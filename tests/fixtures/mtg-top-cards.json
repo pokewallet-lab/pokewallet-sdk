@@ -25,10 +25,10 @@
    "current_price": 24500
   },
   {
-   "id": "mtg_26dcb8609b2fa021e26275d3499b7285040f5369a7f3a65e5b060a78ba625682b13416d8e411",
+   "id": "mtg_58adedc648e9f6a3bb9663371207b7ee89e71b522738cb2aa721cb6e3fee025c126ada5db807",
    "card_info": {
-    "name": "Time Walk",
-    "clean_name": "Time Walk",
+    "name": "Timetwister",
+    "clean_name": "Timetwister",
     "set_name": "Unlimited Edition",
     "set_code": "2ED",
     "set_id": "115",
@@ -39,19 +39,19 @@
     "variants": [
      "Normal"
     ],
-    "card_text": "Take an extra turn after this one.",
+    "card_text": "Set Timetwister aside in a new graveyard pile. Shuffle your hand, library, and graveyard together into a new library and draw a new hand of seven cards, leaving all cards in play where they are; opponent must do the same.",
     "sub_type": "Sorcery"
    },
-   "current_price": 5719.99
+   "current_price": 6400
   },
   {
-   "id": "mtg_57bae78cb8333bb2eeae88837fdc4effdbb2484ca38e6809bac1b402b458ecb45a630b2de42c",
+   "id": "mtg_c07aa3393d983e1c52f14007efad4b27569f676ec8441d911a108e30e9d1d84079bfa6977c",
    "card_info": {
-    "name": "Ancestral Recall",
-    "clean_name": "Ancestral Recall",
-    "set_name": "Unlimited Edition",
-    "set_code": "2ED",
-    "set_id": "115",
+    "name": "Mox Ruby",
+    "clean_name": "Mox Ruby",
+    "set_name": "Beta Edition",
+    "set_code": "LEB",
+    "set_id": "17",
     "card_number": null,
     "rarity": "R",
     "card_type": null,
@@ -59,10 +59,10 @@
     "variants": [
      "Normal"
     ],
-    "card_text": "Draw 3 cards or force opponent to draw 3 cards.",
-    "sub_type": "Instant"
+    "card_text": "Add 1 red mana to your mana pool. Tapping this artifact can be played as an interrupt.",
+    "sub_type": "Mono Artifact"
    },
-   "current_price": 4999.95
+   "current_price": 6400
   }
  ]
 }

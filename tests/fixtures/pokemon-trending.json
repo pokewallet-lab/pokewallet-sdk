@@ -2,25 +2,26 @@
  "period": "7d",
  "trending_sets": [
   {
-   "set_name": "Pt: Arceus LV.X Deck: Grass & Fire",
-   "set_code": "24002",
-   "card_count": 4,
+   "set_name": "POP Series 1",
+   "set_code": "POP",
+   "set_id": "1422",
+   "card_count": 17,
    "cardmarket": {
-    "price_change": "+446.7%",
-    "avg_price_current": 119.56,
-    "avg_price_previous": 21.87,
+    "price_change": "+164.3%",
+    "avg_price_current": 66.08,
+    "avg_price_previous": 25,
     "top_movers": [
      {
-      "name": "Arceus LV.X",
-      "change": "+531.9%"
+      "name": "Tyranitar ex",
+      "change": "+238.2%"
      },
      {
-      "name": "Professor Rowan",
-      "change": "-69.5%"
+      "name": "Rayquaza",
+      "change": "+222.3%"
      },
      {
-      "name": "Switch",
-      "change": "+42.9%"
+      "name": "Blaziken",
+      "change": "+212.3%"
      }
     ]
    },
@@ -30,42 +31,55 @@
    }
   },
   {
-   "set_name": "BREAKpoint Promos",
-   "set_code": "-9",
-   "card_count": 1,
+   "set_name": "Pt: Arceus LV.X Deck: Grass & Fire",
+   "set_code": "Pt",
+   "set_id": "24002",
+   "card_count": 9,
    "cardmarket": {
-    "price_change": "+117.7%",
-    "avg_price_current": 157.5,
-    "avg_price_previous": 72.34,
+    "price_change": "+153.1%",
+    "avg_price_current": 39.28,
+    "avg_price_previous": 15.52,
     "top_movers": [
      {
-      "name": "Giratina Lv.52",
-      "change": "+117.7%"
+      "name": "Arceus Lv.100",
+      "change": "+198.5%"
+     },
+     {
+      "name": "Arceus LV.X",
+      "change": "+184.9%"
+     },
+     {
+      "name": "Sceptile Lv.59",
+      "change": "+62.4%"
      }
     ]
    },
-   "tcgplayer": null
+   "tcgplayer": {
+    "status": "work_in_progress",
+    "message": "TCGPlayer price history not yet available"
+   }
   },
   {
-   "set_name": "SM Promos",
-   "set_code": "1861",
-   "card_count": 3,
+   "set_name": "Hidden Legends",
+   "set_code": "HL",
+   "set_id": "1416",
+   "card_count": 61,
    "cardmarket": {
-    "price_change": "+63.8%",
-    "avg_price_current": 9.97,
-    "avg_price_previous": 6.09,
+    "price_change": "+124.2%",
+    "avg_price_current": 71.99,
+    "avg_price_previous": 32.11,
     "top_movers": [
      {
-      "name": "Rowlet",
-      "change": "+78.5%"
+      "name": "Kyogre ex",
+      "change": "+284.6%"
      },
      {
-      "name": "Popplio",
-      "change": "+31.9%"
+      "name": "Metang",
+      "change": "+244.0%"
      },
      {
-      "name": "Litten",
-      "change": "+18.6%"
+      "name": "Machamp",
+      "change": "+155.1%"
      }
     ]
    },

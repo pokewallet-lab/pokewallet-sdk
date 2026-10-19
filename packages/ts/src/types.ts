@@ -159,7 +159,6 @@ export interface TopCard {
   setId: string | null
   setCode: string | null
   price: number | null
-  previousPrice7d: number | null
   change7d: string | null
   raw: unknown
 }
@@ -183,8 +182,8 @@ export interface PriceHistory {
 export type SearchOptions = { page?: number; limit?: number }
 export type SetOptions = { page?: number; limit?: number; language?: string }
 export type PricesOptions = { source?: 'tcg' | 'cm' }
-export type StatisticsOptions = { variant?: string }
-export type TrendingOptions = { period?: '7d' | '30d'; limit?: number }
+export type StatisticsOptions = { variant?: 'normal' | 'foil' }
+export type TrendingOptions = { period?: '7d'; limit?: number }
 export type TopCardsOptions = { metric?: 'price' | 'growth'; source?: 'tcg' | 'cm'; limit?: number }
 
 export interface Game {

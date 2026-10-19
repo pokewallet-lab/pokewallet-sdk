@@ -5,7 +5,7 @@ Nothing here does I/O, so the sync and async worlds share it verbatim.
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, NamedTuple, Optional, Sequence
+from typing import Any, Dict, NamedTuple, Optional
 
 from ._error_map import ambiguous_set_error, is_disambiguation
 from ._normalize import (
@@ -15,7 +15,7 @@ from ._normalize_pro import (
     normalize_completion_value, normalize_price_history, normalize_set_prices,
     normalize_statistics, normalize_top_cards, normalize_trending,
 )
-from ._validation import check_limit, check_page, check_text, seg
+from ._validation import check_limit, check_page, check_period, check_text, check_variant, seg
 from .errors import ValidationError
 from .types import SearchPage, SetPage
 
@@ -41,9 +41,8 @@ def make_page_meta(meta: Any, count: int) -> Dict[str, int]:
 class CardDialect:
     """Pokémon and the ten games share one response shape."""
 
-    def __init__(self, prefix: str, periods: Sequence[str], min_query: int) -> None:
+    def __init__(self, prefix: str, min_query: int) -> None:
         self.prefix = prefix
-        self.periods = tuple(periods)
         self.min_query = min_query
 
     def _p(self, rest: str) -> str:
@@ -92,7 +91,7 @@ class CardDialect:
     parse_prices = staticmethod(normalize_set_prices)
 
     def statistics(self, code: str, variant: Optional[str]) -> Req:
-        return Req(self._p(f"/sets/{seg(code)}/statistics"), {"variant": variant})
+        return Req(self._p(f"/sets/{seg(code)}/statistics"), {"variant": check_variant(variant)})
 
     parse_statistics = staticmethod(normalize_statistics)
 
@@ -102,10 +101,7 @@ class CardDialect:
     parse_completion_value = staticmethod(normalize_completion_value)
 
     def trending(self, period: Optional[str], limit: Optional[int]) -> Req:
-        p = period or "7d"
-        if p not in self.periods:
-            raise ValidationError(f"period {p} is not available here (use {' or '.join(self.periods)})")
-        return Req(self._p("/sets/trending"), {"period": p, "limit": check_limit(limit, LIMITS["trending"])})
+        return Req(self._p("/sets/trending"), {"period": check_period(period), "limit": check_limit(limit, LIMITS["trending"])})
 
     parse_trending = staticmethod(normalize_trending)
 
@@ -117,7 +113,7 @@ class CardDialect:
 
 class PokemonDialect(CardDialect):
     def __init__(self) -> None:
-        super().__init__("", ("7d", "30d"), 1)
+        super().__init__("", 1)
 
     def price_history(self, card_id: str) -> Req:
         return Req(f"/cards/{seg(card_id)}/price-history", {})
@@ -168,7 +164,7 @@ class OnePieceDialect:
     parse_prices = staticmethod(normalize_set_prices)
 
     def statistics(self, code: str, variant: Optional[str]) -> Req:
-        return Req(f"/op/sets/{seg(code)}/statistics", {"variant": variant})
+        return Req(f"/op/sets/{seg(code)}/statistics", {"variant": check_variant(variant)})
 
     parse_statistics = staticmethod(normalize_statistics)
 
@@ -178,9 +174,7 @@ class OnePieceDialect:
     parse_completion_value = staticmethod(normalize_completion_value)
 
     def trending(self, period: Optional[str], limit: Optional[int]) -> Req:
-        if period == "30d":
-            raise ValidationError("period 30d is not available for One Piece")
-        return Req("/op/sets/trending", {"period": "7d", "limit": check_limit(limit, LIMITS["trending"])})
+        return Req("/op/sets/trending", {"period": check_period(period), "limit": check_limit(limit, LIMITS["trending"])})
 
     parse_trending = staticmethod(normalize_trending)
 

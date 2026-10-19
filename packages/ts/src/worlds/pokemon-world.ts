@@ -9,7 +9,7 @@ import { CardWorld } from './card-world.js'
 /** Pokémon: the shared card world plus the endpoints only Pokémon has. */
 export class PokemonWorld extends CardWorld {
   constructor(http: HttpClient) {
-    super(http, { prefix: '', periods: ['7d', '30d'], minQuery: 1 })
+    super(http, { prefix: '', minQuery: 1 })
   }
 
   /**

@@ -33,10 +33,14 @@
    "set_id": "7",
    "card_count": 295,
    "cardmarket": {
-    "price_change": "+78.9%",
-    "avg_price_current": 930.31,
-    "avg_price_previous": 519.91,
+    "price_change": "+79.0%",
+    "avg_price_current": 934.32,
+    "avg_price_previous": 521.87,
     "top_movers": [
+     {
+      "name": "Island (V.1)",
+      "change": "+544.0%"
+     },
      {
       "name": "Timetwister",
       "change": "+191.4%"
@@ -44,10 +48,6 @@
      {
       "name": "Ancestral Recall",
       "change": "+189.7%"
-     },
-     {
-      "name": "Mox Emerald",
-      "change": "+178.7%"
      }
     ]
    },

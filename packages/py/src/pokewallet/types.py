@@ -229,7 +229,6 @@ class TopCard:
     set_id: Optional[str]
     set_code: Optional[str]
     price: Optional[float]
-    previous_price_7d: Optional[float]
     change_7d: Optional[str]
     raw: Any = None
 

@@ -16,6 +16,19 @@ export function checkLimit(limit: number | undefined, max: number): number | und
   return limit
 }
 
+/** Only `7d` exists, in every world. */
+export function checkPeriod(period: string | undefined): '7d' {
+  if (period !== undefined && period !== '7d') throw new ValidationError(`period ${period} is not available (only 7d)`)
+  return '7d'
+}
+
+/** `variant` is `normal` or `foil`. */
+export function checkVariant(variant: string | undefined): 'normal' | 'foil' | undefined {
+  if (variant === undefined) return undefined
+  if (variant !== 'normal' && variant !== 'foil') throw new ValidationError(`variant must be normal or foil (got ${variant})`)
+  return variant
+}
+
 export function checkText(name: string, value: string, min = 1): string {
   if (typeof value !== 'string' || value.trim().length < min) {
     throw new ValidationError(`${name} must be at least ${min} character${min === 1 ? '' : 's'} long`)

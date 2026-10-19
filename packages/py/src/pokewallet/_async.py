@@ -131,7 +131,7 @@ class AsyncPokemonWorld(AsyncWorld):
 def build_async_worlds(transport: AsyncTransport):
     from .types import GAME_CODES
 
-    games = {code: AsyncWorld(transport, CardDialect(f"/{code}", ("7d",), 2)) for code in GAME_CODES}
+    games = {code: AsyncWorld(transport, CardDialect(f"/{code}", 2)) for code in GAME_CODES}
     return AsyncPokemonWorld(transport), AsyncWorld(transport, OnePieceDialect()), games
 
 

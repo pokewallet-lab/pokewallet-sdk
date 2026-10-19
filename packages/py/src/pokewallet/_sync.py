@@ -131,7 +131,7 @@ class SyncPokemonWorld(SyncWorld):
 def build_sync_worlds(transport: SyncTransport):
     from .types import GAME_CODES
 
-    games = {code: SyncWorld(transport, CardDialect(f"/{code}", ("7d",), 2)) for code in GAME_CODES}
+    games = {code: SyncWorld(transport, CardDialect(f"/{code}", 2)) for code in GAME_CODES}
     return SyncPokemonWorld(transport), SyncWorld(transport, OnePieceDialect()), games
 
 

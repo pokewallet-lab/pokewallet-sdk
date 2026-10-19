@@ -80,29 +80,29 @@ describe('Pokémon cards', () => {
 })
 
 describe('Pro endpoints', () => {
-  it('normalizes statistics: string averages become numbers, a numeric set_code becomes the id', async () => {
+  it('normalizes statistics: string averages become numbers, set_info has set_id and the real set_code', async () => {
     const { pw } = sdk([{ body: fixture('pokemon-statistics') }])
     const s = await pw.pokemon.statistics('PLF')
-    expect(s.set).toMatchObject({ id: '1382', code: null, name: 'Plasma Freeze', totalCards: 222 })
-    expect(s.tcgplayer!.avg).toBe(25.92)
-    expect(s.tcgplayer!.mostExpensive).toMatchObject({ name: 'Ultra Ball', price: 1199.51 })
+    expect(s.set).toMatchObject({ id: '1382', code: 'PLF', name: 'Plasma Freeze', totalCards: 122 })
+    expect(s.tcgplayer!.avg).toBe(45.96)
+    expect(s.tcgplayer!.mostExpensive).toMatchObject({ id: expect.stringMatching(/^pk_/), name: 'Ultra Ball', price: 1199.51 })
     expect(s.cardmarket!.trendDirection).toBe('up')
-    expect(s.rarityBreakdown.Common).toBe(64)
-    expect((s.raw as any).price_statistics.tcgplayer.avg_market_price).toBe('25.92')
+    expect(s.rarityBreakdown.Common).toBe(32)
+    expect((s.raw as any).price_statistics.tcgplayer.avg_market_price).toBe('45.96')
   })
 
   it('normalizes completion value, trending, top cards and price history', async () => {
     const c = await sdk([{ body: fixture('pokemon-completion') }]).pw.pokemon.completionValue('PLF')
     expect(c.set.code).toBe('PLF')
-    expect(c.tcgplayer).toMatchObject({ currency: 'USD', market: 5754.3 })
-    expect(c.byRarity.Common).toEqual({ count: 64, totalCost: 125.93 })
+    expect(c.tcgplayer).toMatchObject({ currency: 'USD', market: 4950.71 })
+    expect(c.byRarity.Common).toEqual({ count: 32, totalCost: 15.79 })
 
-    const t = await sdk([{ body: fixture('pokemon-trending') }]).pw.pokemon.trending({ period: '30d' })
-    expect(t[0]).toMatchObject({ change: '+446.7%', changePct: 446.7, cardCount: 4 })
-    expect(t[0]!.set).toMatchObject({ id: '24002', code: null })
+    const t = await sdk([{ body: fixture('pokemon-trending') }]).pw.pokemon.trending({ period: '7d' })
+    expect(t[0]).toMatchObject({ change: '+164.3%', changePct: 164.3, cardCount: 17 })
+    expect(t[0]!.set).toMatchObject({ id: '1422', code: 'POP' })
 
     const top = await sdk([{ body: fixture('pokemon-top-growth') }]).pw.pokemon.topCards({ metric: 'growth' })
-    expect(top[0]).toMatchObject({ price: 1.43, previousPrice7d: 1.37, change7d: '+4.4%' })
+    expect(top[0]).toMatchObject({ price: 1498.99, change7d: '+29879.8%', setCode: 'HP', setId: '1379' })
 
     const h = await sdk([{ body: fixture('pokemon-price-history') }]).pw.pokemon.priceHistory('pk_x')
     expect(h.tcgplayer!.Normal!.price[7]).toBe(0.37)
@@ -113,12 +113,12 @@ describe('Pro endpoints', () => {
   it('normalizes set prices for Pokémon (group_id) and the games (set_id)', async () => {
     const p = await sdk([{ body: fixture('pokemon-prices') }]).pw.pokemon.prices('PLF', { source: 'tcg' })
     expect(p).toMatchObject({ setId: '1382', setCode: 'PLF', source: 'both', total: 227 })
-    expect(p.rows[0]!.tcgplayer!.market).toBe(0.36)
+    expect(p.rows[0]!.tcgplayer!.market).toBe(0.37)
     expect(p.rows[0]!.variant).toBe('Normal')
 
     const g = await sdk([{ body: fixture('mtg-prices') }]).pw.games.mtg.prices('FRA')
     expect(g.setId).toBe('24684')
-    expect(g.rows[0]!.cardmarket!.trend).toBe(16.27)
+    expect(g.rows[0]!.cardmarket!.trend).toBe(14.03)
   })
 })
 
@@ -171,9 +171,11 @@ describe('One Piece', () => {
     expect(top[0]).toMatchObject({ price: 13000, setCode: 'OP11', setId: '24241' })
   })
 
-  it('refuses periods and options One Piece does not have', async () => {
+  it('refuses periods, finishes and options the API does not have', async () => {
     const { pw, calls } = sdk([{ body: {} }])
-    expect(await fail(pw.onepiece.trending({ period: '30d' }))).toBeInstanceOf(ValidationError)
+    expect(await fail(pw.onepiece.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
+    expect(await fail(pw.pokemon.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
+    expect(await fail(pw.pokemon.statistics('PLF', { variant: 'holo' as any }))).toBeInstanceOf(ValidationError)
     expect(await fail(pw.onepiece.prices('OP01', { source: 'tcg' }))).toBeInstanceOf(ValidationError)
     expect(calls).toHaveLength(0)
   })
@@ -202,7 +204,7 @@ describe('ten games', () => {
   it('rejects one-letter game queries and 30d trending before any request', async () => {
     const { pw, calls } = sdk([{ body: {} }])
     expect(await fail(pw.games.ygo.search('a'))).toBeInstanceOf(ValidationError)
-    expect(await fail(pw.games.ygo.trending({ period: '30d' }))).toBeInstanceOf(ValidationError)
+    expect(await fail(pw.games.ygo.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
     expect(calls).toHaveLength(0)
   })
 

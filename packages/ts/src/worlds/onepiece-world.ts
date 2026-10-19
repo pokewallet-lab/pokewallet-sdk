@@ -28,7 +28,7 @@ import type {
   TrendingOptions,
   TrendingSet,
 } from '../types.js'
-import { checkLimit, checkPage, checkText, seg } from '../validation.js'
+import { checkLimit, checkPage, checkPeriod, checkText, checkVariant, seg } from '../validation.js'
 import { LIMITS, type World } from './world.js'
 
 const NUMERIC_ID = /^-?\d+$/
@@ -95,7 +95,7 @@ export class OnePieceWorld implements World {
   }
 
   async statistics(code: string, options: StatisticsOptions = {}): Promise<SetStatistics> {
-    return normalizeStatistics(await this.http.get(`/op/sets/${seg(code)}/statistics`, { variant: options.variant }))
+    return normalizeStatistics(await this.http.get(`/op/sets/${seg(code)}/statistics`, { variant: checkVariant(options.variant) }))
   }
 
   async completionValue(code: string): Promise<CompletionValue> {
@@ -103,8 +103,8 @@ export class OnePieceWorld implements World {
   }
 
   async trending(options: TrendingOptions = {}): Promise<TrendingSet[]> {
-    if (options.period === '30d') throw new ValidationError('period 30d is not available for One Piece')
-    return normalizeTrending(await this.http.get('/op/sets/trending', { period: '7d', limit: checkLimit(options.limit, LIMITS.trending) }))
+    const period = checkPeriod(options.period)
+    return normalizeTrending(await this.http.get('/op/sets/trending', { period, limit: checkLimit(options.limit, LIMITS.trending) }))
   }
 
   async topCards(options: TopCardsOptions = {}): Promise<TopCard[]> {

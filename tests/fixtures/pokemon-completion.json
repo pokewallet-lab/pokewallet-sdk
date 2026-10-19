@@ -2,51 +2,52 @@
  "set_info": {
   "name": "Plasma Freeze",
   "set_code": "PLF",
-  "total_cards": 222
+  "set_id": "1382",
+  "total_cards": 122
  },
  "completion_cost": {
   "tcgplayer": {
    "currency": "USD",
-   "low_estimate": 4618.45,
-   "market_estimate": 5754.3,
-   "high_estimate": 35295.11
+   "low_estimate": 5084.02,
+   "market_estimate": 4950.71,
+   "high_estimate": 21035.44
   },
   "cardmarket": {
    "currency": "EUR",
-   "low_estimate": 397.9,
-   "avg_estimate": 5178.64,
-   "trend_estimate": 2641.44
+   "low_estimate": 371.46,
+   "avg_estimate": 3576.92,
+   "trend_estimate": 2730.18
   },
-  "note": "TCGPlayer prices in USD, CardMarket prices in EUR. Cross-currency comparison not available."
+  "note": "One copy per card (base finish). TCGPlayer prices in USD, CardMarket prices in EUR. Cross-currency comparison not available."
  },
  "breakdown_by_rarity": {
   "Common": {
-   "count": 64,
-   "total_cost": 125.93
+   "count": 32,
+   "total_cost": 15.79
   },
   "Rare": {
-   "count": 44,
-   "total_cost": 361.61
+   "count": 22,
+   "total_cost": 75.92
   },
   "Uncommon": {
-   "count": 64,
-   "total_cost": 349.11
+   "count": 32,
+   "total_cost": 46.59
   },
   "Holo Rare": {
-   "count": 28,
-   "total_cost": 628.93
+   "count": 14,
+   "total_cost": 313.41
   },
   "Rare Ace": {
    "count": 2,
-   "total_cost": 7.82
+   "total_cost": 7.79
   },
   "Ultra Rare": {
    "count": 14,
-   "total_cost": 1947.35
+   "total_cost": 2061.29
   },
   "Secret Rare": {
    "count": 6,
-   "total_cost": 2333.55
+   "total_cost": 2429.92
   }
  }
 }

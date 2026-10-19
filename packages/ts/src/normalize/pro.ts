@@ -118,7 +118,6 @@ export function normalizeTopCards(raw: unknown): TopCard[] {
       setId: pair.id,
       setCode: pair.code,
       price: num(c.current_price),
-      previousPrice7d: num(c.previous_price_7d),
       change7d: str(c.change_7d),
       raw: item,
     }

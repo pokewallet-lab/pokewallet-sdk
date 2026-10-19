@@ -3,6 +3,7 @@
  "source": "both",
  "set_code": "PLF",
  "group_id": "1382",
+ "set_id": "1382",
  "data": [
   {
    "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
@@ -12,20 +13,20 @@
    "product_type": "card",
    "tcgplayer": {
     "low_price": 0.17,
-    "mid_price": 0.32,
-    "high_price": 19.82,
-    "market_price": 0.36,
-    "direct_low_price": 0.25,
-    "updated_at": "2026-10-02T10:48:34.951475"
+    "mid_price": 0.35,
+    "high_price": 19.8,
+    "market_price": 0.37,
+    "direct_low_price": null,
+    "updated_at": "2026-10-19T10:24:30.898077"
    },
    "cardmarket": {
-    "avg": 0.15,
+    "avg": 0.17,
     "low": 0.02,
-    "trend": 0.19,
+    "trend": 0.2,
     "avg1": 0.25,
-    "avg7": 0.18,
-    "avg30": 0.17,
-    "updated_at": "2026-10-02T10:25:31.336544"
+    "avg7": 0.21,
+    "avg30": 0.18,
+    "updated_at": "2026-10-19T09:47:08.096278"
    }
   },
   {
@@ -36,20 +37,20 @@
    "product_type": "card",
    "tcgplayer": {
     "low_price": 0.51,
-    "mid_price": 1.51,
-    "high_price": 24.84,
-    "market_price": 1.58,
+    "mid_price": 1.5,
+    "high_price": 24.82,
+    "market_price": 1.59,
     "direct_low_price": null,
-    "updated_at": "2026-10-02T10:48:34.951475"
+    "updated_at": "2026-10-19T10:24:30.898077"
    },
    "cardmarket": {
-    "avg": 0.34,
-    "low": 0.14,
-    "trend": 0.8,
-    "avg1": 0.35,
-    "avg7": 0.67,
-    "avg30": 0.66,
-    "updated_at": "2026-10-02T10:25:31.336544"
+    "avg": 0.53,
+    "low": 0.1,
+    "trend": 1.07,
+    "avg1": 2.95,
+    "avg7": 0.79,
+    "avg30": 0.75,
+    "updated_at": "2026-10-19T09:47:08.096278"
    }
   },
   {
@@ -62,18 +63,18 @@
     "low_price": 0.26,
     "mid_price": 0.51,
     "high_price": 23.49,
-    "market_price": 0.53,
-    "direct_low_price": 0.4,
-    "updated_at": "2026-10-02T10:48:34.951475"
+    "market_price": 0.52,
+    "direct_low_price": null,
+    "updated_at": "2026-10-19T10:24:30.898077"
    },
    "cardmarket": {
-    "avg": 1.19,
-    "low": 0.14,
-    "trend": 0.71,
-    "avg1": 1.19,
-    "avg7": 0.67,
-    "avg30": 0.61,
-    "updated_at": "2026-10-02T10:25:31.336544"
+    "avg": 0.43,
+    "low": 0.02,
+    "trend": 0.53,
+    "avg1": 0.14,
+    "avg7": 0.61,
+    "avg30": 0.6,
+    "updated_at": "2026-10-19T09:47:08.096278"
    }
   }
  ],

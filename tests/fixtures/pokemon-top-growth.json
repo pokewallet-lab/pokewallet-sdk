@@ -3,40 +3,92 @@
  "source": "tcg",
  "top_cards": [
   {
-   "id": "pk_a158209922b6436683e91ee5f0a4e231829dc7f6d380c3e82465b90bc99d0ce32be16f0cc84b480071bf97576fd46f04",
+   "id": "pk_462cb032cd960b329159b242fc8373601fa791e3a619cf6ee770023064e3c15d99132abd0485ac540e007398",
    "card_info": {
-    "name": "Pidgeotto - 305/190",
-    "set_name": "SV4a_ Shiny Treasure ex",
-    "card_number": "305/190",
-    "rarity": "Shiny Rare"
+    "name": "Deoxys (Delta Species - Attack Forme)",
+    "clean_name": "Deoxys Delta Species Attack Forme",
+    "set_name": "Holon Phantoms",
+    "set_code": "HP",
+    "set_id": "1379",
+    "card_number": "3/110",
+    "rarity": "Holo Rare",
+    "card_type": "Darkness",
+    "product_type": "card",
+    "variants": [
+     "Holofoil",
+     "Reverse Holofoil"
+    ],
+    "card_text": "<b>Poke-POWER</b> Form Change \r\n<br>Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. <em> (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokemon.) </em> If you do, put Deoxys on top of your deck.  Shuffle your deck afterward.  You can't use more than 1 Form Change Poke-Power each turn.",
+    "hp": "70.0",
+    "stage": "Basic",
+    "attacks": [
+     "[2D] Energy Loop (60) \r\n<br>Return 2 Energy attached to Deoxys to your hand."
+    ],
+    "weakness": "Px2",
+    "resistance": null,
+    "retreat_cost": "1.0"
    },
-   "current_price": 1.43,
-   "previous_price_7d": 1.37,
-   "change_7d": "+4.4%"
+   "current_price": 1498.99,
+   "change_7d": "+29879.8%"
   },
   {
-   "id": "pk_929c5621a1885943b712e257de5a24dedd6736b0f15fca3149244a0b3765ca4ce268dfd90b43880c56c79e071bd8bc84",
+   "id": "pk_25e49104431ab1a80938919ef14c6b148e61bd7be9454ad317c1083cf3127a274caf46c3b42d0f48ee4b3ec727",
    "card_info": {
-    "name": "Aarune - 101/076",
-    "set_name": "Storm Emeralda",
-    "card_number": "101/076",
-    "rarity": "Super Rare"
+    "name": "Venonat",
+    "clean_name": "Venonat",
+    "set_name": "Triumphant",
+    "set_code": "TM",
+    "set_id": "1381",
+    "card_number": "81/102",
+    "rarity": "Common",
+    "card_type": "Grass",
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Reverse Holofoil"
+    ],
+    "card_text": null,
+    "hp": "50.0",
+    "stage": "Basic",
+    "attacks": [
+     "[G] Leech Life (10) Remove from Venonat the number of damage counters equal to the damage you did to the Defending Pokemon.",
+     "[2] Tackle (20)"
+    ],
+    "weakness": "Rx2",
+    "resistance": null,
+    "retreat_cost": "1.0"
    },
-   "current_price": 5.1,
-   "previous_price_7d": 5.05,
-   "change_7d": "+1.0%"
+   "current_price": 10.78,
+   "change_7d": "+926.7%"
   },
   {
-   "id": "pk_b2f7d7e4aaa527261c3d1f78dc2af3978777cd687fdd821f90fd304d49b30b19e26085e4e95364dfaaca1d004312a9",
+   "id": "pk_1fe57fdf5e944973ff5f5abcd9b7d7299df7e25beb493b8fa037b90a32cef651b4388049535403fd456fc5b6ae",
    "card_info": {
-    "name": "Swablu",
-    "set_name": "smJ_ Tag Team GX Premium Trainer Box",
-    "card_number": "012/035",
-    "rarity": null
+    "name": "Machamp",
+    "clean_name": "Machamp",
+    "set_name": "Legendary Collection",
+    "set_code": "LC",
+    "set_id": "1374",
+    "card_number": "015/110",
+    "rarity": "Holo Rare",
+    "card_type": "Fighting",
+    "product_type": "card",
+    "variants": [
+     "Holofoil",
+     "Reverse Holofoil"
+    ],
+    "card_text": "<strong>Pokémon Power: Strikes Back</strong> Whenever your opponent's attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. <em>(Don't apply Weakness and Resistance.)</em> This power can't be used if Machamp is already affected by a Special Condition when your opponent attacks.",
+    "hp": "100.0",
+    "stage": "Stage 2",
+    "attacks": [
+     "[1FFF] Seismic Toss (60)"
+    ],
+    "weakness": "P",
+    "resistance": null,
+    "retreat_cost": "3.0"
    },
-   "current_price": 12.5,
-   "previous_price_7d": 12.5,
-   "change_7d": "0.0%"
+   "current_price": 263.33,
+   "change_7d": "+875.3%"
   }
  ]
 }

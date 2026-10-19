@@ -32,7 +32,7 @@ export class PokeWallet {
     this.onepiece = new OnePieceWorld(this.#http)
     const games = {} as Record<GameCode, World>
     for (const code of GAME_CODES) {
-      games[code] = new CardWorld(this.#http, { prefix: `/${code}`, periods: ['7d'], minQuery: 2 })
+      games[code] = new CardWorld(this.#http, { prefix: `/${code}`, minQuery: 2 })
     }
     this.games = games
   }

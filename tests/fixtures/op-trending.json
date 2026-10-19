@@ -7,17 +7,17 @@
    "set_id": "-7",
    "card_count": 46,
    "cardmarket": {
-    "price_change": "+91.3%",
-    "avg_price_current": 208.2,
-    "avg_price_previous": 108.85,
+    "price_change": "+88.9%",
+    "avg_price_current": 208.12,
+    "avg_price_previous": 110.19,
     "top_movers": [
-     {
-      "name": "Monkey.D.Luffy (OP05-060)",
-      "change": "+197.9%"
-     },
      {
       "name": "Tony Tony.Chopper (OP08-001)",
       "change": "+191.2%"
+     },
+     {
+      "name": "Monkey.D.Luffy (OP05-060)",
+      "change": "+175.1%"
      },
      {
       "name": "Hannyabal (EB01-021)",
@@ -33,13 +33,13 @@
    "set_id": "23834",
    "card_count": 57,
    "cardmarket": {
-    "price_change": "+79.4%",
-    "avg_price_current": 461.39,
-    "avg_price_previous": 257.14,
+    "price_change": "+82.4%",
+    "avg_price_current": 472.24,
+    "avg_price_previous": 258.85,
     "top_movers": [
      {
       "name": "Tony Tony.Chopper (OP08-001)",
-      "change": "+205.3%"
+      "change": "+214.9%"
      },
      {
       "name": "Charlotte Pudding (OP08-058)",
@@ -62,21 +62,21 @@
    "set_id": "-4",
    "card_count": 36,
    "cardmarket": {
-    "price_change": "+52.4%",
-    "avg_price_current": 326.02,
-    "avg_price_previous": 213.92,
+    "price_change": "+54.3%",
+    "avg_price_current": 340.02,
+    "avg_price_previous": 220.39,
     "top_movers": [
      {
       "name": "Monkey.D.Luffy (ST01-012) (V.2)",
-      "change": "+90.1%"
+      "change": "+93.9%"
      },
      {
       "name": "Trafalgar Law (OP05-069) (V.3)",
       "change": "+57.1%"
      },
      {
-      "name": "Sabo (OP05-007) (V.2)",
-      "change": "-43.0%"
+      "name": "Monkey.D.Luffy (OP05-119) (V.3)",
+      "change": "+39.1%"
      }
     ]
    },

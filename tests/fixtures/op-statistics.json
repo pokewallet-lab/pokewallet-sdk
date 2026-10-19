@@ -7,8 +7,8 @@
  },
  "price_statistics": {
   "tcgplayer": {
-   "avg_market_price": "53.37",
-   "min_price": 0.07,
+   "avg_market_price": "53.17",
+   "min_price": 0.04,
    "max_price": 3998.74,
    "most_expensive": {
     "id": "op_7816ebfb908c6a34cd6feabbf11c84943582bbc7d8109009e47917e7e499e84b245a31a536a5865d5663ccaa201c9f7f",
@@ -17,13 +17,13 @@
    }
   },
   "cardmarket": {
-   "avg_price": "59.17",
+   "avg_price": "54.18",
    "min_price": 0.03,
-   "max_price": 4566.67,
+   "max_price": 3775,
    "most_expensive": {
     "id": "op_7816ebfb908c6a34cd6feabbf11c84943582bbc7d8109009e47917e7e499e84b245a31a536a5865d5663ccaa201c9f7f",
     "name": "Shanks (Parallel) (Manga) (Alternate Art)",
-    "price": 4566.67
+    "price": 3775
    },
    "trend_direction": "up"
   }

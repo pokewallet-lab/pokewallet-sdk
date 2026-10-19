@@ -1,31 +1,38 @@
 {
  "set_info": {
   "name": "Plasma Freeze",
-  "set_code": "1382",
-  "total_cards": 222
+  "set_code": "PLF",
+  "set_id": "1382",
+  "total_cards": 122
  },
  "price_statistics": {
   "tcgplayer": {
-   "avg_market_price": "25.92",
-   "min_price": 0.21,
+   "avg_market_price": "45.96",
+   "min_price": 0.47,
    "max_price": 1199.51,
    "most_expensive": {
+    "id": "pk_3e8467be1a1da76afdba5f8c584e1279407c4eb2ede63f20ca1cbd873a385e83524e0570003724ed8d5434500c3b",
     "name": "Ultra Ball",
     "price": 1199.51
    }
   },
   "cardmarket": {
-   "avg_price": "26.16",
-   "min_price": 0.07,
-   "max_price": 1800,
+   "avg_price": "18.83",
+   "min_price": 0.09,
+   "max_price": 788.28,
+   "most_expensive": {
+    "id": "pk_d93e0915cba12beb4a6b7a2a5a0927dfbefca742545179ca93e589f48b000518fb589c9cc8bb4ab81652167ab217",
+    "name": "Deoxys EX (Team Plasma) (Full Art)",
+    "price": 788.28
+   },
    "trend_direction": "up"
   }
  },
  "rarity_breakdown": {
-  "Common": 64,
-  "Rare": 44,
-  "Uncommon": 64,
-  "Holo Rare": 28,
+  "Common": 32,
+  "Rare": 22,
+  "Uncommon": 32,
+  "Holo Rare": 14,
   "Rare Ace": 2,
   "Ultra Rare": 14,
   "Secret Rare": 6

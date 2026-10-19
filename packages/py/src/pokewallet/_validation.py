@@ -23,6 +23,20 @@ def check_limit(limit: Optional[int], maximum: int) -> Optional[int]:
     return limit
 
 
+def check_period(period: Optional[str]) -> str:
+    """Only ``7d`` exists, in every world."""
+    if period is not None and period != "7d":
+        raise ValidationError(f"period {period} is not available (only 7d)")
+    return "7d"
+
+
+def check_variant(variant: Optional[str]) -> Optional[str]:
+    """``variant`` is ``normal`` or ``foil``."""
+    if variant is not None and variant not in ("normal", "foil"):
+        raise ValidationError(f"variant must be normal or foil (got {variant!r})")
+    return variant
+
+
 def check_text(name: str, value: str, minimum: int = 1) -> str:
     if not isinstance(value, str) or len(value.strip()) < minimum:
         plural = "" if minimum == 1 else "s"

@@ -119,7 +119,6 @@ def normalize_top_cards(raw: Any) -> List[TopCard]:
             set_id=pair.id,
             set_code=pair.code,
             price=num(c.get("current_price")),
-            previous_price_7d=num(c.get("previous_price_7d")),
             change_7d=text(c.get("change_7d")),
             raw=item,
         ))

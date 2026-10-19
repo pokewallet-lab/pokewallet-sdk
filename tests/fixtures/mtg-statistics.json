@@ -7,8 +7,8 @@
  },
  "price_statistics": {
   "tcgplayer": {
-   "avg_market_price": "17.01",
-   "min_price": 0.12,
+   "avg_market_price": "20.61",
+   "min_price": 0.13,
    "max_price": 880,
    "most_expensive": {
     "id": "mtg_ec52a22ab58717a79d0006db028c7112b5e228b08893577d810b8a171d3ec22b2a6ea80e47e2ba4462fa7e17",
@@ -17,15 +17,15 @@
    }
   },
   "cardmarket": {
-   "avg_price": "12.32",
-   "min_price": 0.03,
-   "max_price": 452.25,
+   "avg_price": "8.37",
+   "min_price": 0.04,
+   "max_price": 600,
    "most_expensive": {
-    "id": "mtg_dbc07746db9723d9ba428f50cb6da85211bd1e7658f51bd599bccdcfffb190b95cc00b858dd59296cb227408",
-    "name": "Hexhaven Invigorator (Borderless) (Facet Foil)",
-    "price": 452.25
+    "id": "22120c320358856d612b66fd229394d08563fe8ce48bdf7fd503a40e2b8e8ce7",
+    "name": "Darklight Phoenix (V.3)",
+    "price": 600
    },
-   "trend_direction": "stable"
+   "trend_direction": "down"
   }
  },
  "rarity_breakdown": {

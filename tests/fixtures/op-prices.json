@@ -1,28 +1,32 @@
 {
  "success": true,
+ "source": "both",
+ "set_code": "OP01",
  "group_id": "3188",
+ "set_id": "3188",
  "data": [
   {
    "id": "op_0f7d2687ec1143b5118027ccb9fb52060de6c5eb63cb4e7bf04f9b7b7666d2ad51f0acbabeff512c13fbd2fb4538de82",
    "card_number": "OP01-001",
    "name": "Roronoa Zoro (001)",
    "variant": "Normal",
+   "product_type": "card",
    "tcgplayer": {
-    "low_price": 1.49,
-    "mid_price": 3.35,
+    "low_price": 1.67,
+    "mid_price": 3.39,
     "high_price": 34.99,
-    "market_price": 2.05,
+    "market_price": 1.67,
     "direct_low_price": null,
-    "updated_at": "2026-10-02T11:56:40.197781"
+    "updated_at": "2026-10-19T12:14:22.162534"
    },
    "cardmarket": {
-    "avg": 2.34,
-    "low": 0.5,
-    "trend": 2.1,
-    "avg1": 2.17,
-    "avg7": 1.83,
-    "avg30": 2.31,
-    "updated_at": "2026-10-02T10:15:27.142921"
+    "avg": 2.02,
+    "low": 0.8,
+    "trend": 2.23,
+    "avg1": 2.22,
+    "avg7": 2.19,
+    "avg30": 2.03,
+    "updated_at": "2026-10-19T09:31:18.478754"
    }
   },
   {
@@ -30,22 +34,23 @@
    "card_number": "OP01-001",
    "name": "Roronoa Zoro (001) (Parallel)",
    "variant": "Foil",
+   "product_type": "card",
    "tcgplayer": {
-    "low_price": 695.01,
-    "mid_price": 772.5,
+    "low_price": 689.99,
+    "mid_price": 746.49,
     "high_price": 3000,
-    "market_price": 619.64,
+    "market_price": 660.39,
     "direct_low_price": null,
-    "updated_at": "2026-10-02T11:56:40.197781"
+    "updated_at": "2026-10-19T12:14:22.162534"
    },
    "cardmarket": {
-    "avg": 547.2,
-    "low": 500,
-    "trend": 610.16,
-    "avg1": 518,
-    "avg7": 612.33,
-    "avg30": 607.93,
-    "updated_at": "2026-10-02T10:15:27.142921"
+    "avg": 770,
+    "low": 450,
+    "trend": 619.74,
+    "avg1": 695,
+    "avg7": 603.64,
+    "avg30": 619.15,
+    "updated_at": "2026-10-19T09:31:18.478754"
    }
   },
   {
@@ -53,22 +58,23 @@
    "card_number": "OP01-002",
    "name": "Trafalgar Law (002)",
    "variant": "Normal",
+   "product_type": "card",
    "tcgplayer": {
     "low_price": 1.02,
-    "mid_price": 2.71,
-    "high_price": 21.66,
-    "market_price": 1.45,
+    "mid_price": 2.5,
+    "high_price": 15,
+    "market_price": 1.68,
     "direct_low_price": null,
-    "updated_at": "2026-10-02T11:56:40.197781"
+    "updated_at": "2026-10-19T12:14:22.162534"
    },
    "cardmarket": {
-    "avg": 1,
+    "avg": 1.14,
     "low": 0.15,
-    "trend": 1.4,
-    "avg1": 1.13,
-    "avg7": 1.22,
-    "avg30": 1.05,
-    "updated_at": "2026-10-02T10:15:27.142921"
+    "trend": 1,
+    "avg1": 0.93,
+    "avg7": 0.92,
+    "avg30": 1.17,
+    "updated_at": "2026-10-19T09:31:18.478754"
    }
   }
  ],

@@ -1,4 +1,3 @@
-import { ValidationError } from '../errors.js'
 import { ambiguousSetError, isDisambiguation } from '../error-map.js'
 import type { HttpClient } from '../http.js'
 import { arr, num, rec } from '../normalize/common.js'
@@ -29,14 +28,12 @@ import type {
   TrendingOptions,
   TrendingSet,
 } from '../types.js'
-import { checkLimit, checkPage, checkText, seg } from '../validation.js'
+import { checkLimit, checkPage, checkPeriod, checkText, checkVariant, seg } from '../validation.js'
 import { LIMITS, type World } from './world.js'
 
 export interface CardWorldConfig {
   /** Route prefix: `''` for Pokémon, `/mtg` for a game. */
   prefix: string
-  /** Pokémon accepts `period=30d` on trending; the other worlds only `7d`. */
-  periods: readonly ('7d' | '30d')[]
   /** Minimum search length: the games reject queries shorter than 2 characters. */
   minQuery: number
 }
@@ -109,7 +106,7 @@ export class CardWorld implements World {
   }
 
   async statistics(code: string, options: StatisticsOptions = {}): Promise<SetStatistics> {
-    return normalizeStatistics(await this.http.get(this.path(`/sets/${seg(code)}/statistics`), { variant: options.variant }))
+    return normalizeStatistics(await this.http.get(this.path(`/sets/${seg(code)}/statistics`), { variant: checkVariant(options.variant) }))
   }
 
   async completionValue(code: string): Promise<CompletionValue> {
@@ -117,8 +114,7 @@ export class CardWorld implements World {
   }
 
   async trending(options: TrendingOptions = {}): Promise<TrendingSet[]> {
-    const period = options.period ?? '7d'
-    if (!this.config.periods.includes(period)) throw new ValidationError(`period ${period} is not available here (use ${this.config.periods.join(' or ')})`)
+    const period = checkPeriod(options.period)
     return normalizeTrending(await this.http.get(this.path('/sets/trending'), { period, limit: checkLimit(options.limit, LIMITS.trending) }))
   }
 

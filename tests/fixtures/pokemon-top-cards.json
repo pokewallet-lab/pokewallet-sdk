@@ -3,34 +3,88 @@
  "source": "tcg",
  "top_cards": [
   {
-   "id": "pk_9594663ed14cf1b0361df92f0e94d6c7c5f99a04d66a87ac88267b67c4b4c180534e36d671c931ec3f4541ea8d76d45a",
+   "id": "pk_f5634f24a52d6e0c605845f08c6fc9287a9de50b34911105aa58a51b4b96db969fb31108584b13415978245eb722",
    "card_info": {
-    "name": "Mega Golisopod ex - 107/076",
-    "set_name": "Storm Emeralda",
-    "card_number": "107/076",
-    "rarity": "Special Art Rare"
+    "name": "Mewtwo Star",
+    "clean_name": "Mewtwo Star",
+    "set_name": "Holon Phantoms",
+    "set_code": "HP",
+    "set_id": "1379",
+    "card_number": "103/110",
+    "rarity": "Ultra Rare",
+    "card_type": "Psychic",
+    "product_type": "card",
+    "variants": [
+     "Holofoil"
+    ],
+    "card_text": null,
+    "hp": "80.0",
+    "stage": "Basic",
+    "attacks": [
+     "[1] Energy Absorption \r\n<br>Search your discard pile for an Energy card and attach it to Mewtwo *.",
+     "[LPR] Psychic Star (50+) \r\n<br>If the Defending Pokemon is an Evolved Pokemon, discard all Energy attached to Mewtwo Star and this attack does 50 damage plus 50 more damage."
+    ],
+    "weakness": "P",
+    "resistance": null,
+    "retreat_cost": "1.0"
    },
-   "current_price": 14.17
+   "current_price": 9200
   },
   {
-   "id": "pk_b2f7d7e4aaa527261c3d1f78dc2af3978777cd687fdd821f90fd304d49b30b19e26085e4e95364dfaaca1d004312a9",
+   "id": "pk_dfb19efd47ec71afa9ac5a5b8eb834e54bf79a21344f86a9af4feca8dea384d2ffd381314d80168eb6dffda7",
    "card_info": {
-    "name": "Swablu",
-    "set_name": "smJ_ Tag Team GX Premium Trainer Box",
-    "card_number": "012/035",
-    "rarity": null
+    "name": "Charizard",
+    "clean_name": "Charizard",
+    "set_name": "Legendary Collection",
+    "set_code": "LC",
+    "set_id": "1374",
+    "card_number": "003/110",
+    "rarity": "Holo Rare",
+    "card_type": "Fire",
+    "product_type": "card",
+    "variants": [
+     "Holofoil",
+     "Reverse Holofoil"
+    ],
+    "card_text": "<strong>Pokémon Power: Energy Burn</strong> As often as you like during your turn <em>(before your attack)</em>, you may turn all Energy attached to Charizard into Fire Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition.",
+    "hp": "120.0",
+    "stage": "Stage 2",
+    "attacks": [
+     "[RRRR] Fire Spin (100)\r\n<br>Discard 2 Energy cards attached to Charizard or this attack does nothing."
+    ],
+    "weakness": "W",
+    "resistance": "F-30",
+    "retreat_cost": "3.0"
    },
-   "current_price": 12.5
+   "current_price": 6999
   },
   {
-   "id": "pk_e3be8eb5916f29d28f874169eb44de1f36074f1cd7fb6b315dd880dea0ac8fe8689b1491daf574725108139007b54a",
+   "id": "pk_2c988ccd4d2cb736417cc5f6cca3f8544310363bed1fd0a013d3589de8d433414499ef9dbea9c1beb8feafdf1c86",
    "card_info": {
-    "name": "Groudon - 084/076",
-    "set_name": "Storm Emeralda",
-    "card_number": "084/076",
-    "rarity": "Art Rare"
+    "name": "Torchic Star",
+    "clean_name": "Torchic Star",
+    "set_name": "Team Rocket Returns",
+    "set_code": "RR",
+    "set_id": "1428",
+    "card_number": "108/109",
+    "rarity": "Ultra Rare",
+    "card_type": "Fire",
+    "product_type": "card",
+    "variants": [
+     "Holofoil"
+    ],
+    "card_text": null,
+    "hp": "70.0",
+    "stage": "Basic",
+    "attacks": [
+     "[R] Fireworks (20) \r\n<br>Flip a coin.  If tails, discard a Fire Energy card attached to Torchic Star.",
+     "[RR] Spring Back (20+) \r\n<br>If your opponent has only 1 Prize card left, this attack does 20 damage plus 50 more damage and the Defending Pokemon is now Confused."
+    ],
+    "weakness": "W",
+    "resistance": null,
+    "retreat_cost": "1.0"
    },
-   "current_price": 10.75
+   "current_price": 6500
   }
  ]
 }

@@ -49,26 +49,27 @@ def test_numeric_strings_become_numbers_and_raw_is_kept():
     assert p.market == 1.5 and p.low is None and p.raw["market_price"] == "1.50"
 
 
-def test_statistics_string_averages_and_numeric_set_code():
+def test_statistics_string_averages_and_set_ids():
     s = mock({"body": fixture("pokemon-statistics")}).client().pokemon.statistics("PLF")
-    assert (s.set.id, s.set.code, s.set.name, s.set.total_cards) == ("1382", None, "Plasma Freeze", 222)
-    assert s.tcgplayer.avg == 25.92
+    assert (s.set.id, s.set.code, s.set.name, s.set.total_cards) == ("1382", "PLF", "Plasma Freeze", 122)
+    assert s.tcgplayer.avg == 45.96
     assert (s.tcgplayer.most_expensive.name, s.tcgplayer.most_expensive.price) == ("Ultra Ball", 1199.51)
-    assert s.cardmarket.trend_direction == "up" and s.rarity_breakdown["Common"] == 64
-    assert s.raw["price_statistics"]["tcgplayer"]["avg_market_price"] == "25.92"
+    assert s.cardmarket.trend_direction == "up" and s.rarity_breakdown["Common"] == 32
+    assert s.tcgplayer.most_expensive.id.startswith("pk_")
+    assert s.raw["price_statistics"]["tcgplayer"]["avg_market_price"] == "45.96"
 
 
 def test_completion_trending_top_cards_history():
     c = mock({"body": fixture("pokemon-completion")}).client().pokemon.completion_value("PLF")
-    assert c.set.code == "PLF" and c.tcgplayer.currency == "USD" and c.tcgplayer.market == 5754.3
-    assert (c.by_rarity["Common"].count, c.by_rarity["Common"].total_cost) == (64, 125.93)
+    assert c.set.code == "PLF" and c.tcgplayer.currency == "USD" and c.tcgplayer.market == 4950.71
+    assert (c.by_rarity["Common"].count, c.by_rarity["Common"].total_cost) == (32, 15.79)
 
-    t = mock({"body": fixture("pokemon-trending")}).client().pokemon.trending(period="30d")
-    assert (t[0].change, t[0].change_pct, t[0].card_count) == ("+446.7%", 446.7, 4)
-    assert (t[0].set.id, t[0].set.code) == ("24002", None)
+    t = mock({"body": fixture("pokemon-trending")}).client().pokemon.trending(period="7d")
+    assert (t[0].change, t[0].change_pct, t[0].card_count) == ("+164.3%", 164.3, 17)
+    assert (t[0].set.id, t[0].set.code) == ("1422", "POP")
 
     top = mock({"body": fixture("pokemon-top-growth")}).client().pokemon.top_cards(metric="growth")
-    assert (top[0].price, top[0].previous_price_7d, top[0].change_7d) == (1.43, 1.37, "+4.4%")
+    assert (top[0].price, top[0].change_7d, top[0].set_code, top[0].set_id) == (1498.99, "+29879.8%", "HP", "1379")
 
     h = mock({"body": fixture("pokemon-price-history")}).client().pokemon.price_history("pk_x")
     assert h.tcgplayer["Normal"].price[7] == 0.37 and h.tcgplayer["Normal"].change[30] == "+12.5%"
@@ -78,9 +79,9 @@ def test_completion_trending_top_cards_history():
 def test_set_prices_for_pokemon_and_games():
     p = mock({"body": fixture("pokemon-prices")}).client().pokemon.prices("PLF", source="tcg")
     assert (p.set_id, p.set_code, p.source, p.total) == ("1382", "PLF", "both", 227)
-    assert p.rows[0].tcgplayer.market == 0.36 and p.rows[0].variant == "Normal"
+    assert p.rows[0].tcgplayer.market == 0.37 and p.rows[0].variant == "Normal"
     g = mock({"body": fixture("mtg-prices")}).client().games.mtg.prices("FRA")
-    assert g.set_id == "24684" and g.rows[0].cardmarket.trend == 16.27
+    assert g.set_id == "24684" and g.rows[0].cardmarket.trend == 14.03
 
 
 def test_one_piece_flat_shape_and_set_identity():
@@ -151,6 +152,8 @@ def test_games_runtime_code_and_early_validation():
     pw = m.client()
     assert isinstance(failure(pw.games.ygo.search, "a"), ValidationError)
     assert isinstance(failure(pw.games.ygo.trending, period="30d"), ValidationError)
+    assert isinstance(failure(pw.pokemon.trending, period="30d"), ValidationError)
+    assert isinstance(failure(pw.pokemon.statistics, "PLF", variant="holo"), ValidationError)
     assert m.calls == []
 
 
