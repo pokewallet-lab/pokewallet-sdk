@@ -34,29 +34,23 @@ Free keys can search cards and read cards and sets. **Pro endpoints** (set price
 
 ## 2. Install
 
-Nothing is on npm or PyPI yet: this is a **preview** distributed as release files. Download them from the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases) or with the [GitHub CLI](https://cli.github.com).
+Nothing is on npm or PyPI yet: this is a **preview** installed straight from the release files on GitHub. No GitHub account is needed.
 
 **TypeScript** (Node 18+, no runtime dependencies):
 
 ```sh
 mkdir my-cards && cd my-cards && npm init -y
-gh release download v0.1.1 -R pokewallet-lab/pokewallet-sdk -p '*.tgz'
-npm install ./pokewallet-sdk-0.1.1.tgz
+npm install https://github.com/pokewallet-lab/pokewallet-sdk/releases/download/v0.1.1/pokewallet-sdk-0.1.1.tgz
 ```
 
 **Python** (3.9+, depends only on `httpx`):
 
 ```sh
 python3 -m venv .venv && source .venv/bin/activate
-gh release download v0.1.1 -R pokewallet-lab/pokewallet-sdk -p '*.whl'
-pip install ./pokewallet-0.1.1-py3-none-any.whl
+pip install https://github.com/pokewallet-lab/pokewallet-sdk/releases/download/v0.1.1/pokewallet-0.1.1-py3-none-any.whl
 ```
 
-Python alternative, straight from git (needs git access to the repo):
-
-```sh
-pip install "git+https://github.com/pokewallet-lab/pokewallet-sdk.git#subdirectory=packages/py"
-```
+The same files, with their checksums (`SHA256SUMS`), are on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases) if you prefer to download them first.
 
 ## 3. Quickstart
 
