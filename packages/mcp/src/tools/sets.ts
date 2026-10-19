@@ -72,7 +72,7 @@ export function registerSetTools({ server, pw }: Deps): void {
     {
       title: 'Set price statistics',
       description: `Price statistics of a set: average, min, max, most expensive card and rarity breakdown, TCGPlayer USD and CardMarket EUR. ${PRO_NEEDED} ${COST}`,
-      inputSchema: z.object({ set: setParam, game: gameParam, variant: z.enum(['normal', 'foil', 'holo']).optional().describe('Restrict to one finish (pokemon: normal|holo; others: normal|foil).') }),
+      inputSchema: z.object({ set: setParam, game: gameParam, variant: z.enum(['normal', 'foil']).optional().describe('Restrict to one finish.') }),
       annotations: READ_ONLY,
     },
     ({ set, game, variant }) =>

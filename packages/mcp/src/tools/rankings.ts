@@ -20,7 +20,7 @@ export function registerRankingTools({ server, pw }: Deps): void {
     'top_cards',
     {
       title: 'Most expensive or fastest-growing cards',
-      description: `Ranking of cards by price or by 7-day growth. Growth needs source "cm" (CardMarket). Prices are USD for source tcg, EUR for cm. ${PRO_NEEDED} ${COST}`,
+      description: `Ranking of cards by price or by 7-day growth, same format for every game. Price ranking uses the TCGPlayer market price (tcg, USD) or the CardMarket trend price (cm, EUR). Growth works with source "cm" in every game; source "tcg" growth exists for Pokémon only. Each card has its id (usable with get_card), set, number, rarity and current price; growth adds change7d. ${PRO_NEEDED} ${COST}`,
       inputSchema: z.object({
         game: gameParam,
         metric: z.enum(['price', 'growth']).default('price'),
@@ -40,18 +40,17 @@ export function registerRankingTools({ server, pw }: Deps): void {
     'trending_sets',
     {
       title: 'Trending sets',
-      description: `Sets whose CardMarket prices moved the most over the period, with their top movers. Pokémon also supports 30d; other games only 7d. ${PRO_NEEDED} ${COST}`,
+      description: `Sets whose CardMarket prices moved the most over the last 7 days, with their top movers. Same for every game; only a 7-day period exists. ${PRO_NEEDED} ${COST}`,
       inputSchema: z.object({
         game: gameParam,
-        period: z.enum(['7d', '30d']).default('7d'),
         limit: z.number().int().min(1).max(25).default(10),
       }),
       annotations: READ_ONLY,
     },
-    ({ game, period, limit }) =>
+    ({ game, limit }) =>
       guarded(async () => {
-        const sets = await worldFor(pw, game).trending({ period, limit })
-        return ok({ game, period, sets: sets.map(trendingEntry) })
+        const sets = await worldFor(pw, game).trending({ limit })
+        return ok({ game, period: '7d', sets: sets.map(trendingEntry) })
       }),
   )
 }

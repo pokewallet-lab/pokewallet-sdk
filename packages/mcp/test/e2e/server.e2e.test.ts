@@ -163,15 +163,25 @@ live('MCP over Streamable HTTP against the production API', () => {
   })
 
   it('Pro tools: statistics, completion value, history, rankings', async () => {
-    expect((await call(client, 'set_statistics', { set: 'PLF' })).json().tcgplayerUsd.average).toBeTypeOf('number')
+    const stats = (await call(client, 'set_statistics', { set: 'PLF' })).json()
+    expect(stats.tcgplayerUsd.average).toBeTypeOf('number')
+    expect(stats.set).toMatchObject({ code: 'PLF', setId: '1382' })
+    expect(stats.tcgplayerUsd.mostExpensive.id).toMatch(/^pk_/)
+    expect((await call(client, 'set_statistics', { set: 'PLF', variant: 'foil' })).isError).toBe(false)
     expect((await call(client, 'set_completion_value', { set: 'PLF' })).json().tcgplayerUsd.market).toBeTypeOf('number')
     expect(Object.keys((await call(client, 'get_price_history', { id: pokemonId })).json())).toContain('id')
     const top = (await call(client, 'top_cards', { limit: 3 })).json()
     expect(top.cards).toHaveLength(3)
     expect(top.currency).toBe('USD')
+    expect(top.cards[0].price).toBeGreaterThanOrEqual(top.cards[1].price)
+    // A ranking id opens with get_card.
+    expect((await call(client, 'get_card', { id: top.cards[0].id })).isError).toBe(false)
     const growth = (await call(client, 'top_cards', { game: 'onepiece', metric: 'growth', source: 'cm', limit: 3 })).json()
     expect(growth.currency).toBe('EUR')
-    expect((await call(client, 'trending_sets', { limit: 3 })).json().sets.length).toBeGreaterThan(0)
+    const trending = (await call(client, 'trending_sets', { limit: 3 })).json()
+    expect(trending.period).toBe('7d')
+    expect(trending.sets.length).toBeGreaterThan(0)
+    expect((await call(client, 'trending_sets', { game: 'mtg', limit: 3 })).json().sets.length).toBeGreaterThan(0)
   })
 
   it('maps API errors to tool errors: unknown set, and a pk_ key the API rejects', async () => {

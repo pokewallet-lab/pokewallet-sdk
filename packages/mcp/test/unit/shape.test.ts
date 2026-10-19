@@ -63,14 +63,17 @@ describe('other shapes', () => {
   it('statistics, completion, trending, top cards, history and set entries are null-free', async () => {
     const pw = (name: string) => new PokeWallet({ apiKey: 'pk_test_not_a_real_key', fetch: stubFetch([{ body: fixture(name) }]) })
     const st = statistics(await pw('pokemon-statistics').pokemon.statistics('PLF')) as any
-    expect(st.tcgplayerUsd).toMatchObject({ average: 25.92, mostExpensive: { name: 'Ultra Ball' } })
+    expect(st.set).toEqual({ name: 'Plasma Freeze', code: 'PLF', setId: '1382' })
+    expect(st.totalCards).toBe(122)
+    expect(st.tcgplayerUsd).toMatchObject({ average: 45.96, mostExpensive: { name: 'Ultra Ball', id: expect.stringMatching(/^pk_/) } })
     const co = completion(await pw('pokemon-completion').pokemon.completionValue('PLF')) as any
-    expect(co.byRarity.Common).toEqual({ cards: 64, cost: 125.93 })
+    expect(co.byRarity.Common).toEqual({ cards: 32, cost: 15.79 })
     const tr = trendingEntry((await pw('pokemon-trending').pokemon.trending())[0]!) as any
-    expect(tr).toMatchObject({ change: '+446.7%', cards: 4 })
+    expect(tr).toMatchObject({ change: '+164.3%', cards: 17, set: { name: 'POP Series 1', code: 'POP', setId: '1422' } })
     expect(tr.topMovers.length).toBeLessThanOrEqual(3)
     const top = topCard((await pw('pokemon-top-growth').pokemon.topCards({ metric: 'growth' }))[0]!, true) as any
-    expect(top).toMatchObject({ change7d: '+4.4%', price: 1.43 })
+    expect(top).toMatchObject({ change7d: '+29879.8%', price: 1498.99 })
+    expect(top).not.toHaveProperty('price7dAgo')
     const h = history(await pw('pokemon-price-history').pokemon.priceHistory('pk_x')) as any
     expect(h.tcgplayerUsd.Normal.priceDaysAgo['7d']).toBe(0.37)
     const s = setEntry((await pw('pokemon-sets').pokemon.sets())[0]!) as any

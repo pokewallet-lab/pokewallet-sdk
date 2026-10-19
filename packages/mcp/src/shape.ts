@@ -152,7 +152,7 @@ export function topCard(t: TopCard, growth: boolean): Record<string, unknown> {
     number: t.number,
     rarity: t.rarity,
     price: t.price,
-    ...(growth ? { change7d: t.change7d, price7dAgo: t.previousPrice7d } : {}),
+    ...(growth ? { change7d: t.change7d } : {}),
   }) as Record<string, unknown>
 }
 
