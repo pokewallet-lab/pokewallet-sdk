@@ -164,17 +164,19 @@ Three worlds with the same methods: `pw.pokemon`, `pw.onepiece`, and `pw.games.<
 | `sets({language})` | `sets(language=)` | all sets | free |
 | `set(code, {page, limit})` | `set(code, page=, limit=)` | one page of a set's cards | free |
 | `setCards(code, {limit, maxItems})` | `set_cards(...)` | iterator over a whole set | free |
-| `prices(code)` | `prices(code)` | prices of every card in a set | Pro |
-| `statistics(code)` | `statistics(code)` | average, min, max, rarity breakdown | Pro |
-| `completionValue(code)` | `completion_value(code)` | cost to complete a set | Pro |
-| `trending({period, limit})` | `trending(period=, limit=)` | sets with the biggest price moves | Pro |
-| `topCards({metric, source, limit})` | `top_cards(...)` | ranking by price or growth | Pro |
+| `prices(code)` | `prices(code)` | prices of every card in a set (one row per finish; sealed products included, `productType` tells them apart) | Pro |
+| `statistics(code, {variant})` | `statistics(code, variant=)` | average, min, max, most expensive card, trend, rarity breakdown; `variant` is `normal` or `foil` | Pro |
+| `completionValue(code)` | `completion_value(code)` | cost of one copy of every card in its base finish | Pro |
+| `trending({limit})` | `trending(limit=)` | sets with the biggest CardMarket price moves over 7 days (`period` can only be `7d`; anything else is refused before sending) | Pro |
+| `topCards({metric, source, limit})` | `top_cards(...)` | ranking by price (TCGPlayer market price, CardMarket trend price) or 7-day growth; each item has the card `id`, set, rarity, `price` and, for growth, `change7d`; TCGPlayer growth is Pokémon only | Pro |
 | `pokemon.priceHistory(id)` | `pokemon.price_history(id)` | price snapshots at 7/14/30/60/120 days | Pro, Pokémon only |
 | `health()` | `health()` | service status and per-service checks | no key needed |
 | `listGames()` | `list_games()` | the ten games and their routes | no key needed |
 | `imageUrl(id)` | `image_url(id)` | an image URL (see below) | free |
 
-"Pro" means a Pro plan or the 7-day trial for Pokémon and One Piece, and an Ultra plan or the trial for the ten other games. Limits: `limit` is at most 100 for searches, 200 for set pages, 50 for trending and 100 for top cards; the SDK checks `page` and `limit` before sending anything.
+"Pro" means a Pro plan or the 7-day trial for Pokémon and One Piece, and an Ultra plan or the trial for the ten other games. Limits: `limit` is at most 100 for searches, 200 for set pages, 50 for trending and 100 for top cards; the SDK checks `page`, `limit`, `period` and `variant` before sending anything.
+
+Statistics and completion value describe a set the same way in every world: `set` has `id`, `code`, `name` and `totalCards` (cards, not finishes; sealed products are not counted), and the most expensive card of each side has its `id`, `name` and `price`. Card ids from rankings open with `card(id)`.
 
 Every returned object has the same fields in both languages (`camelCase` in TypeScript, `snake_case` in Python): a card has `id`, `name`, `number`, `rarity`, `setId`, `setCode`, `setName`, `tcgplayer.prices[]` (finish, `market`, `low`, `mid`, `high`, `directLow`) and `cardmarket.prices[]` (`avg`, `low`, `trend`, `avg1`, `avg7`, `avg30`). Prices are numbers, or `null` / `None` when missing. Game-specific fields (`hp`, `attacks`, Magic's `p` and `t`, One Piece `ext_*`) are in `card.info`, and the untouched server value is always in `card.raw`.
 
@@ -242,7 +244,7 @@ An ambiguous set code is reported the same way on every endpoint, even though th
 
 `packages/mcp` is a small server for the [Model Context Protocol](https://modelcontextprotocol.io). It lets an MCP client (Claude Code, Cursor, Claude Desktop through `mcp-remote`, ...) search cards and read prices using **your own key**: the client sends `Authorization: Bearer pk_…`, the server forwards it to PokeWallet and keeps nothing. Your plan and quota stay yours, and every tool call uses one request of your quota.
 
-Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
+Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
 
 > **The hosted server is not live yet.** For now you run it on your own machine. A public URL will replace `http://127.0.0.1:8787/mcp` below once it exists.
 
