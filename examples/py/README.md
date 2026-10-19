@@ -1,7 +1,7 @@
 # Python examples
 
 ```sh
-pip install ./pokewallet-0.1.1-py3-none-any.whl   # see the root README for where to get it
+pip install pokewallet
 export POKEWALLET_API_KEY=pk_live_xxx
 python 01_quickstart.py
 ```

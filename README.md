@@ -1,6 +1,8 @@
 # PokeWallet SDKs
 
 [![CI](https://github.com/pokewallet-lab/pokewallet-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/pokewallet-lab/pokewallet-sdk/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@pokewallet/sdk)](https://www.npmjs.com/package/@pokewallet/sdk)
+[![PyPI](https://img.shields.io/pypi/v/pokewallet)](https://pypi.org/project/pokewallet/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [PokeWallet](https://pokewallet.io) is a card price API: Pokémon, One Piece and ten more trading card games (Magic, Yu-Gi-Oh!, Lorcana, Digimon, Flesh and Blood and others), with TCGPlayer prices in USD and CardMarket prices in EUR. This repo has the official **TypeScript** and **Python** SDKs, which put all twelve games behind one interface, and an **MCP server** that lets MCP clients such as Claude Code and Cursor look up cards and prices with your own key.
@@ -34,23 +36,21 @@ Free keys can search cards and read cards and sets. **Pro endpoints** (set price
 
 ## 2. Install
 
-Nothing is on npm or PyPI yet: this is a **preview** installed straight from the release files on GitHub. No GitHub account is needed.
-
 **TypeScript** (Node 18+, no runtime dependencies):
 
 ```sh
 mkdir my-cards && cd my-cards && npm init -y
-npm install https://github.com/pokewallet-lab/pokewallet-sdk/releases/download/v0.1.1/pokewallet-sdk-0.1.1.tgz
+npm install @pokewallet/sdk
 ```
 
 **Python** (3.9+, depends only on `httpx`):
 
 ```sh
 python3 -m venv .venv && source .venv/bin/activate
-pip install https://github.com/pokewallet-lab/pokewallet-sdk/releases/download/v0.1.1/pokewallet-0.1.1-py3-none-any.whl
+pip install pokewallet
 ```
 
-The same files, with their checksums (`SHA256SUMS`), are on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases) if you prefer to download them first.
+The files of release v0.1.1, with their checksums (`SHA256SUMS`), also remain available on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
 
 ## 3. Quickstart
 
@@ -341,7 +341,7 @@ This is about the data and the service. The MIT license of the code is separate.
 | `.github/scripts` | Helper scripts used by the CI and release workflows |
 | `tests/fixtures` | Recorded API answers shared by the TypeScript, Python and MCP unit tests |
 
-The MCP package is not published to a package registry. The two SDK packages are published only through the tag workflow described under Release. CI is `.github/workflows/ci.yml`: typecheck and unit tests only, no key.
+The MCP package is not published to a package registry. The two SDK packages are published through the tag workflow described under Release. CI is `.github/workflows/ci.yml`: typecheck and unit tests only, no key.
 
 ### Tests
 
@@ -363,6 +363,9 @@ Contract and end-to-end tests skip cleanly without a key (the two key-less endpo
 
 ### Release
 
-Releases are published by GitHub Actions from version tags (`ts-v<semver>` for the TypeScript package, `py-v<semver>` for the Python package) after a maintainer approves the run. Nothing publishes from a laptop. Each pull request runs a publish dry-run (`publish-check.yml`), and a weekly job (`drift.yml`) runs the contract tests against the live API.
+Releases are published by GitHub Actions from version tags: `ts-v<semver>` for the TypeScript package and `py-v<semver>` for the Python package. A tag runs `release.yml`, which checks that the tag matches the version in the package files, runs the unit tests, builds, and publishes after a maintainer approves the run on the `release` environment. Each pull request runs a publish dry-run (`publish-check.yml`), and a weekly job (`drift.yml`) runs the contract tests against the live API.
+
+- **PyPI** uses Trusted Publishing; no token is stored.
+- **npm**: the first version (0.1.1) was published manually, which is how a new package is created. Later versions are published by the workflow through npm Trusted Publishing, which must be configured in the settings of `@pokewallet/sdk` on npmjs.com: provider GitHub Actions, owner `pokewallet-lab`, repository `pokewallet-sdk`, workflow `release.yml`, environment `release`. Staged publishing of a new package needs an approval with two-factor authentication on npmjs.com; new releases of an existing package go through the workflow.
 
 </details>

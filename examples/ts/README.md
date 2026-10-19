@@ -1,7 +1,7 @@
 # TypeScript examples
 
 ```sh
-npm install ./pokewallet-sdk-0.1.1.tgz   # see the root README for where to get it
+npm install @pokewallet/sdk
 export POKEWALLET_API_KEY=pk_live_xxx
 node 01-quickstart.mjs
 ```

@@ -1,6 +1,6 @@
 # @pokewallet/sdk
 
-> Preview: install from the GitHub release files, see [Install](../../README.md#2-install) in the root README, which also has the quickstart, the full method table and the MCP server.
+> Install with `npm install @pokewallet/sdk`. The [root README](../../README.md#2-install) has the quickstart, the full method table and the MCP server.
 
 Official TypeScript SDK for the [PokeWallet API](https://pokewallet.io): Pokémon, One Piece and ten more card games, with TCGPlayer and CardMarket prices. Zero runtime dependencies, ESM and CJS, Node 18+ (also Workers and browsers: it only needs `fetch`).
 

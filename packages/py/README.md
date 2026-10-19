@@ -1,6 +1,6 @@
 # pokewallet
 
-> Preview: install from the GitHub release files, see [Install](../../README.md#2-install) in the root README, which also has the quickstart, the full method table and the MCP server.
+> Install with `pip install pokewallet`. The [root README](../../README.md#2-install) has the quickstart, the full method table and the MCP server.
 
 Official Python SDK for the [PokeWallet API](https://pokewallet.io): Pokémon, One Piece and ten more card games, with TCGPlayer and CardMarket prices. Python 3.9+, sync and async clients, `httpx` is the only dependency.
 
