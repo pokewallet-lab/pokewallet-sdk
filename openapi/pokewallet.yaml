@@ -83,9 +83,9 @@ paths:
       operationId: pokemonSearch
       summary: Search Pokémon cards by name, number, set or rarity
       description: |
-        Note: server-side range checks on `limit` and `page` differ from One Piece and the ten games.
-        Send `limit` between 1 and 100 and `page` of at least 1 (the SDKs enforce this before
-        sending); `total_pages` can be `null` for out-of-range input.
+        `page` and `limit`: a missing, non-numeric or lower-than-1 value falls back to the default, and a
+        value above the cap (100 for `limit`) is clamped. The SDKs still check both before sending.
+        A name may contain parentheses, e.g. `Pikachu (Cosmos Holo)`.
       parameters:
         - { name: q, in: query, required: true, schema: { type: string } }
         - { $ref: '#/components/parameters/Page' }
@@ -125,8 +125,9 @@ paths:
       tags: [pokemon]
       operationId: pokemonTrendingSets
       summary: Sets with the strongest CardMarket price change (Pro or trial)
+      description: "Same format in every world. Only `period=7d` exists; `30d` answers 400 `Invalid parameter`."
       parameters:
-        - { name: period, in: query, schema: { type: string, enum: [7d, 30d], default: 7d } }
+        - { name: period, in: query, description: 'Only 7d (30d gives 400).', schema: { type: string, enum: [7d], default: 7d } }
         - { name: limit, in: query, schema: { type: integer, default: 10, maximum: 50 } }
       responses:
         '200':
@@ -182,11 +183,12 @@ paths:
       operationId: pokemonSetStatistics
       summary: Price and rarity statistics of a set (Pro or trial)
       description: |
-        Note: `set_info.set_code` is the numeric `set_id` ("1382"); in `completion-value` it is the code ("PLF").
-        Ambiguous set: **409**.
+        Same format in every world: `set_info` is `{name, set_code, set_id, total_cards}` with the real set code;
+        `total_cards` counts cards (sealed products excluded), not finishes. `trend_direction` compares the
+        7-day with the 30-day average. Ambiguous set: **409**.
       parameters:
         - { $ref: '#/components/parameters/SetCode' }
-        - { name: variant, in: query, schema: { type: string, enum: [normal, holo] } }
+        - { $ref: '#/components/parameters/Variant' }
       responses:
         '200':
           description: OK
@@ -205,6 +207,7 @@ paths:
       tags: [pokemon]
       operationId: pokemonSetCompletionValue
       summary: Cost to complete a set (Pro or trial)
+      description: "One copy of each card, in its base finish. `set_info` has the same shape as in statistics."
       parameters:
         - { $ref: '#/components/parameters/SetCode' }
       responses:
@@ -226,6 +229,7 @@ paths:
       operationId: pokemonSetPrices
       summary: Prices of every card in a set (Pro or trial; hundreds of rows)
       description: |
+        The response carries both `set_id` and `group_id` (the same value).
         Ambiguous set: **300** with the `Disambiguation` body (no `error` field).
       parameters:
         - { $ref: '#/components/parameters/SetCode' }
@@ -255,7 +259,7 @@ paths:
       summary: Pokémon card detail
       description: |
         `id` is `pk_<hex>`, a 64-character hex CardMarket `encrypted_id`, or a plain card number
-        (`086`, `086/078`) to be combined with `set_code`. An id from another game (`op_`, `mtg_`...)
+        (`086`, `086/078`, `010a/073`) to be combined with `set_code`. An id from another game (`op_`, `mtg_`...)
         gives 400 with a hint to the right route.
       parameters:
         - { name: id, in: path, required: true, schema: { type: string } }
@@ -297,6 +301,12 @@ paths:
       tags: [pokemon]
       operationId: pokemonTopCards
       summary: Ranking by price or growth (Pro or trial)
+      description: |
+        Same item format in every world: `{id, card_info, current_price, change_7d?}` (`change_7d` only for growth).
+        `card_info` is the full common card info. Price ranking uses the TCGPlayer market price (`tcg`) or the
+        CardMarket trend price (`cm`). A CardMarket row linked to a TCGPlayer card carries that card's `pk_` id,
+        the others the CardMarket encrypted id; both open with `/cards/{id}`. Growth with `source=tcg` exists
+        for Pokémon only.
       parameters:
         - { $ref: '#/components/parameters/Metric' }
         - { $ref: '#/components/parameters/Source' }
@@ -322,7 +332,8 @@ paths:
       summary: Search One Piece cards
       description: |
         Flat pagination `{data,total,page,limit}` (differs from Pokémon, which nests it in `pagination`).
-        `page`/`limit` are validated with `Math.max(1, …)`.
+        `page` and `limit`: a missing, non-numeric or lower-than-1 value falls back to the default, and a
+        value above the cap is clamped. A name may contain parentheses, e.g. `Buggy (Reprint)`.
       parameters:
         - { name: q, in: query, required: true, schema: { type: string } }
         - { $ref: '#/components/parameters/Page' }
@@ -409,7 +420,7 @@ paths:
       summary: Statistics of a set (Pro or trial)
       parameters:
         - { name: set, in: path, required: true, schema: { type: string } }
-        - { name: variant, in: query, schema: { type: string, enum: [normal, foil] } }
+        - { $ref: '#/components/parameters/Variant' }
       responses:
         '200':
           description: OK
@@ -471,6 +482,7 @@ paths:
       description: |
         The set goes in the query (`set_code` or `group_id`), not in the path as on other routes.
         At least one of the two is required, otherwise 400.
+        Like the other worlds, the response has `source`, `set_code`, `set_id` and a `product_type` on every row.
       parameters:
         - { name: set_code, in: query, schema: { type: string } }
         - { name: group_id, in: query, schema: { type: string } }
@@ -616,7 +628,7 @@ paths:
       parameters:
         - { $ref: '#/components/parameters/Game' }
         - { name: set, in: path, required: true, schema: { type: string } }
-        - { name: variant, in: query, schema: { type: string, enum: [normal, foil] } }
+        - { $ref: '#/components/parameters/Variant' }
       responses:
         '200':
           description: OK
@@ -757,7 +769,13 @@ components:
     Page:
       name: page
       in: query
+      description: "Missing, non-numeric or lower than 1 falls back to 1."
       schema: { type: integer, default: 1, minimum: 1 }
+    Variant:
+      name: variant
+      in: query
+      description: "`normal` or `foil`; anything else gives 400 `Invalid parameter`. On Pokémon `holo` is still accepted as a legacy alias of `foil`."
+      schema: { type: string, enum: [normal, foil] }
     Language:
       name: language
       in: query
@@ -775,8 +793,8 @@ components:
   responses:
     BadRequest:
       description: |
-        Missing or invalid parameter. The body shape differs by family: Pokémon and One Piece send `{error}`,
-        the games send `{error,message,docs}`.
+        Missing or invalid parameter. A bad parameter value answers `{error: 'Invalid parameter', message, docs}`
+        in every world. Other 400 bodies may carry only `{error}`.
       content:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
@@ -1088,11 +1106,12 @@ components:
         cardmarket: { oneOf: [{ $ref: '#/components/schemas/CardmarketPrice' }, { type: 'null' }] }
     PokemonPricesResponse:
       type: object
-      description: "The set id is called `group_id` here (`set_id` in the games)."
+      description: "Carries both `set_id` and `group_id` (the same value)."
       properties:
         success: { type: boolean }
         source: { type: string, enum: [both, tcg, cm] }
         set_code: { type: [string, 'null'] }
+        set_id: { type: string }
         group_id: { type: string }
         data: { type: array, items: { $ref: '#/components/schemas/PriceRow' } }
         total: { type: integer }
@@ -1112,12 +1131,12 @@ components:
       properties:
         set_info:
           type: object
-          description: "Pokémon: `set_code` is the numeric `set_id`; `set_id` is missing."
+          description: "Same in every world."
           properties:
             name: { type: string }
-            set_code: { type: [string, 'null'] }
+            set_code: { type: [string, 'null'], description: The real set code. }
             set_id: { type: string }
-            total_cards: { type: integer }
+            total_cards: { type: integer, description: "Cards, not finishes; sealed products excluded." }
         price_statistics:
           type: object
           properties:
@@ -1135,7 +1154,7 @@ components:
         most_expensive:
           type: object
           properties:
-            id: { type: string, description: Missing in Pokémon. }
+            id: { type: string }
             name: { type: string }
             price: { type: number }
         trend_direction: { type: string, enum: [up, down, stable] }
@@ -1143,7 +1162,13 @@ components:
       type: object
       required: [set_info, completion_cost, breakdown_by_rarity]
       properties:
-        set_info: { type: object, additionalProperties: true }
+        set_info:
+          type: object
+          properties:
+            name: { type: string }
+            set_code: { type: [string, 'null'] }
+            set_id: { type: string }
+            total_cards: { type: integer }
         completion_cost:
           type: object
           properties:
@@ -1181,7 +1206,7 @@ components:
             properties:
               set_name: { type: [string, 'null'] }
               set_code: { type: [string, 'null'] }
-              set_id: { type: string, description: Missing in Pokémon. }
+              set_id: { type: string }
               card_count: { type: integer }
               cardmarket:
                 type: object
@@ -1198,7 +1223,7 @@ components:
                         change: { type: string }
               tcgplayer:
                 type: [object, 'null']
-                description: "`{status:'work_in_progress'}` or `null` (CardMarket-only sets)."
+                description: "`{status, message}` (TCGPlayer history is not available yet) or `null`."
                 additionalProperties: true
     TopCardsResponse:
       type: object
@@ -1215,7 +1240,6 @@ components:
               id: { type: string }
               card_info: { $ref: '#/components/schemas/CardInfo' }
               current_price: { type: number }
-              previous_price_7d: { type: number }
               change_7d: { type: string }
     PriceHistory:
       type: object
@@ -1320,6 +1344,9 @@ components:
       type: object
       properties:
         success: { type: boolean }
+        source: { type: string, enum: [both, tcg, cm] }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: string }
         group_id: { type: [string, integer] }
         data: { type: array, items: { $ref: '#/components/schemas/PriceRow' } }
         total: { type: integer }
