@@ -39,3 +39,5 @@ Pokémon, One Piece and the ten games (`pw.games.mtg`, `pw.games.ygo`, ... or `p
 The client can be created without a key: `health()` and `list_games()` are public and work without one (the `X-API-Key` header is sent only when a key is set); every other call raises `ValidationError` before any request is made.
 
 Every request carries `User-Agent: pokewallet-sdk-py/<version>`.
+
+Attribution: if you show data obtained through the PokeWallet API, SDKs or MCP server to other people, credit PokéWallet with visible text "Data by PokéWallet" (or "Powered by PokéWallet") linking to <https://pokewallet.io>; private use needs no attribution. See the [Terms of Use](https://pokewallet.io/terms-conditions). This concerns the data and the service; the MIT license of the code is separate.

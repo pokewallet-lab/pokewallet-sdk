@@ -25,3 +25,5 @@ Pokémon, One Piece and the ten games (`pw.games.mtg`, `pw.games.ygo`, ...) shar
 - **Images:** `imageUrl(id)` only builds the URL. The image routes need the `X-API-Key` header, so the URL cannot be used directly in an `<img>` tag.
 
 The key is read from the `apiKey` option or the `POKEWALLET_API_KEY` environment variable. The client can be created without one: `health()` and `listGames()` are public and work without a key (the `X-API-Key` header is sent only when a key is set); every other call throws `ValidationError` before any request is made. Every request carries `User-Agent: pokewallet-sdk-ts/<version>`.
+
+Attribution: if you show data obtained through the PokeWallet API, SDKs or MCP server to other people, credit PokéWallet with visible text "Data by PokéWallet" (or "Powered by PokéWallet") linking to <https://pokewallet.io>; private use needs no attribution. See the [Terms of Use](https://pokewallet.io/terms-conditions). This concerns the data and the service; the MIT license of the code is separate.

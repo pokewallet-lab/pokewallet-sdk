@@ -320,6 +320,12 @@ MIT License, Copyright (c) 2026 PokeWallet. See [LICENSE](LICENSE).
 
 Package documentation: [`packages/ts`](packages/ts/README.md) (TypeScript), [`packages/py`](packages/py/README.md) (Python), [`packages/mcp`](packages/mcp/README.md) (MCP server), [`openapi/pokewallet.yaml`](openapi/pokewallet.yaml) (API specification).
 
+### Attribution
+
+If you show data obtained through the PokeWallet API, the SDKs or the MCP server to other people (an app, website, bot, dashboard, report, published content, or an AI assistant answer you publish), credit PokéWallet with the visible text "Data by PokéWallet" (or "Powered by PokéWallet") linking to <https://pokewallet.io>. Private use needs no attribution. See the [Terms of Use](https://pokewallet.io/terms-conditions).
+
+This is about the data and the service. The MIT license of the code is separate.
+
 <details>
 <summary>For maintainers</summary>
 
@@ -332,6 +338,7 @@ Package documentation: [`packages/ts`](packages/ts/README.md) (TypeScript), [`pa
 | `packages/py` | `pokewallet`, Python 3.9+, `httpx` only, sync and async |
 | `packages/mcp` | Stateless MCP server for a Cloudflare Worker (hosted version not live yet) |
 | `examples/ts`, `examples/py` | Runnable examples |
+| `.github/scripts` | Helper scripts used by the CI and release workflows |
 | `tests/fixtures` | Recorded API answers shared by the TypeScript, Python and MCP unit tests |
 
 The MCP package is not published to a package registry. The two SDK packages are published only through the tag workflow described under Release. CI is `.github/workflows/ci.yml`: typecheck and unit tests only, no key.
