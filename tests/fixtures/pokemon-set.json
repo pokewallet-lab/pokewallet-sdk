@@ -1,0 +1,146 @@
+{
+ "success": true,
+ "set": {
+  "name": "Plasma Freeze",
+  "set_code": "PLF",
+  "set_id": "1382",
+  "total_cards": 127,
+  "language": "eng",
+  "release_date": "8th May, 2013"
+ },
+ "cards": [
+  {
+   "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
+   "card_info": {
+    "name": "Weedle",
+    "clean_name": "Weedle",
+    "set_name": "Plasma Freeze",
+    "set_code": "1382",
+    "card_number": "1/116",
+    "rarity": "Common",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Reverse Holofoil"
+    ],
+    "hp": "50.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[G] Triple Stab (10x) Flip 3 coins.  This attack does 10 damage times the number of heads."
+    ],
+    "weakness": "Rx2",
+    "resistance": null,
+    "retreat_cost": "1.0"
+   },
+   "images": {
+    "languages": [
+     "en",
+     "it",
+     "fr"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/90547"
+   },
+   "cardmarket": {
+    "product_name": "Weedle",
+    "prices": [],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Plasma-Freeze/Weedle-PLF1"
+   }
+  },
+  {
+   "id": "pk_2ff328bd0813ae927eee030a61f7b755a66b4f0ce3b112c652b1d0165543fe423b82527daf3f63aedda6004e71",
+   "card_info": {
+    "name": "Cacturne",
+    "clean_name": "Cacturne",
+    "set_name": "Plasma Freeze",
+    "set_code": "1382",
+    "card_number": "10/116",
+    "rarity": "Rare",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Reverse Holofoil"
+    ],
+    "hp": "90.0",
+    "stage": "Stage 1",
+    "card_text": null,
+    "attacks": [
+     "[G] Rapid-Fire Needles (60) Does 30 damage to 1 of your Pokemon.  (Don't apply Weakness and Resistance for Benched Pokemon.)",
+     "[1G] Payback (30+) If your opponent has only 1 Prize card left, this attack does 60 more damage and discard and Energy attached to the Defending Pokemon."
+    ],
+    "weakness": "Rx2",
+    "resistance": "W-20",
+    "retreat_cost": "1.0"
+   },
+   "images": {
+    "languages": [
+     "en",
+     "it",
+     "fr"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/84082"
+   },
+   "cardmarket": {
+    "product_name": "Cacturne",
+    "prices": [],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Plasma-Freeze/Cacturne-PLF10"
+   }
+  },
+  {
+   "id": "pk_ab596b0f76fcf860d13ad90b7eddacb60c70b854cb002190c66b21484f21a504b9842170cfc3cb9d8cef4fee435e",
+   "card_info": {
+    "name": "Frozen City (Team Plasma)",
+    "clean_name": "Frozen City Team Plasma",
+    "set_name": "Plasma Freeze",
+    "set_code": "1382",
+    "card_number": "100/116",
+    "rarity": "Uncommon",
+    "card_type": "Stadium",
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Reverse Holofoil"
+    ],
+    "hp": "0.0",
+    "stage": "Stadium",
+    "card_text": "This card stays in play when you play it.  Discard this card if another Stadium card comes into play.  If another card with the same name is in play, you can't play this card.",
+    "attacks": [
+     "Whenever any player attaches an Energy from his or her hand to 1 of his or her Pokemon (excluding Team Plasma Pokemon), put 2 damage counters on that Pokemon."
+    ],
+    "weakness": null,
+    "resistance": null,
+    "retreat_cost": null
+   },
+   "images": {
+    "languages": [
+     "en",
+     "it",
+     "fr"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/85577"
+   },
+   "cardmarket": {
+    "product_name": "Frozen City",
+    "prices": [],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Plasma-Freeze/Frozen-City-V1-PLF100"
+   }
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 3,
+  "total": 127,
+  "total_pages": 43
+ }
+}

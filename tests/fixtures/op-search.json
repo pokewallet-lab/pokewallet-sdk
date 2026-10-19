@@ -1,0 +1,122 @@
+{
+ "success": true,
+ "data": [
+  {
+   "id": "op_368c74168acc859943c1d462bd7ce8546d5cedf7c976804c7997fa27aedb4d6c2a5d7e7344e0b3118158f079fc76252189",
+   "card_number": "EB01-012",
+   "name": "Cavendish (Zoro Deck)",
+   "clean_name": "Cavendish Zoro Deck",
+   "sub_type_name": "Normal",
+   "rarity": "SR",
+   "card_type": "Character",
+   "ext_color": "Green",
+   "ext_cost": "5",
+   "ext_power": "6000",
+   "ext_subtypes": "Beautiful Pirates;Supernovas",
+   "ext_attribute": "Slash",
+   "tcgplayer": {
+    "url": "https://www.tcgplayer.com/product/656644",
+    "prices": {
+     "low_price": 0.5,
+     "mid_price": 1.17,
+     "high_price": 18.99,
+     "market_price": 0.73,
+     "direct_low_price": null,
+     "updated_at": "2026-10-02T11:56:38.362908"
+    }
+   },
+   "cardmarket": {
+    "product_name": "Cavendish (EB01-012)",
+    "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Learn-Together-Deck-Set-01/Cavendish-EB01-012",
+    "prices": {
+     "avg": 1.08,
+     "low": 0.4,
+     "trend": 0.77,
+     "avg1": 1.95,
+     "avg7": 0.94,
+     "avg30": 1.29,
+     "updated_at": "2026-10-02T10:15:29.556439"
+    }
+   }
+  },
+  {
+   "id": "op_bdfbf777848a62470bb182fd5dbf142ff029f4341c3f760cb9df30130f0d303da168efbe4c21437229d29b6b706a5812ce",
+   "card_number": "EB02-019",
+   "name": "Roronoa Zoro - EB02-019 (Zoro Deck)",
+   "clean_name": "Roronoa Zoro EB02 019 Zoro Deck",
+   "sub_type_name": "Normal",
+   "rarity": "R",
+   "card_type": "Character",
+   "ext_color": "Green",
+   "ext_cost": "4",
+   "ext_power": "5000",
+   "ext_subtypes": "Straw Hat Crew;East Blue",
+   "ext_attribute": "Slash",
+   "tcgplayer": {
+    "url": "https://www.tcgplayer.com/product/656641",
+    "prices": {
+     "low_price": 0.05,
+     "mid_price": 0.2,
+     "high_price": 9.54,
+     "market_price": 0.12,
+     "direct_low_price": null,
+     "updated_at": "2026-10-02T11:56:38.362908"
+    }
+   },
+   "cardmarket": {
+    "product_name": "Roronoa Zoro (EB02-019)",
+    "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Learn-Together-Deck-Set-01/Roronoa-Zoro-EB02-019",
+    "prices": {
+     "avg": 0.09,
+     "low": 0.04,
+     "trend": 0.13,
+     "avg1": 0.09,
+     "avg7": 0.07,
+     "avg30": 0.11,
+     "updated_at": "2026-10-02T10:15:29.556439"
+    }
+   }
+  },
+  {
+   "id": "op_16fe18f974e0d4a89afae386bd9e6271c2d59b69b9af203b661253960da5a0905625a09524f8ee34b91b30122731cbce57",
+   "card_number": "EB02-019",
+   "name": "Roronoa Zoro",
+   "clean_name": "Roronoa Zoro",
+   "sub_type_name": "Foil",
+   "rarity": "R",
+   "card_type": "Character",
+   "ext_color": "Green",
+   "ext_cost": "4",
+   "ext_power": "5000",
+   "ext_subtypes": "Straw Hat Crew;East Blue",
+   "ext_attribute": "Slash",
+   "tcgplayer": {
+    "url": "https://www.tcgplayer.com/product/629113",
+    "prices": {
+     "low_price": 0.1,
+     "mid_price": 0.5,
+     "high_price": 20.34,
+     "market_price": 0.38,
+     "direct_low_price": null,
+     "updated_at": "2026-10-02T11:56:38.362908"
+    }
+   },
+   "cardmarket": {
+    "product_name": "Roronoa Zoro (EB02-019)",
+    "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Anime-25th-Collection/Roronoa-Zoro-EB02-019",
+    "prices": {
+     "avg": 0.19,
+     "low": 0.02,
+     "trend": 0.23,
+     "avg1": 0.19,
+     "avg7": 0.15,
+     "avg30": 0.17,
+     "updated_at": "2026-10-02T10:15:29.556439"
+    }
+   }
+  }
+ ],
+ "total": 192,
+ "page": 1,
+ "limit": 3
+}

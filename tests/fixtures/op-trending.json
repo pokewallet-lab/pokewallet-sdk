@@ -1,0 +1,86 @@
+{
+ "period": "7d",
+ "trending_sets": [
+  {
+   "set_name": "Extra Booster: Anime 25th Collection (Japanese)",
+   "set_code": "EB-02-JP",
+   "set_id": "-7",
+   "card_count": 46,
+   "cardmarket": {
+    "price_change": "+91.3%",
+    "avg_price_current": 208.2,
+    "avg_price_previous": 108.85,
+    "top_movers": [
+     {
+      "name": "Monkey.D.Luffy (OP05-060)",
+      "change": "+197.9%"
+     },
+     {
+      "name": "Tony Tony.Chopper (OP08-001)",
+      "change": "+191.2%"
+     },
+     {
+      "name": "Hannyabal (EB01-021)",
+      "change": "+163.1%"
+     }
+    ]
+   },
+   "tcgplayer": null
+  },
+  {
+   "set_name": "Extra Booster: Anime 25th Collection",
+   "set_code": "EB-02",
+   "set_id": "23834",
+   "card_count": 57,
+   "cardmarket": {
+    "price_change": "+79.4%",
+    "avg_price_current": 461.39,
+    "avg_price_previous": 257.14,
+    "top_movers": [
+     {
+      "name": "Tony Tony.Chopper (OP08-001)",
+      "change": "+205.3%"
+     },
+     {
+      "name": "Charlotte Pudding (OP08-058)",
+      "change": "+189.1%"
+     },
+     {
+      "name": "Monkey.D.Luffy (OP05-060)",
+      "change": "+184.2%"
+     }
+    ]
+   },
+   "tcgplayer": {
+    "status": "work_in_progress",
+    "message": "TCGPlayer price history not yet available"
+   }
+  },
+  {
+   "set_name": "Awakening of the New Era (Japanese)",
+   "set_code": "OP05-JP",
+   "set_id": "-4",
+   "card_count": 36,
+   "cardmarket": {
+    "price_change": "+52.4%",
+    "avg_price_current": 326.02,
+    "avg_price_previous": 213.92,
+    "top_movers": [
+     {
+      "name": "Monkey.D.Luffy (ST01-012) (V.2)",
+      "change": "+90.1%"
+     },
+     {
+      "name": "Trafalgar Law (OP05-069) (V.3)",
+      "change": "+57.1%"
+     },
+     {
+      "name": "Sabo (OP05-007) (V.2)",
+      "change": "-43.0%"
+     }
+    ]
+   },
+   "tcgplayer": null
+  }
+ ]
+}

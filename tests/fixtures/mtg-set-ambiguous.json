@@ -1,0 +1,21 @@
+{
+ "disambiguation": true,
+ "message": "Multiple sets found for set_code 'MOC'. Use set_id to specify which one.",
+ "matches": [
+  {
+   "set_id": "22979",
+   "set_code": "MOC",
+   "name": "Commander: March of the Machine",
+   "language": "eng",
+   "release_date": "2023-04-21T00:00:00"
+  },
+  {
+   "set_id": "23109",
+   "set_code": "MOC",
+   "name": "Planechase: March of the Machine",
+   "language": "eng",
+   "release_date": "2023-04-21T00:00:00"
+  }
+ ],
+ "total": 2
+}

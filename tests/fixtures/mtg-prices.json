@@ -1,0 +1,66 @@
+{
+ "success": true,
+ "source": "both",
+ "set_code": "FRA",
+ "set_id": "24684",
+ "data": [
+  {
+   "id": "mtg_2c2bae815d1b5d8235423b0c89f43f5383afbff3adbe2b6a895216ea36ddb4f83d2fec580f087b6707d9",
+   "card_number": "1",
+   "name": "Emrakul, the Exigent Doom",
+   "product_type": "card",
+   "variant": "Normal",
+   "tcgplayer": {
+    "low_price": 28.08,
+    "mid_price": 32.62,
+    "high_price": 58.92,
+    "market_price": 29.08,
+    "direct_low_price": 29.48,
+    "updated_at": "2026-09-30T20:37:36.812579+00:00"
+   },
+   "cardmarket": {
+    "avg": 34.79,
+    "low": 14.3,
+    "trend": 16.27,
+    "avg1": 29.45,
+    "avg7": 31.97,
+    "avg30": 31.97,
+    "updated_at": "2026-09-30T14:49:39.980453+00:00"
+   }
+  },
+  {
+   "id": "mtg_2c2bae815d1b5d8235423b0c89f43f5383afbff3adbe2b6a895216ea36ddb4f83d2fec580f087b6707d9",
+   "card_number": "1",
+   "name": "Emrakul, the Exigent Doom",
+   "product_type": "card",
+   "variant": "Foil",
+   "tcgplayer": {
+    "low_price": 33.01,
+    "mid_price": 42.3,
+    "high_price": 94.97,
+    "market_price": 39.85,
+    "direct_low_price": null,
+    "updated_at": "2026-09-30T20:37:36.812579+00:00"
+   },
+   "cardmarket": {
+    "avg": 59.99,
+    "low": 19.5,
+    "trend": 18.78,
+    "avg1": 54.99,
+    "avg7": 58.32,
+    "avg30": 58.32,
+    "updated_at": "2026-09-30T14:49:39.980453+00:00"
+   }
+  },
+  {
+   "id": "mtg_e4c34bcb45c655b0a16dead271fb9b06485f40592248f6d84d707822665da561a1e9164f1de7c0ad0f5e61cde70601",
+   "card_number": "1 // 5",
+   "name": "Cadet // Jace Double-Sided Token",
+   "product_type": "card",
+   "variant": "Normal",
+   "tcgplayer": null,
+   "cardmarket": null
+  }
+ ],
+ "total": 1226
+}

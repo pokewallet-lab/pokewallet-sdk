@@ -1,0 +1,68 @@
+{
+ "metric": "price",
+ "source": "tcg",
+ "top_cards": [
+  {
+   "id": "mtg_b12d1c3adb12f714026300db18765591e37f7dd47cacf8cf89e5629aa6d55d188c39a0e63173fa43b8708aff",
+   "card_info": {
+    "name": "Smaug the Magnificent (Borderless)",
+    "clean_name": "Smaug the Magnificent Borderless",
+    "set_name": "The Hobbit",
+    "set_code": "HOB",
+    "set_id": "24683",
+    "card_number": "249",
+    "rarity": "M",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Foil"
+    ],
+    "card_text": null,
+    "p": "4",
+    "t": "3",
+    "sub_type": "Legendary Creature — Dragon"
+   },
+   "current_price": 24500
+  },
+  {
+   "id": "mtg_26dcb8609b2fa021e26275d3499b7285040f5369a7f3a65e5b060a78ba625682b13416d8e411",
+   "card_info": {
+    "name": "Time Walk",
+    "clean_name": "Time Walk",
+    "set_name": "Unlimited Edition",
+    "set_code": "2ED",
+    "set_id": "115",
+    "card_number": null,
+    "rarity": "R",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal"
+    ],
+    "card_text": "Take an extra turn after this one.",
+    "sub_type": "Sorcery"
+   },
+   "current_price": 5719.99
+  },
+  {
+   "id": "mtg_57bae78cb8333bb2eeae88837fdc4effdbb2484ca38e6809bac1b402b458ecb45a630b2de42c",
+   "card_info": {
+    "name": "Ancestral Recall",
+    "clean_name": "Ancestral Recall",
+    "set_name": "Unlimited Edition",
+    "set_code": "2ED",
+    "set_id": "115",
+    "card_number": null,
+    "rarity": "R",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal"
+    ],
+    "card_text": "Draw 3 cards or force opponent to draw 3 cards.",
+    "sub_type": "Instant"
+   },
+   "current_price": 4999.95
+  }
+ ]
+}

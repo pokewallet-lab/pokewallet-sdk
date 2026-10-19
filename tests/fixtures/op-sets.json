@@ -1,0 +1,27 @@
+{
+ "success": true,
+ "data": [
+  {
+   "name": "Romance Dawn (Japanese)",
+   "set_code": "OP01-JP",
+   "group_id": "-3",
+   "language": "jp",
+   "release_date": "2022-07-22"
+  },
+  {
+   "name": "Super Pre-Release Starter Deck 4: Animal Kingdom Pirates",
+   "set_code": "ST-04 PRE",
+   "group_id": "17661",
+   "language": "en",
+   "release_date": "2022-09-30"
+  },
+  {
+   "name": "Super Pre-Release Starter Deck 3: The Seven Warlords of the Sea",
+   "set_code": "ST-03 PRE",
+   "group_id": "17660",
+   "language": "en",
+   "release_date": "2022-09-30"
+  }
+ ],
+ "total": 111
+}

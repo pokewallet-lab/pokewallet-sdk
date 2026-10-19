@@ -1,0 +1,119 @@
+{
+ "success": true,
+ "set": {
+  "name": "Reality Fracture",
+  "set_code": "FRA",
+  "set_id": "24684",
+  "total_cards": 782,
+  "language": "eng",
+  "release_date": "2026-10-02T00:00:00"
+ },
+ "cards": [
+  {
+   "id": "mtg_2c2bae815d1b5d8235423b0c89f43f5383afbff3adbe2b6a895216ea36ddb4f83d2fec580f087b6707d9",
+   "card_info": {
+    "name": "Emrakul, the Exigent Doom",
+    "clean_name": "Emrakul the Exigent Doom",
+    "set_name": "Reality Fracture",
+    "set_code": "FRA",
+    "set_id": "24684",
+    "card_number": "1",
+    "rarity": "M",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Foil"
+    ],
+    "card_text": "When you cast this spell, untap all lands you control.<br>\r\nFlying, trample<br>\r\nWard—Sacrifice three permanents.<br>\r\n3, Exile this card from your hand: Target land gains \"T: Add CC\" until this card is cast from exile. You may cast this card for as long as it remains exiled.",
+    "p": "12",
+    "t": "12",
+    "sub_type": "Legendary Creature — Eldrazi"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/716715/magic-reality-fracture-emrakul-the-exigent-doom"
+   },
+   "cardmarket": {
+    "product_name": "Emrakul, the Exigent Doom",
+    "prices": [],
+    "product_url": "https://www.cardmarket.com/en/Magic/Products/Singles/Reality-Fracture/Emrakul-the-Exigent-Doom"
+   }
+  },
+  {
+   "id": "mtg_e4c34bcb45c655b0a16dead271fb9b06485f40592248f6d84d707822665da561a1e9164f1de7c0ad0f5e61cde70601",
+   "card_info": {
+    "name": "Cadet // Jace Double-Sided Token",
+    "clean_name": "Cadet Jace Double Sided Token",
+    "set_name": "Reality Fracture",
+    "set_code": "FRA",
+    "set_id": "24684",
+    "card_number": "1 // 5",
+    "rarity": "T",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Foil"
+    ],
+    "card_text": "<strong>Jace</strong>\r\n<br>[-1]: Surveil 1. <em>(Look at the top card of : your library. You may put that card into your graveyard.)</em>\r\n<br>[-3]: Draw a card.",
+    "p": "2",
+    "t": "2",
+    "sub_type": "Token Creature — Wizard Soldier // Token Planeswalker — Jace"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/720958/magic-reality-fracture-cadet-jace-double-sided-token"
+   },
+   "cardmarket": null
+  },
+  {
+   "id": "mtg_b70ce026be024003748a4e17354ae2dc31dfb739933780eb00d9035ac503ade308873d2428e6abebaa40212f8e26f0",
+   "card_info": {
+    "name": "Cadet // Beast Double-Sided Token",
+    "clean_name": "Cadet Beast Double Sided Token",
+    "set_name": "Reality Fracture",
+    "set_code": "FRA",
+    "set_id": "24684",
+    "card_number": "1 // 8",
+    "rarity": "T",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Foil"
+    ],
+    "card_text": "<strong>Beast</strong>\r\n<br>Trample",
+    "p": "2/4",
+    "t": "2/4",
+    "sub_type": "Token Creature — Wizard Soldier // Token Creature — Beast"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [],
+    "url": "https://www.tcgplayer.com/product/720965/magic-reality-fracture-cadet-beast-double-sided-token"
+   },
+   "cardmarket": null
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 3,
+  "total": 782,
+  "total_pages": 261
+ }
+}

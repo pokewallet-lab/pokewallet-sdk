@@ -1,0 +1,233 @@
+{
+ "query": "weedle",
+ "results": [
+  {
+   "id": "pk_09f1da7bf463bb3cce37497d819eaf8d0eb2860c35daf3ad91c3d7a8da9e56e79d2426ed5d1358c7533990fa94",
+   "card_info": {
+    "name": "Weedle",
+    "clean_name": "Weedle",
+    "set_name": "Base Set 2",
+    "set_code": "BS2",
+    "set_id": "605",
+    "card_number": "100/130",
+    "rarity": "Common",
+    "card_type": "Grass",
+    "product_type": "card",
+    "hp": "40.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+    ],
+    "weakness": "R",
+    "resistance": null,
+    "retreat_cost": "1.0"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 0.13,
+      "mid_price": 0.5,
+      "high_price": 100,
+      "updated_at": "2026-10-02T10:48:37.747076",
+      "market_price": 0.57,
+      "direct_low_price": 0.5,
+      "sub_type_name": "Normal"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/42551"
+   },
+   "cardmarket": {
+    "product_name": "Weedle",
+    "prices": [
+     {
+      "avg": 0.24,
+      "low": 0.02,
+      "avg1": 0.1,
+      "avg7": 0.34,
+      "avg30": 0.29,
+      "trend": 0.14,
+      "updated_at": "2026-10-02T10:25:25.392497",
+      "variant_type": "normal"
+     },
+     {
+      "avg": null,
+      "low": null,
+      "avg1": 0.05,
+      "avg7": 0.05,
+      "avg30": 0.05,
+      "trend": 0.05,
+      "updated_at": "2026-10-02T10:25:25.392497",
+      "variant_type": "holo"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Base-Set-2/Weedle-B2100"
+   }
+  },
+  {
+   "id": "pk_1bd5ea41a6e45db1f788df08ed641aff0b42072c3ffb0ace8157640e20ad47984883213a5cc9f2e17f72b866e4c3",
+   "card_info": {
+    "name": "Weedle",
+    "clean_name": "Weedle",
+    "set_name": "Base Set (Shadowless)",
+    "set_code": "BSS",
+    "set_id": "1663",
+    "card_number": "069/102",
+    "rarity": "Common",
+    "card_type": "Grass",
+    "product_type": "card",
+    "hp": "40.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+    ],
+    "weakness": "R",
+    "resistance": null,
+    "retreat_cost": "1.0"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 34.1,
+      "mid_price": 39.99,
+      "high_price": 280.55,
+      "updated_at": "2026-10-02T10:48:37.747076",
+      "market_price": 57.52,
+      "direct_low_price": 280.55,
+      "sub_type_name": "1st Edition"
+     },
+     {
+      "low_price": 1,
+      "mid_price": 2.7,
+      "high_price": 96.95,
+      "updated_at": "2026-10-02T10:48:37.747076",
+      "market_price": 3.26,
+      "direct_low_price": 4.31,
+      "sub_type_name": "Unlimited"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/107066"
+   },
+   "cardmarket": {
+    "product_name": "Weedle (Shadowless)",
+    "prices": [
+     {
+      "avg": 4.4,
+      "low": 1.14,
+      "avg1": 3.16,
+      "avg7": 2.73,
+      "avg30": 6.68,
+      "trend": 8.71,
+      "updated_at": "2026-10-02T10:25:43.020832",
+      "variant_type": "normal"
+     },
+     {
+      "avg": null,
+      "low": null,
+      "avg1": null,
+      "avg7": null,
+      "avg30": null,
+      "trend": 0,
+      "updated_at": "2026-10-02T10:25:43.020832",
+      "variant_type": "holo"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Base-Set/Weedle-V2-BS69"
+   }
+  },
+  {
+   "id": "pk_a914d4b084978b0bfefdcc6ced88f7ab64d451ee341f39c6eeb4d66f1832c134c1cb7b52107b35f042ed5037",
+   "card_info": {
+    "name": "Weedle",
+    "clean_name": "Weedle",
+    "set_name": "Base Set",
+    "set_code": "BS",
+    "set_id": "604",
+    "card_number": "069/102",
+    "rarity": "Common",
+    "card_type": "Grass",
+    "product_type": "card",
+    "hp": "40.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+    ],
+    "weakness": "R",
+    "resistance": null,
+    "retreat_cost": "1.0"
+   },
+   "images": {
+    "languages": [
+     "en",
+     "fr"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 0.19,
+      "mid_price": 0.5,
+      "high_price": 80,
+      "updated_at": "2026-10-02T10:48:37.747076",
+      "market_price": 0.66,
+      "direct_low_price": 0.79,
+      "sub_type_name": "Normal"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/42414"
+   },
+   "cardmarket": {
+    "product_name": "Weedle",
+    "prices": [
+     {
+      "avg": null,
+      "low": null,
+      "avg1": 0.5,
+      "avg7": 5.92,
+      "avg30": 5.92,
+      "trend": 4.57,
+      "updated_at": "2026-10-02T10:25:25.392497",
+      "variant_type": "holo"
+     },
+     {
+      "avg": 0.96,
+      "low": 0.02,
+      "avg1": 0.96,
+      "avg7": 1.63,
+      "avg30": 0.89,
+      "trend": 1.02,
+      "updated_at": "2026-10-02T10:25:25.392497",
+      "variant_type": "normal"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Base-Set/Weedle-V1-BS69"
+   }
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 3,
+  "total": 66,
+  "total_pages": 22
+ },
+ "metadata": {
+  "total_count": 66,
+  "tcg": 58,
+  "cardmarket": 58,
+  "tcg_only": 8,
+  "cardmarket_only": 8,
+  "both_sources": 50
+ }
+}

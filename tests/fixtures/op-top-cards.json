@@ -1,0 +1,63 @@
+{
+ "metric": "price",
+ "source": "tcg",
+ "top_cards": [
+  {
+   "id": "op_4efc83a71371699af41ffc592c2c1c2076567bcff30c224518260e7ad036150f0156f916c677e9abc3804cefaaf233c9c9",
+   "card_info": {
+    "name": "Monkey.D.Luffy (119) (SP) (Gold)",
+    "clean_name": "Monkey.D.Luffy (119) (SP) (Gold)",
+    "set_name": "A Fist of Divine Speed",
+    "set_code": "OP11",
+    "set_id": "24241",
+    "card_number": "OP05-119",
+    "rarity": "SEC",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Foil"
+    ],
+    "card_text": null
+   },
+   "current_price": 13000
+  },
+  {
+   "id": "op_d68478f75c427f84335e50e28b950a2c9eb3b1b4e84ce0a2f4df4a292e3a9dd40a76ffdef62f958b0e381d79827e5eac0e",
+   "card_info": {
+    "name": "Portgas.D.Ace (Serial Numbered)",
+    "clean_name": "Portgas.D.Ace (Serial Numbered)",
+    "set_name": "One Piece Promotion Cards",
+    "set_code": "OP-PR",
+    "set_id": "17675",
+    "card_number": "OP07-119",
+    "rarity": "SEC",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Foil"
+    ],
+    "card_text": null
+   },
+   "current_price": 9950
+  },
+  {
+   "id": "op_54084f71196618c212ffed85b9b8d5649b3eb255870ee979191752df46726a35b097c13ed25966018c7ff07def3838955564",
+   "card_info": {
+    "name": "Monkey.D.Luffy (Red Bull Double Don!!) (Winner)",
+    "clean_name": "Monkey.D.Luffy (Red Bull Double Don!!) (Winner)",
+    "set_name": "One Piece Promotion Cards",
+    "set_code": "OP-PR",
+    "set_id": "17675",
+    "card_number": "PRB02-005",
+    "rarity": "SR",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Foil"
+    ],
+    "card_text": null
+   },
+   "current_price": 8898.99
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+{
+ "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
+ "card_name": "Weedle",
+ "tcgplayer": {
+  "variants": {
+   "Normal": {
+    "current": {
+     "market": 0.36,
+     "low": 0.17,
+     "mid": 0.32,
+     "high": 19.82,
+     "direct_low": 0.25
+    },
+    "price_7d": 0.37,
+    "price_14d": 0.32,
+    "price_30d": 0.32,
+    "price_60d": 0.32,
+    "price_120d": 0.32,
+    "change_7d": "-2.7%",
+    "change_14d": "+12.5%",
+    "change_30d": "+12.5%",
+    "change_60d": "+12.5%",
+    "change_120d": "+12.5%",
+    "last_updated": "2026-10-02T10:48:34.951475"
+   },
+   "Reverse Holofoil": {
+    "current": {
+     "market": 1.58,
+     "low": 0.51,
+     "mid": 1.51,
+     "high": 24.84,
+     "direct_low": null
+    },
+    "price_7d": 1.58,
+    "price_14d": 1.54,
+    "price_30d": 1.49,
+    "price_60d": 1.51,
+    "price_120d": 1.39,
+    "change_7d": "0.0%",
+    "change_14d": "+2.6%",
+    "change_30d": "+6.0%",
+    "change_60d": "+4.6%",
+    "change_120d": "+13.7%",
+    "last_updated": "2026-10-02T10:48:34.951475"
+   }
+  }
+ },
+ "cardmarket": {
+  "variants": {
+   "normal": {
+    "current": {
+     "avg": 0.15,
+     "low": 0.02,
+     "trend": 0.19
+    },
+    "avg_1d": 0.25,
+    "avg_7d": 0.18,
+    "avg_30d": 0.17,
+    "price_7d": 0.15,
+    "price_14d": 0.15,
+    "price_30d": 0.16,
+    "price_60d": 0.16,
+    "price_120d": 0.11,
+    "change_7d": "0.0%",
+    "change_14d": "0.0%",
+    "change_30d": "-6.3%",
+    "change_60d": "-6.3%",
+    "change_120d": "+36.4%",
+    "last_updated": "2026-10-02T10:25:31.336544"
+   },
+   "holo": {
+    "current": {
+     "avg": 0.34,
+     "low": 0.14,
+     "trend": 0.8
+    },
+    "avg_1d": 0.35,
+    "avg_7d": 0.67,
+    "avg_30d": 0.66,
+    "price_7d": 0.34,
+    "price_14d": 0.34,
+    "price_30d": 0.75,
+    "price_60d": 1.28,
+    "price_120d": 0.98,
+    "change_7d": "0.0%",
+    "change_14d": "0.0%",
+    "change_30d": "-54.7%",
+    "change_60d": "-73.4%",
+    "change_120d": "-65.3%",
+    "last_updated": "2026-10-02T10:25:31.336544"
+   }
+  }
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "id": "mtg_2c2bae815d1b5d8235423b0c89f43f5383afbff3adbe2b6a895216ea36ddb4f83d2fec580f087b6707d9",
+ "card_info": {
+  "name": "Emrakul, the Exigent Doom",
+  "clean_name": "Emrakul the Exigent Doom",
+  "set_name": "Reality Fracture",
+  "set_code": "FRA",
+  "set_id": "24684",
+  "card_number": "1",
+  "rarity": "M",
+  "card_type": null,
+  "product_type": "card",
+  "variants": [
+   "Normal",
+   "Foil"
+  ],
+  "card_text": "When you cast this spell, untap all lands you control.<br>\r\nFlying, trample<br>\r\nWard—Sacrifice three permanents.<br>\r\n3, Exile this card from your hand: Target land gains \"T: Add CC\" until this card is cast from exile. You may cast this card for as long as it remains exiled.",
+  "p": "12",
+  "t": "12",
+  "sub_type": "Legendary Creature — Eldrazi"
+ },
+ "images": {
+  "languages": [
+   "en"
+  ]
+ },
+ "tcgplayer": {
+  "prices": [
+   {
+    "low_price": 28.08,
+    "mid_price": 32.62,
+    "high_price": 58.92,
+    "market_price": 29.08,
+    "direct_low_price": 29.48,
+    "updated_at": "2026-09-30T20:37:36.812579+00:00",
+    "sub_type_name": "Normal"
+   },
+   {
+    "low_price": 33.01,
+    "mid_price": 42.3,
+    "high_price": 94.97,
+    "market_price": 39.85,
+    "direct_low_price": null,
+    "updated_at": "2026-09-30T20:37:36.812579+00:00",
+    "sub_type_name": "Foil"
+   }
+  ],
+  "url": "https://www.tcgplayer.com/product/716715/magic-reality-fracture-emrakul-the-exigent-doom"
+ },
+ "cardmarket": {
+  "product_name": "Emrakul, the Exigent Doom",
+  "prices": [
+   {
+    "variant_type": "normal",
+    "avg": 34.79,
+    "low": 14.3,
+    "trend": 16.27,
+    "avg1": 29.45,
+    "avg7": 31.97,
+    "avg30": 31.97,
+    "updated_at": "2026-09-30T14:49:39.980453+00:00"
+   },
+   {
+    "variant_type": "foil",
+    "avg": 59.99,
+    "low": 19.5,
+    "trend": 18.78,
+    "avg1": 54.99,
+    "avg7": 58.32,
+    "avg30": 58.32,
+    "updated_at": "2026-09-30T14:49:39.980453+00:00"
+   }
+  ],
+  "product_url": "https://www.cardmarket.com/en/Magic/Products/Singles/Reality-Fracture/Emrakul-the-Exigent-Doom"
+ }
+}

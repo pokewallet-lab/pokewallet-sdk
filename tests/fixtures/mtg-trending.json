@@ -1,0 +1,86 @@
+{
+ "period": "7d",
+ "trending_sets": [
+  {
+   "set_name": "WCD 2002: Brian Kibler",
+   "set_code": "wc02bk",
+   "set_id": "-24",
+   "card_count": 10,
+   "cardmarket": {
+    "price_change": "+112.1%",
+    "avg_price_current": 8.04,
+    "avg_price_previous": 3.79,
+    "top_movers": [
+     {
+      "name": "Plains",
+      "change": "+189.6%"
+     },
+     {
+      "name": "Plains",
+      "change": "+168.7%"
+     },
+     {
+      "name": "Forest",
+      "change": "+147.9%"
+     }
+    ]
+   },
+   "tcgplayer": null
+  },
+  {
+   "set_name": "Alpha Edition",
+   "set_code": "LEA",
+   "set_id": "7",
+   "card_count": 295,
+   "cardmarket": {
+    "price_change": "+78.9%",
+    "avg_price_current": 930.31,
+    "avg_price_previous": 519.91,
+    "top_movers": [
+     {
+      "name": "Timetwister",
+      "change": "+191.4%"
+     },
+     {
+      "name": "Ancestral Recall",
+      "change": "+189.7%"
+     },
+     {
+      "name": "Mox Emerald",
+      "change": "+178.7%"
+     }
+    ]
+   },
+   "tcgplayer": {
+    "status": "work_in_progress",
+    "message": "TCGPlayer price history not yet available"
+   }
+  },
+  {
+   "set_name": "WCD 2001: Jan Tomcani",
+   "set_code": "wc01jt",
+   "set_id": "-22",
+   "card_count": 9,
+   "cardmarket": {
+    "price_change": "+78.0%",
+    "avg_price_current": 3.82,
+    "avg_price_previous": 2.15,
+    "top_movers": [
+     {
+      "name": "Forest",
+      "change": "+126.7%"
+     },
+     {
+      "name": "Mountain",
+      "change": "+105.7%"
+     },
+     {
+      "name": "Forest",
+      "change": "+90.4%"
+     }
+    ]
+   },
+   "tcgplayer": null
+  }
+ ]
+}

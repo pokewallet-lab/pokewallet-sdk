@@ -1,0 +1,52 @@
+name: Bug report
+description: Something in the SDKs or the MCP server does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never paste your API key.** It starts with `pk_`. Replace it with `pk_***` in everything you share, including logs, headers, URLs and screenshots. If a key may have leaked, revoke it in the dashboard.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - TypeScript SDK (@pokewallet/sdk)
+        - Python SDK (pokewallet)
+        - MCP server (packages/mcp)
+        - OpenAPI spec / documentation
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Node.js or Python version and operating system.
+      placeholder: "Node 22.12 on macOS 15"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal code to reproduce
+      description: Use `process.env.POKEWALLET_API_KEY` / `os.environ`, not a literal key.
+      render: shell
+  - type: textarea
+    id: output
+    attributes:
+      label: Error output
+      description: Check it for `pk_` strings before pasting.
+      render: shell

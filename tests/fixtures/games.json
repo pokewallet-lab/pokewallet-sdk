@@ -1,0 +1,185 @@
+{
+ "success": true,
+ "data": [
+  {
+   "code": "mtg",
+   "name": "Magic: the Gathering",
+   "endpoints": {
+    "sets": "/mtg/sets",
+    "set": "/mtg/sets/:set",
+    "card": "/mtg/cards/:id",
+    "search": "/mtg/search?q=",
+    "image": "/mtg/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/mtg/prices/:set",
+    "statistics": "/mtg/sets/:set/statistics",
+    "completion_value": "/mtg/sets/:set/completion-value",
+    "trending": "/mtg/sets/trending",
+    "top_cards": "/mtg/analytics/top-cards"
+   }
+  },
+  {
+   "code": "ygo",
+   "name": "Yu-Gi-Oh!",
+   "endpoints": {
+    "sets": "/ygo/sets",
+    "set": "/ygo/sets/:set",
+    "card": "/ygo/cards/:id",
+    "search": "/ygo/search?q=",
+    "image": "/ygo/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/ygo/prices/:set",
+    "statistics": "/ygo/sets/:set/statistics",
+    "completion_value": "/ygo/sets/:set/completion-value",
+    "trending": "/ygo/sets/trending",
+    "top_cards": "/ygo/analytics/top-cards"
+   }
+  },
+  {
+   "code": "cfv",
+   "name": "Cardfight!! Vanguard",
+   "endpoints": {
+    "sets": "/cfv/sets",
+    "set": "/cfv/sets/:set",
+    "card": "/cfv/cards/:id",
+    "search": "/cfv/search?q=",
+    "image": "/cfv/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/cfv/prices/:set",
+    "statistics": "/cfv/sets/:set/statistics",
+    "completion_value": "/cfv/sets/:set/completion-value",
+    "trending": "/cfv/sets/trending",
+    "top_cards": "/cfv/analytics/top-cards"
+   }
+  },
+  {
+   "code": "dbs",
+   "name": "Dragon Ball Super",
+   "endpoints": {
+    "sets": "/dbs/sets",
+    "set": "/dbs/sets/:set",
+    "card": "/dbs/cards/:id",
+    "search": "/dbs/search?q=",
+    "image": "/dbs/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/dbs/prices/:set",
+    "statistics": "/dbs/sets/:set/statistics",
+    "completion_value": "/dbs/sets/:set/completion-value",
+    "trending": "/dbs/sets/trending",
+    "top_cards": "/dbs/analytics/top-cards"
+   }
+  },
+  {
+   "code": "fab",
+   "name": "Flesh and Blood",
+   "endpoints": {
+    "sets": "/fab/sets",
+    "set": "/fab/sets/:set",
+    "card": "/fab/cards/:id",
+    "search": "/fab/search?q=",
+    "image": "/fab/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/fab/prices/:set",
+    "statistics": "/fab/sets/:set/statistics",
+    "completion_value": "/fab/sets/:set/completion-value",
+    "trending": "/fab/sets/trending",
+    "top_cards": "/fab/analytics/top-cards"
+   }
+  },
+  {
+   "code": "dgm",
+   "name": "Digimon",
+   "endpoints": {
+    "sets": "/dgm/sets",
+    "set": "/dgm/sets/:set",
+    "card": "/dgm/cards/:id",
+    "search": "/dgm/search?q=",
+    "image": "/dgm/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/dgm/prices/:set",
+    "statistics": "/dgm/sets/:set/statistics",
+    "completion_value": "/dgm/sets/:set/completion-value",
+    "trending": "/dgm/sets/trending",
+    "top_cards": "/dgm/analytics/top-cards"
+   }
+  },
+  {
+   "code": "swu",
+   "name": "Star Wars Unlimited",
+   "endpoints": {
+    "sets": "/swu/sets",
+    "set": "/swu/sets/:set",
+    "card": "/swu/cards/:id",
+    "search": "/swu/search?q=",
+    "image": "/swu/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/swu/prices/:set",
+    "statistics": "/swu/sets/:set/statistics",
+    "completion_value": "/swu/sets/:set/completion-value",
+    "trending": "/swu/sets/trending",
+    "top_cards": "/swu/analytics/top-cards"
+   }
+  },
+  {
+   "code": "lor",
+   "name": "Disney Lorcana",
+   "endpoints": {
+    "sets": "/lor/sets",
+    "set": "/lor/sets/:set",
+    "card": "/lor/cards/:id",
+    "search": "/lor/search?q=",
+    "image": "/lor/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/lor/prices/:set",
+    "statistics": "/lor/sets/:set/statistics",
+    "completion_value": "/lor/sets/:set/completion-value",
+    "trending": "/lor/sets/trending",
+    "top_cards": "/lor/analytics/top-cards"
+   }
+  },
+  {
+   "code": "rft",
+   "name": "Riftbound",
+   "endpoints": {
+    "sets": "/rft/sets",
+    "set": "/rft/sets/:set",
+    "card": "/rft/cards/:id",
+    "search": "/rft/search?q=",
+    "image": "/rft/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/rft/prices/:set",
+    "statistics": "/rft/sets/:set/statistics",
+    "completion_value": "/rft/sets/:set/completion-value",
+    "trending": "/rft/sets/trending",
+    "top_cards": "/rft/analytics/top-cards"
+   }
+  },
+  {
+   "code": "cpk",
+   "name": "Cyberpunk",
+   "endpoints": {
+    "sets": "/cpk/sets",
+    "set": "/cpk/sets/:set",
+    "card": "/cpk/cards/:id",
+    "search": "/cpk/search?q=",
+    "image": "/cpk/images/:id"
+   },
+   "pro_endpoints": {
+    "prices": "/cpk/prices/:set",
+    "statistics": "/cpk/sets/:set/statistics",
+    "completion_value": "/cpk/sets/:set/completion-value",
+    "trending": "/cpk/sets/trending",
+    "top_cards": "/cpk/analytics/top-cards"
+   }
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "metric": "growth",
+ "source": "tcg",
+ "top_cards": [
+  {
+   "id": "pk_a158209922b6436683e91ee5f0a4e231829dc7f6d380c3e82465b90bc99d0ce32be16f0cc84b480071bf97576fd46f04",
+   "card_info": {
+    "name": "Pidgeotto - 305/190",
+    "set_name": "SV4a_ Shiny Treasure ex",
+    "card_number": "305/190",
+    "rarity": "Shiny Rare"
+   },
+   "current_price": 1.43,
+   "previous_price_7d": 1.37,
+   "change_7d": "+4.4%"
+  },
+  {
+   "id": "pk_929c5621a1885943b712e257de5a24dedd6736b0f15fca3149244a0b3765ca4ce268dfd90b43880c56c79e071bd8bc84",
+   "card_info": {
+    "name": "Aarune - 101/076",
+    "set_name": "Storm Emeralda",
+    "card_number": "101/076",
+    "rarity": "Super Rare"
+   },
+   "current_price": 5.1,
+   "previous_price_7d": 5.05,
+   "change_7d": "+1.0%"
+  },
+  {
+   "id": "pk_b2f7d7e4aaa527261c3d1f78dc2af3978777cd687fdd821f90fd304d49b30b19e26085e4e95364dfaaca1d004312a9",
+   "card_info": {
+    "name": "Swablu",
+    "set_name": "smJ_ Tag Team GX Premium Trainer Box",
+    "card_number": "012/035",
+    "rarity": null
+   },
+   "current_price": 12.5,
+   "previous_price_7d": 12.5,
+   "change_7d": "0.0%"
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "metric": "price",
+ "source": "tcg",
+ "top_cards": [
+  {
+   "id": "pk_9594663ed14cf1b0361df92f0e94d6c7c5f99a04d66a87ac88267b67c4b4c180534e36d671c931ec3f4541ea8d76d45a",
+   "card_info": {
+    "name": "Mega Golisopod ex - 107/076",
+    "set_name": "Storm Emeralda",
+    "card_number": "107/076",
+    "rarity": "Special Art Rare"
+   },
+   "current_price": 14.17
+  },
+  {
+   "id": "pk_b2f7d7e4aaa527261c3d1f78dc2af3978777cd687fdd821f90fd304d49b30b19e26085e4e95364dfaaca1d004312a9",
+   "card_info": {
+    "name": "Swablu",
+    "set_name": "smJ_ Tag Team GX Premium Trainer Box",
+    "card_number": "012/035",
+    "rarity": null
+   },
+   "current_price": 12.5
+  },
+  {
+   "id": "pk_e3be8eb5916f29d28f874169eb44de1f36074f1cd7fb6b315dd880dea0ac8fe8689b1491daf574725108139007b54a",
+   "card_info": {
+    "name": "Groudon - 084/076",
+    "set_name": "Storm Emeralda",
+    "card_number": "084/076",
+    "rarity": "Art Rare"
+   },
+   "current_price": 10.75
+  }
+ ]
+}

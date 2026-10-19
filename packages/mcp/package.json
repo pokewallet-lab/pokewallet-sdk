@@ -1,0 +1,33 @@
+{
+  "name": "@pokewallet/mcp",
+  "version": "0.1.0",
+  "description": "Remote MCP server for the PokeWallet API (stateless, Bearer key forwarded per request)",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pokewallet-lab/pokewallet-sdk.git",
+    "directory": "packages/mcp"
+  },
+  "scripts": {
+    "build:sdk": "npm --prefix ../ts run build",
+    "typecheck": "npm run build:sdk && tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "npm run build:sdk && vitest run --config vitest.e2e.config.ts",
+    "dev": "npm run build:sdk && wrangler dev"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.3.1",
+    "@pokewallet/sdk": "file:../ts",
+    "agents": "^0.28.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.3.1",
+    "@types/node": "^26.6.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.151.1"
+  }
+}

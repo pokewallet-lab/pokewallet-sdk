@@ -1,0 +1,72 @@
+{
+  "name": "@pokewallet/sdk",
+  "version": "0.1.1",
+  "description": "Official TypeScript SDK for the PokeWallet API",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pokewallet-lab/pokewallet-sdk.git",
+    "directory": "packages/ts"
+  },
+  "homepage": "https://github.com/pokewallet-lab/pokewallet-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/pokewallet-lab/pokewallet-sdk/issues"
+  },
+  "keywords": [
+    "pokewallet",
+    "pokemon",
+    "tcg",
+    "trading-cards",
+    "one-piece",
+    "magic-the-gathering",
+    "card-prices",
+    "tcgplayer",
+    "cardmarket",
+    "sdk"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "gen": "openapi-typescript ../../openapi/pokewallet.yaml -o src/generated/schema.d.ts",
+    "typecheck": "npm run gen && tsc --noEmit",
+    "build": "npm run gen && tsup",
+    "test": "npm run gen && vitest run",
+    "test:contract": "npm run gen && vitest run --config vitest.contract.config.ts",
+    "prepublishOnly": "node scripts/guard-publish.mjs && npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "openapi-typescript": "^7.13.0",
+    "tsup": "^9.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "author": "PokeWallet"
+}

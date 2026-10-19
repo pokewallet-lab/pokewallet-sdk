@@ -1,0 +1,39 @@
+{
+ "set_info": {
+  "name": "Reality Fracture",
+  "set_code": "FRA",
+  "set_id": "24684",
+  "total_cards": 767
+ },
+ "price_statistics": {
+  "tcgplayer": {
+   "avg_market_price": "17.01",
+   "min_price": 0.12,
+   "max_price": 880,
+   "most_expensive": {
+    "id": "mtg_ec52a22ab58717a79d0006db028c7112b5e228b08893577d810b8a171d3ec22b2a6ea80e47e2ba4462fa7e17",
+    "name": "Omnipresence (Borderless) (Facet Foil) (0459)",
+    "price": 880
+   }
+  },
+  "cardmarket": {
+   "avg_price": "12.32",
+   "min_price": 0.03,
+   "max_price": 452.25,
+   "most_expensive": {
+    "id": "mtg_dbc07746db9723d9ba428f50cb6da85211bd1e7658f51bd599bccdcfffb190b95cc00b858dd59296cb227408",
+    "name": "Hexhaven Invigorator (Borderless) (Facet Foil)",
+    "price": 452.25
+   },
+   "trend_direction": "stable"
+  }
+ },
+ "rarity_breakdown": {
+  "M": 90,
+  "T": 15,
+  "C": 71,
+  "R": 134,
+  "U": 124,
+  "L": 35
+ }
+}

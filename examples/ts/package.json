@@ -1,0 +1,6 @@
+{
+  "name": "pokewallet-examples-ts",
+  "private": true,
+  "type": "module",
+  "description": "Runnable examples for @pokewallet/sdk. Install the SDK here first, see the README."
+}

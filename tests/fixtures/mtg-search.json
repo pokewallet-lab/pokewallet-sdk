@@ -1,0 +1,238 @@
+{
+ "query": "Emrakul",
+ "results": [
+  {
+   "id": "mtg_a226650648bfbc74a51c389551e67786144bc98133f32b8812acf122033bde69de7cce366aa417",
+   "card_info": {
+    "name": "Emrakul, the Aeons Torn",
+    "clean_name": "Emrakul the Aeons Torn",
+    "set_name": "Pro Tour Promos",
+    "set_code": "PTP",
+    "set_id": "93",
+    "card_number": "1",
+    "rarity": "P",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Foil"
+    ],
+    "card_text": "Emrakul, the Aeons Torn can't be countered. \r\n<br>\r\nWhen you cast Emrakul, take an extra turn after this one.\r\n<br>\r\nFlying, protection from colored spells, Annihilator 6 \r\n<br>\r\nWhen Emrakul is put into a graveyard from anywhere, its owner shuffles his or her graveyard into his or her library.",
+    "p": "15",
+    "t": "15",
+    "sub_type": "Legendary Creature — Eldrazi"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 104.13,
+      "mid_price": 124.86,
+      "high_price": 231.5,
+      "market_price": 123.86,
+      "direct_low_price": null,
+      "updated_at": "2026-09-30T20:37:32.272128+00:00",
+      "sub_type_name": "Foil"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/128632/magic-pro-tour-promos-emrakul-the-aeons-torn"
+   },
+   "cardmarket": {
+    "product_name": "Emrakul, the Aeons Torn",
+    "prices": [
+     {
+      "variant_type": "normal",
+      "avg": null,
+      "low": 36.05,
+      "trend": null,
+      "avg1": null,
+      "avg7": null,
+      "avg30": null,
+      "updated_at": "2026-09-30T14:49:31.144302+00:00"
+     },
+     {
+      "variant_type": "foil",
+      "avg": 48.99,
+      "low": 36.05,
+      "trend": 47.18,
+      "avg1": 42.98,
+      "avg7": 46.05,
+      "avg30": 51.83,
+      "updated_at": "2026-09-30T14:49:31.144302+00:00"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Magic/Products/Singles/Pro-Tour-Promos/Emrakul-the-Aeons-Torn"
+   }
+  },
+  {
+   "id": "mtg_b531f26dc4cb581bc1d18ef3bc214567478e3b7f5c3e8145ce325481203519c2df3ccfc04100e6a4df",
+   "card_info": {
+    "name": "Emrakul, the Aeons Torn",
+    "clean_name": "Emrakul the Aeons Torn",
+    "set_name": "Double Masters 2022",
+    "set_code": "2X2",
+    "set_id": "3070",
+    "card_number": "1",
+    "rarity": "M",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Foil"
+    ],
+    "card_text": "This spell can't be countered. \r\n<br>When you cast this spell, take an extra turn after this one. \r\n<br>Flying, protection from spells that are one or more colors, annihilator 6 \r\n<br>When Emrakul, the Aeons Torn is put into a graveyard from anywhere, its owner shuffles their graveyard into their library.",
+    "p": "15",
+    "t": "15",
+    "sub_type": "Legendary Creature — Eldrazi"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 16,
+      "mid_price": 20.66,
+      "high_price": 117.08,
+      "market_price": 20.49,
+      "direct_low_price": 25,
+      "updated_at": "2026-09-30T20:37:34.932925+00:00",
+      "sub_type_name": "Normal"
+     },
+     {
+      "low_price": 21.09,
+      "mid_price": 25.61,
+      "high_price": 302.81,
+      "market_price": 21.97,
+      "direct_low_price": 28,
+      "updated_at": "2026-09-30T20:37:34.932925+00:00",
+      "sub_type_name": "Foil"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/276660/magic-double-masters-2022-emrakul-the-aeons-torn"
+   },
+   "cardmarket": {
+    "product_name": "Emrakul, the Aeons Torn",
+    "prices": [
+     {
+      "variant_type": "normal",
+      "avg": 16.32,
+      "low": 14.5,
+      "trend": 16.3,
+      "avg1": 18.92,
+      "avg7": 16.9,
+      "avg30": 16.22,
+      "updated_at": "2026-09-30T14:49:35.959448+00:00"
+     },
+     {
+      "variant_type": "foil",
+      "avg": 28.6,
+      "low": 22.9,
+      "trend": 23.04,
+      "avg1": 28.37,
+      "avg7": 24.17,
+      "avg30": 21.99,
+      "updated_at": "2026-09-30T14:49:35.959448+00:00"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Magic/Products/Singles/Double-Masters-2022/Emrakul-the-Aeons-Torn"
+   }
+  },
+  {
+   "id": "mtg_2c2bae815d1b5d8235423b0c89f43f5383afbff3adbe2b6a895216ea36ddb4f83d2fec580f087b6707d9",
+   "card_info": {
+    "name": "Emrakul, the Exigent Doom",
+    "clean_name": "Emrakul the Exigent Doom",
+    "set_name": "Reality Fracture",
+    "set_code": "FRA",
+    "set_id": "24684",
+    "card_number": "1",
+    "rarity": "M",
+    "card_type": null,
+    "product_type": "card",
+    "variants": [
+     "Normal",
+     "Foil"
+    ],
+    "card_text": "When you cast this spell, untap all lands you control.<br>\r\nFlying, trample<br>\r\nWard—Sacrifice three permanents.<br>\r\n3, Exile this card from your hand: Target land gains \"T: Add CC\" until this card is cast from exile. You may cast this card for as long as it remains exiled.",
+    "p": "12",
+    "t": "12",
+    "sub_type": "Legendary Creature — Eldrazi"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ]
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 28.08,
+      "mid_price": 32.62,
+      "high_price": 58.92,
+      "market_price": 29.08,
+      "direct_low_price": 29.48,
+      "updated_at": "2026-09-30T20:37:36.812579+00:00",
+      "sub_type_name": "Normal"
+     },
+     {
+      "low_price": 33.01,
+      "mid_price": 42.3,
+      "high_price": 94.97,
+      "market_price": 39.85,
+      "direct_low_price": null,
+      "updated_at": "2026-09-30T20:37:36.812579+00:00",
+      "sub_type_name": "Foil"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/716715/magic-reality-fracture-emrakul-the-exigent-doom"
+   },
+   "cardmarket": {
+    "product_name": "Emrakul, the Exigent Doom",
+    "prices": [
+     {
+      "variant_type": "normal",
+      "avg": 34.79,
+      "low": 14.3,
+      "trend": 16.27,
+      "avg1": 29.45,
+      "avg7": 31.97,
+      "avg30": 31.97,
+      "updated_at": "2026-09-30T14:49:39.980453+00:00"
+     },
+     {
+      "variant_type": "foil",
+      "avg": 59.99,
+      "low": 19.5,
+      "trend": 18.78,
+      "avg1": 54.99,
+      "avg7": 58.32,
+      "avg30": 58.32,
+      "updated_at": "2026-09-30T14:49:39.980453+00:00"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Magic/Products/Singles/Reality-Fracture/Emrakul-the-Exigent-Doom"
+   }
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 3,
+  "total": 53,
+  "total_pages": 18
+ },
+ "metadata": {
+  "total_count": 53,
+  "tcg": 51,
+  "cardmarket": 47,
+  "tcg_only": 6,
+  "cardmarket_only": 2,
+  "both_sources": 45,
+  "truncated": false
+ }
+}

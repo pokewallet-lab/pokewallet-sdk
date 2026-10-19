@@ -1,0 +1,23 @@
+{
+ "status": "unhealthy",
+ "timestamp": "2026-10-02T14:21:36.441Z",
+ "version": "1.7.1",
+ "checks": {
+  "database": {
+   "status": "unhealthy",
+   "responseTime": 5012,
+   "message": "Connection failed"
+  },
+  "cache": {
+   "status": "healthy",
+   "responseTime": 3
+  },
+  "storage": {
+   "status": "healthy",
+   "responseTime": 1
+  }
+ },
+ "responseTime": 82,
+ "region": "MXP",
+ "message": "Critical services unavailable - API may not function correctly"
+}

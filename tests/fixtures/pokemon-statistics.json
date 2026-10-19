@@ -1,0 +1,33 @@
+{
+ "set_info": {
+  "name": "Plasma Freeze",
+  "set_code": "1382",
+  "total_cards": 222
+ },
+ "price_statistics": {
+  "tcgplayer": {
+   "avg_market_price": "25.92",
+   "min_price": 0.21,
+   "max_price": 1199.51,
+   "most_expensive": {
+    "name": "Ultra Ball",
+    "price": 1199.51
+   }
+  },
+  "cardmarket": {
+   "avg_price": "26.16",
+   "min_price": 0.07,
+   "max_price": 1800,
+   "trend_direction": "up"
+  }
+ },
+ "rarity_breakdown": {
+  "Common": 64,
+  "Rare": 44,
+  "Uncommon": 64,
+  "Holo Rare": 28,
+  "Rare Ace": 2,
+  "Ultra Rare": 14,
+  "Secret Rare": 6
+ }
+}

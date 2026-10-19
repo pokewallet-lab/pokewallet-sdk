@@ -1,0 +1,86 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Unit tests only: contract tests need an API key and are run by hand.
+jobs:
+  typescript:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/ts
+    strategy:
+      matrix:
+        # Dev tooling (vitest, tsup) needs Node 22.12+; the built package is checked on 18 and 20 below.
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: packages/ts/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  runtime-compat:
+    # The published code has no dependencies and targets Node 18+: build once, run on the oldest runtimes.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci && npm run build
+        working-directory: packages/ts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Smoke test the built package on Node ${{ matrix.node }}
+        working-directory: packages/ts
+        run: |
+          node --input-type=module -e "import { PokeWallet } from './dist/index.js'; const pw = new PokeWallet({ apiKey: 'pk_ci_placeholder', fetch: async () => new Response(JSON.stringify({ success: true, data: [], total: 0 }), { status: 200 }) }); const sets = await pw.pokemon.sets(); if (!Array.isArray(sets)) throw new Error('esm smoke failed'); console.log('esm ok')"
+          node -e "const { PokeWallet } = require('./dist/index.cjs'); new PokeWallet({ apiKey: 'pk_ci_placeholder', fetch: async () => new Response('{}') }).pokemon.sets().then(() => console.log('cjs ok'))"
+
+  python:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/py
+    strategy:
+      matrix:
+        python: ['3.9', '3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e '.[test]'
+      - run: python -m pytest tests/unit
+
+  mcp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/mcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm --prefix ../ts ci
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test

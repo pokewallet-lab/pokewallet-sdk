@@ -1,0 +1,66 @@
+name: publish-check
+
+# Runs on pull requests so packaging problems show up before anyone pushes a release tag.
+# Nothing here publishes: npm uses --dry-run and the Python job stops at twine check.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm-dry-run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python3 ../../scripts/check_release_version.py ts
+      - run: npm ci
+      - run: npm run build
+      - run: npm pack --dry-run
+      - run: npm publish --dry-run --access public
+      - name: The tarball holds only the build, the license and the readme
+        run: |
+          npm pack --dry-run --json | python3 -c "
+          import json, sys
+          files = {f['path'] for f in json.load(sys.stdin)[0]['files']}
+          extra = {f for f in files if not (f.startswith('dist/') or f in ('LICENSE', 'README.md', 'package.json'))}
+          missing = {'LICENSE', 'README.md', 'package.json'} - files
+          assert not extra and not missing, f'unexpected={sorted(extra)} missing={sorted(missing)}'
+          print('tarball contents ok:', len(files), 'files')"
+
+  pypi-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 ../../scripts/check_release_version.py py
+      - run: python -m pip install build twine
+      - run: python -m build -o dist .
+      - run: python -m twine check dist/*
+      - name: The distributions hold only the package, the license and the readme
+        run: |
+          python - <<'PY'
+          import glob, tarfile, zipfile
+          sdist = tarfile.open(glob.glob('dist/*.tar.gz')[0]).getnames()
+          wheel = zipfile.ZipFile(glob.glob('dist/*.whl')[0]).namelist()
+          for name in sdist + wheel:
+              assert not any(bad in name for bad in ('tests/', 'fixtures', '.env', '.venv')), name
+          assert any(n.endswith('/LICENSE') for n in sdist) and any(n.endswith('licenses/LICENSE') for n in wheel)
+          assert any(n.endswith('/README.md') for n in sdist)
+          print('distribution contents ok:', len(sdist), 'sdist files,', len(wheel), 'wheel files')
+          PY

@@ -1,0 +1,81 @@
+{
+ "success": true,
+ "source": "both",
+ "set_code": "PLF",
+ "group_id": "1382",
+ "data": [
+  {
+   "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
+   "card_number": "1/116",
+   "name": "Weedle",
+   "variant": "Normal",
+   "product_type": "card",
+   "tcgplayer": {
+    "low_price": 0.17,
+    "mid_price": 0.32,
+    "high_price": 19.82,
+    "market_price": 0.36,
+    "direct_low_price": 0.25,
+    "updated_at": "2026-10-02T10:48:34.951475"
+   },
+   "cardmarket": {
+    "avg": 0.15,
+    "low": 0.02,
+    "trend": 0.19,
+    "avg1": 0.25,
+    "avg7": 0.18,
+    "avg30": 0.17,
+    "updated_at": "2026-10-02T10:25:31.336544"
+   }
+  },
+  {
+   "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
+   "card_number": "1/116",
+   "name": "Weedle",
+   "variant": "Reverse Holofoil",
+   "product_type": "card",
+   "tcgplayer": {
+    "low_price": 0.51,
+    "mid_price": 1.51,
+    "high_price": 24.84,
+    "market_price": 1.58,
+    "direct_low_price": null,
+    "updated_at": "2026-10-02T10:48:34.951475"
+   },
+   "cardmarket": {
+    "avg": 0.34,
+    "low": 0.14,
+    "trend": 0.8,
+    "avg1": 0.35,
+    "avg7": 0.67,
+    "avg30": 0.66,
+    "updated_at": "2026-10-02T10:25:31.336544"
+   }
+  },
+  {
+   "id": "pk_2ff328bd0813ae927eee030a61f7b755a66b4f0ce3b112c652b1d0165543fe423b82527daf3f63aedda6004e71",
+   "card_number": "10/116",
+   "name": "Cacturne",
+   "variant": "Normal",
+   "product_type": "card",
+   "tcgplayer": {
+    "low_price": 0.26,
+    "mid_price": 0.51,
+    "high_price": 23.49,
+    "market_price": 0.53,
+    "direct_low_price": 0.4,
+    "updated_at": "2026-10-02T10:48:34.951475"
+   },
+   "cardmarket": {
+    "avg": 1.19,
+    "low": 0.14,
+    "trend": 0.71,
+    "avg1": 1.19,
+    "avg7": 0.67,
+    "avg30": 0.61,
+    "updated_at": "2026-10-02T10:25:31.336544"
+   }
+  }
+ ],
+ "total": 227
+}

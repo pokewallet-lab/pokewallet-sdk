@@ -1,0 +1,42 @@
+{
+ "success": true,
+ "id": "op_0f7d2687ec1143b5118027ccb9fb52060de6c5eb63cb4e7bf04f9b7b7666d2ad51f0acbabeff512c13fbd2fb4538de82",
+ "card_number": "OP01-001",
+ "name": "Roronoa Zoro (001)",
+ "clean_name": "Roronoa Zoro 001",
+ "sub_type_name": "Normal",
+ "rarity": "L",
+ "card_type": "Leader",
+ "ext_color": "Red",
+ "ext_cost": null,
+ "ext_power": "5000",
+ "ext_subtypes": "Straw Hat Crew;Supernovas",
+ "ext_attribute": "Slash",
+ "ext_life": "5",
+ "ext_counterplus": null,
+ "ext_description": "[DON!! x1] [Your Turn] All of your Characters gain +1000 power.",
+ "tcgplayer": {
+  "url": "https://www.tcgplayer.com/product/454512",
+  "prices": {
+   "low_price": 1.49,
+   "mid_price": 3.35,
+   "high_price": 34.99,
+   "market_price": 2.05,
+   "direct_low_price": null,
+   "updated_at": "2026-10-02T11:56:40.197781"
+  }
+ },
+ "cardmarket": {
+  "product_name": "Roronoa Zoro (OP01-001) (V.1)",
+  "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Romance-Dawn/Roronoa-Zoro-OP01-001-V1",
+  "prices": {
+   "avg": 2.34,
+   "low": 0.5,
+   "trend": 2.1,
+   "avg1": 2.17,
+   "avg7": 1.83,
+   "avg30": 2.31,
+   "updated_at": "2026-10-02T10:15:27.142921"
+  }
+ }
+}

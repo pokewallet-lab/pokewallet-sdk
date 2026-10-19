@@ -1,0 +1,40 @@
+{
+ "set_info": {
+  "name": "Romance Dawn",
+  "set_code": "OP01",
+  "set_id": "3188",
+  "total_cards": 159
+ },
+ "price_statistics": {
+  "tcgplayer": {
+   "avg_market_price": "53.37",
+   "min_price": 0.07,
+   "max_price": 3998.74,
+   "most_expensive": {
+    "id": "op_7816ebfb908c6a34cd6feabbf11c84943582bbc7d8109009e47917e7e499e84b245a31a536a5865d5663ccaa201c9f7f",
+    "name": "Shanks (Parallel) (Manga) (Alternate Art)",
+    "price": 3998.74
+   }
+  },
+  "cardmarket": {
+   "avg_price": "59.17",
+   "min_price": 0.03,
+   "max_price": 4566.67,
+   "most_expensive": {
+    "id": "op_7816ebfb908c6a34cd6feabbf11c84943582bbc7d8109009e47917e7e499e84b245a31a536a5865d5663ccaa201c9f7f",
+    "name": "Shanks (Parallel) (Manga) (Alternate Art)",
+    "price": 4566.67
+   },
+   "trend_direction": "up"
+  }
+ },
+ "rarity_breakdown": {
+  "L": 16,
+  "R": 35,
+  "UC": 32,
+  "C": 49,
+  "SR": 20,
+  "SEC": 5,
+  "DON!!": 2
+ }
+}

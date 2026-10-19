@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pokewallet"
+version = "0.1.1"
+description = "Official Python SDK for the PokeWallet API"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["pokewallet", "pokemon", "tcg", "trading-cards", "one-piece", "magic-the-gathering", "card-prices", "tcgplayer", "cardmarket", "sdk"]
+authors = [{ name = "PokeWallet" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = ["httpx>=0.25"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/pokewallet-lab/pokewallet-sdk#readme"
+Repository = "https://github.com/pokewallet-lab/pokewallet-sdk"
+Issues = "https://github.com/pokewallet-lab/pokewallet-sdk/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pokewallet"]
+
+# The source distribution carries the package, its metadata files and nothing else:
+# no tests, no recorded fixtures, no local environments.
+[tool.hatch.build.targets.sdist]
+include = ["/src/pokewallet", "/README.md", "/LICENSE", "/pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]

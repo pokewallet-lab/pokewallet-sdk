@@ -1,0 +1,28 @@
+{
+ "disambiguation": true,
+ "message": "Multiple sets found for set_code 'PR'. Use set_id to specify which one.",
+ "matches": [
+  {
+   "set_id": "1938",
+   "set_code": "PR",
+   "name": "Alternate Art Promos",
+   "language": "eng",
+   "release_date": "1st January, 2002"
+  },
+  {
+   "set_id": "1840",
+   "set_code": "PR",
+   "name": "Deck Exclusives",
+   "language": "eng",
+   "release_date": null
+  },
+  {
+   "set_id": "1539",
+   "set_code": "PR",
+   "name": "League & Championship Cards",
+   "language": "eng",
+   "release_date": null
+  }
+ ],
+ "total": 21
+}

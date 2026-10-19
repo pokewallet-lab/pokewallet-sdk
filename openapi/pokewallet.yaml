@@ -1,0 +1,1325 @@
+openapi: 3.1.0
+info:
+  title: PokeWallet API
+  version: 1.7.1
+  summary: Pokémon, One Piece and ten more card games, with TCGPlayer and CardMarket prices.
+  description: |
+    Hand-written specification of the API as it behaves today. The three families below do not
+    share every convention; where they differ, the description says so (search for "differs"
+    or "Note").
+
+    Out of scope: images (`/images/{id}`, `/{game}/images/{id}`, `/sets/{setCode}/image`),
+    `/user/*`, `/admin/*`, and endpoints that are not mounted (`/search/by-price-range`,
+    `/search/by-type`, `/cards/{id}/variants`, `/cards/{id}/price-comparison`: they answer 404).
+
+    Three families with different shapes:
+    - **Pokémon** (root `/`): lists in `results` / `cards`, nested `pagination`.
+    - **One Piece** (`/op`): flat card, single price object, flat pagination
+      `{data,total,page,limit}`, sets identified by `group_id`.
+    - **Ten games** (`/{game}`): same shape as Pokémon, game-specific fields inside `card_info`.
+
+    Rate limits per hour/day: free 100/1,000, coffee 1,000/10,000, pro 5,000/50,000,
+    ultra 7,000/70,000, business 50,000/500,000. 4xx responses consume quota, 5xx do not.
+  license:
+    name: Proprietary
+servers:
+  - url: https://api.pokewallet.io
+security:
+  - ApiKeyHeader: []
+  - BearerAuth: []
+tags:
+  - name: meta
+  - name: pokemon
+  - name: onepiece
+  - name: games
+
+# Quota headers present on every authenticated response (not on the 429: see TooManyRequests).
+# There is no X-RateLimit-Reset and no Retry-After on the 429.
+x-rate-limit-headers: &rlHeaders
+  X-RateLimit-Limit-Hour: { $ref: '#/components/headers/RateLimitLimitHour' }
+  X-RateLimit-Remaining-Hour: { $ref: '#/components/headers/RateLimitRemainingHour' }
+  X-RateLimit-Limit-Day: { $ref: '#/components/headers/RateLimitLimitDay' }
+  X-RateLimit-Remaining-Day: { $ref: '#/components/headers/RateLimitRemainingDay' }
+
+paths:
+  /health:
+    get:
+      tags: [meta]
+      operationId: getHealth
+      summary: Service status
+      description: |
+        Needs no key. Answers 503 with the same report body (`status: unhealthy`) when the database
+        or storage is down; the cache is optional and only degrades the message. A 503 without
+        a `status` field is a different failure (edge error, `Retry-After` present).
+      security: []
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+        '503':
+          description: A critical service is down; the body is still a health report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+  /games:
+    get:
+      tags: [meta]
+      operationId: listGames
+      summary: The ten games and their routes
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/GamesResponse' }
+
+  # ───────────────────────── Pokémon ─────────────────────────
+  /search:
+    get:
+      tags: [pokemon]
+      operationId: pokemonSearch
+      summary: Search Pokémon cards by name, number, set or rarity
+      description: |
+        Note: server-side range checks on `limit` and `page` differ from One Piece and the ten games.
+        Send `limit` between 1 and 100 and `page` of at least 1 (the SDKs enforce this before
+        sending); `total_pages` can be `null` for out-of-range input.
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SearchResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /sets:
+    get:
+      tags: [pokemon]
+      operationId: pokemonListSets
+      summary: All Pokémon sets (not paginated, long list)
+      parameters:
+        - { $ref: '#/components/parameters/Language' }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SetListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /sets/trending:
+    get:
+      tags: [pokemon]
+      operationId: pokemonTrendingSets
+      summary: Sets with the strongest CardMarket price change (Pro or trial)
+      parameters:
+        - { name: period, in: query, schema: { type: string, enum: [7d, 30d], default: 7d } }
+        - { name: limit, in: query, schema: { type: integer, default: 10, maximum: 50 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TrendingResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /sets/{setCode}:
+    get:
+      tags: [pokemon]
+      operationId: pokemonGetSet
+      summary: Cards of a set (paginated)
+      description: |
+        `setCode` is a `set_code` (`PLF`) or a numeric `set_id`, possibly negative (CardMarket-only sets).
+
+        Ambiguous set code: if the `set_code` exists in several languages the answer is
+        **200** with `disambiguation: true` and `matches`; on `/prices/{setCode}` it is **300**, on
+        statistics and completion-value it is **409**. Disambiguate with `?language=` or the numeric `set_id`.
+
+        Note: in this listing `card_info.set_code` holds the `set_id` ("1382"), while
+        `/cards/{id}` and `/search` hold the real code ("PLF"). `prices` is always `[]` here.
+
+        Note: send `limit` and `page` within range (see `/search`).
+      parameters:
+        - { $ref: '#/components/parameters/SetCode' }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 50, maximum: 200 } }
+        - { $ref: '#/components/parameters/Language' }
+      responses:
+        '200':
+          description: Cards of the set, or the list of candidate sets
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/SetCardsResponse' }
+                  - { $ref: '#/components/schemas/Disambiguation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /sets/{setCode}/statistics:
+    get:
+      tags: [pokemon]
+      operationId: pokemonSetStatistics
+      summary: Price and rarity statistics of a set (Pro or trial)
+      description: |
+        Note: `set_info.set_code` is the numeric `set_id` ("1382"); in `completion-value` it is the code ("PLF").
+        Ambiguous set: **409**.
+      parameters:
+        - { $ref: '#/components/parameters/SetCode' }
+        - { name: variant, in: query, schema: { type: string, enum: [normal, holo] } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StatisticsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/AmbiguousSet' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /sets/{setCode}/completion-value:
+    get:
+      tags: [pokemon]
+      operationId: pokemonSetCompletionValue
+      summary: Cost to complete a set (Pro or trial)
+      parameters:
+        - { $ref: '#/components/parameters/SetCode' }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CompletionValueResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/AmbiguousSet' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /prices/{setCode}:
+    get:
+      tags: [pokemon]
+      operationId: pokemonSetPrices
+      summary: Prices of every card in a set (Pro or trial; hundreds of rows)
+      description: |
+        Ambiguous set: **300** with the `Disambiguation` body (no `error` field).
+      parameters:
+        - { $ref: '#/components/parameters/SetCode' }
+        - { name: source, in: query, schema: { type: string, enum: [tcg, cm] } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PokemonPricesResponse' }
+        '300':
+          description: Ambiguous set
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Disambiguation' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /cards/{id}:
+    get:
+      tags: [pokemon]
+      operationId: pokemonGetCard
+      summary: Pokémon card detail
+      description: |
+        `id` is `pk_<hex>`, a 64-character hex CardMarket `encrypted_id`, or a plain card number
+        (`086`, `086/078`) to be combined with `set_code`. An id from another game (`op_`, `mtg_`...)
+        gives 400 with a hint to the right route.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: set_code, in: query, description: Disambiguates a plain card number., schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Card' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /cards/{id}/price-history:
+    get:
+      tags: [pokemon]
+      operationId: pokemonPriceHistory
+      summary: Price history as fixed snapshots (7/14/30/60/120 days; Pokémon only; Pro or trial)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PriceHistory' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /analytics/top-cards:
+    get:
+      tags: [pokemon]
+      operationId: pokemonTopCards
+      summary: Ranking by price or growth (Pro or trial)
+      parameters:
+        - { $ref: '#/components/parameters/Metric' }
+        - { $ref: '#/components/parameters/Source' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TopCardsResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+
+  # ───────────────────────── One Piece ─────────────────────────
+  /op/search:
+    get:
+      tags: [onepiece]
+      operationId: opSearch
+      summary: Search One Piece cards
+      description: |
+        Flat pagination `{data,total,page,limit}` (differs from Pokémon, which nests it in `pagination`).
+        `page`/`limit` are validated with `Math.max(1, …)`.
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, minimum: 1, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpCardList' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /op/sets:
+    get:
+      tags: [onepiece]
+      operationId: opListSets
+      summary: All One Piece sets
+      description: "The set identifier is called `group_id` here (`set_id` elsewhere)."
+      parameters:
+        - { $ref: '#/components/parameters/Language' }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpSetListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /op/sets/trending:
+    get:
+      tags: [onepiece]
+      operationId: opTrendingSets
+      summary: Sets with the strongest CardMarket price change (Pro or trial)
+      parameters:
+        - { name: period, in: query, description: 'Only 7d (30d gives 400).', schema: { type: string, enum: [7d], default: 7d } }
+        - { name: limit, in: query, schema: { type: integer, default: 10, maximum: 50 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TrendingResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /op/sets/{set}:
+    get:
+      tags: [onepiece]
+      operationId: opGetSet
+      summary: Cards of a One Piece set (paginated, flat shape)
+      description: |
+        `set` is a `set_code` (`OP01`, `EB01` also without the hyphen) or a numeric `group_id` (possibly negative).
+        No disambiguation: if several sets share a code the first one wins.
+      parameters:
+        - { name: set, in: path, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 50, minimum: 1, maximum: 200 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpSetCardsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /op/sets/{set}/statistics:
+    get:
+      tags: [onepiece]
+      operationId: opSetStatistics
+      summary: Statistics of a set (Pro or trial)
+      parameters:
+        - { name: set, in: path, required: true, schema: { type: string } }
+        - { name: variant, in: query, schema: { type: string, enum: [normal, foil] } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StatisticsResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /op/sets/{set}/completion-value:
+    get:
+      tags: [onepiece]
+      operationId: opSetCompletionValue
+      summary: Cost to complete a set (Pro or trial)
+      parameters:
+        - { name: set, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CompletionValueResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /op/cards/{id}:
+    get:
+      tags: [onepiece]
+      operationId: opGetCard
+      summary: One Piece card detail
+      description: "`id` is `op_<hex>`. Flat card, with `success` and without `card_info` (differs from Pokémon)."
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpCardDetail' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /op/prices:
+    get:
+      tags: [onepiece]
+      operationId: opSetPrices
+      summary: Prices of every card in a set (Pro or trial)
+      description: |
+        The set goes in the query (`set_code` or `group_id`), not in the path as on other routes.
+        At least one of the two is required, otherwise 400.
+      parameters:
+        - { name: set_code, in: query, schema: { type: string } }
+        - { name: group_id, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpPricesResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /op/analytics/top-cards:
+    get:
+      tags: [onepiece]
+      operationId: opTopCards
+      summary: Ranking by price or growth (Pro or trial)
+      description: "`metric=growth` requires `source=cm` (with `tcg` it gives 400 `Not available yet`)."
+      parameters:
+        - { $ref: '#/components/parameters/Metric' }
+        - { $ref: '#/components/parameters/Source' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TopCardsResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+
+  # ───────────────────────── Ten games ─────────────────────────
+  # The /{game}/... routes exist for each of the ten codes. "Pro" endpoints require Ultra,
+  # Business or the 7-day trial (Pro is not enough). There is no price history (404).
+  /{game}/search:
+    get:
+      tags: [games]
+      operationId: gameSearch
+      summary: Search the cards of a game
+      description: |
+        `q` must be 2-100 characters. `limit`/`page` are validated (invalid values fall back to defaults).
+        `metadata.truncated` means the search stopped at its cap: a more specific query is needed.
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: q, in: query, required: true, schema: { type: string, minLength: 2, maxLength: 100 } }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, minimum: 1, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SearchResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /{game}/sets:
+    get:
+      tags: [games]
+      operationId: gameListSets
+      summary: All sets of a game
+      description: "`set_code` can be `null`. `card_count`/`sealed_count` are missing if the SQL counts function is not installed."
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SetListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /{game}/sets/trending:
+    get:
+      tags: [games]
+      operationId: gameTrendingSets
+      summary: Trending sets (Ultra or trial)
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: period, in: query, description: 'Only 7d (30d gives 400).', schema: { type: string, enum: [7d], default: 7d } }
+        - { name: limit, in: query, schema: { type: integer, default: 10, maximum: 50 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TrendingResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /{game}/sets/{set}:
+    get:
+      tags: [games]
+      operationId: gameGetSet
+      summary: Cards of a set (paginated)
+      description: |
+        `set` is a `set_code` or a `set_id`. Ambiguous set: **200** with `disambiguation: true`
+        (the Pro routes answer 409). The listing exposes no prices (`prices: []`).
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: set, in: path, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/Page' }
+        - { name: limit, in: query, schema: { type: integer, default: 50, minimum: 1, maximum: 200 } }
+      responses:
+        '200':
+          description: Cards of the set, or the list of candidate sets
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/SetCardsResponse' }
+                  - { $ref: '#/components/schemas/Disambiguation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /{game}/sets/{set}/statistics:
+    get:
+      tags: [games]
+      operationId: gameSetStatistics
+      summary: Statistics of a set (Ultra or trial)
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: set, in: path, required: true, schema: { type: string } }
+        - { name: variant, in: query, schema: { type: string, enum: [normal, foil] } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StatisticsResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/AmbiguousSet' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /{game}/sets/{set}/completion-value:
+    get:
+      tags: [games]
+      operationId: gameSetCompletionValue
+      summary: Cost to complete a set (Ultra or trial)
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: set, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CompletionValueResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/AmbiguousSet' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /{game}/prices/{set}:
+    get:
+      tags: [games]
+      operationId: gameSetPrices
+      summary: Prices of every card in a set (Ultra or trial; up to thousands of rows)
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: set, in: path, required: true, schema: { type: string } }
+        - { name: source, in: query, schema: { type: string, enum: [tcg, cm] } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/GamePricesResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/AmbiguousSet' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /{game}/cards/{id}:
+    get:
+      tags: [games]
+      operationId: gameGetCard
+      summary: Card detail
+      description: "`id` is `<code>_<hex>` or a 64-character hex CardMarket `encrypted_id` (CardMarket-only cards)."
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Card' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /{game}/analytics/top-cards:
+    get:
+      tags: [games]
+      operationId: gameTopCards
+      summary: Ranking by price or growth (Ultra or trial)
+      description: "`metric=growth` requires `source=cm` (with `tcg` it gives 400 `Not available yet`)."
+      parameters:
+        - { $ref: '#/components/parameters/Game' }
+        - { $ref: '#/components/parameters/Metric' }
+        - { $ref: '#/components/parameters/Source' }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        '200':
+          description: OK
+          headers: *rlHeaders
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TopCardsResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+
+components:
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Key with the `pk_` prefix. Never in the query string (it gives 401).
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: The same `pk_…` key as an `Authorization` Bearer token.
+
+  headers:
+    RateLimitLimitHour: { description: Requests allowed per hour, schema: { type: integer } }
+    RateLimitRemainingHour: { description: Requests left in the hour, schema: { type: integer } }
+    RateLimitLimitDay: { description: Requests allowed per day, schema: { type: integer } }
+    RateLimitRemainingDay: { description: Requests left today, schema: { type: integer } }
+    RetryAfter:
+      description: Seconds to wait. Present only on 503 (values 5 or 3600), never on 429.
+      schema: { type: integer }
+
+  parameters:
+    Game:
+      name: game
+      in: path
+      required: true
+      schema: { $ref: '#/components/schemas/GameCode' }
+    SetCode:
+      name: setCode
+      in: path
+      required: true
+      description: "`set_code` (`PLF`) or numeric `set_id`, possibly negative."
+      schema: { type: string }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, default: 1, minimum: 1 }
+    Language:
+      name: language
+      in: query
+      description: "Set language (`eng`, `jap`, `chn`, `en`, `jp`...): the vocabulary is not uniform between Pokémon and One Piece."
+      schema: { type: string }
+    Metric:
+      name: metric
+      in: query
+      schema: { type: string, enum: [price, growth], default: price }
+    Source:
+      name: source
+      in: query
+      schema: { type: string, enum: [tcg, cm], default: tcg }
+
+  responses:
+    BadRequest:
+      description: |
+        Missing or invalid parameter. The body shape differs by family: Pokémon and One Piece send `{error}`,
+        the games send `{error,message,docs}`.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Unauthorized:
+      description: Missing or invalid key (also a key sent in the query string).
+      headers: { X-RateLimit-Limit-Hour: { $ref: '#/components/headers/RateLimitLimitHour' } }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Forbidden:
+      description: |
+        Insufficient plan: `Trial not activated` (with `redeem_url`), `Pro plan required` /
+        `Ultra plan required` (trial expired, with `upgrade_url`) or `Feature not enabled`
+        (this account does not have access to this feature, with `contact_url`).
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    NotFound:
+      description: |
+        Missing resource or route. Minimal shape `{error}` (Pokémon/OP) or full with `message`,
+        `docs`, `did_you_mean`, `suggestions`. A route of a game that is switched off gives 404.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    AmbiguousSet:
+      description: Ambiguous set (or card number). Pick with the `set_id` of one of the `matches`.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    TooManyRequests:
+      description: |
+        Hourly or daily limit exhausted. The answer carries no `Retry-After` and no
+        `X-RateLimit-Reset`; the waiting time is not declared.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/RateLimitError' }
+    Unavailable:
+      description: Database busy or feature not yet enabled. Has `Retry-After` (5 or 3600).
+      headers: { Retry-After: { $ref: '#/components/headers/RetryAfter' } }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    ServerError:
+      description: |
+        Internal error. The body is `{error}`; the text is generic for the ten games and may be
+        more specific for Pokémon and One Piece.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+
+  schemas:
+    GameCode:
+      type: string
+      enum: [mtg, ygo, cfv, dbs, fab, dgm, swu, lor, rft, cpk]
+    Nullable_Number:
+      type: [number, 'null']
+
+    ApiError:
+      type: object
+      description: Union of all error shapes; only `error` is always present.
+      required: [error]
+      properties:
+        error: { type: string }
+        message: { type: string }
+        docs: { type: string, format: uri }
+        example: { type: string }
+        did_you_mean: { type: string }
+        redeem_url: { type: string, format: uri }
+        upgrade_url: { type: string, format: uri }
+        contact_url: { type: string, format: uri }
+        suggestions: { type: array, items: { type: object, additionalProperties: true } }
+        matches:
+          type: array
+          description: Candidates of an ambiguous set; the fields vary (the Pokémon set-image route sends only `set_id` and `language`).
+          items: { $ref: '#/components/schemas/SetMatch' }
+      additionalProperties: true
+    RateLimitError:
+      allOf:
+        - { $ref: '#/components/schemas/ApiError' }
+        - type: object
+          properties:
+            limits:
+              type: object
+              properties:
+                hourly: { $ref: '#/components/schemas/LimitWindow' }
+                daily: { $ref: '#/components/schemas/LimitWindow' }
+    LimitWindow:
+      type: object
+      required: [limit, used, remaining]
+      properties:
+        limit: { type: integer }
+        used: { type: integer }
+        remaining: { type: integer }
+
+    HealthCheck:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [healthy, degraded, unhealthy, unknown] }
+        responseTime: { type: [number, 'null'] }
+        message: { type: string, description: Present when the check failed or is limited. }
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [healthy, unhealthy] }
+        timestamp: { type: string, format: date-time }
+        version: { type: string }
+        checks:
+          type: object
+          description: Keys are `database`, `cache` and `storage`.
+          additionalProperties: { $ref: '#/components/schemas/HealthCheck' }
+        responseTime: { type: number }
+        region: { type: string }
+        message: { type: string, description: Present when degraded or unhealthy. }
+    GamesResponse:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean }
+        data:
+          type: array
+          items:
+            type: object
+            required: [code, name, endpoints, pro_endpoints]
+            properties:
+              code: { $ref: '#/components/schemas/GameCode' }
+              name: { type: string }
+              endpoints: { type: object, additionalProperties: { type: string } }
+              pro_endpoints: { type: object, additionalProperties: { type: string } }
+
+    # ── Prices ──
+    TcgplayerPrice:
+      type: object
+      properties:
+        low_price: { $ref: '#/components/schemas/Nullable_Number' }
+        mid_price: { $ref: '#/components/schemas/Nullable_Number' }
+        high_price: { $ref: '#/components/schemas/Nullable_Number' }
+        market_price: { $ref: '#/components/schemas/Nullable_Number' }
+        direct_low_price: { $ref: '#/components/schemas/Nullable_Number' }
+        updated_at: { type: [string, 'null'], description: "ISO 8601; with or without offset (`+00:00`) depending on the family." }
+    TcgplayerVariantPrice:
+      description: TCGPlayer finish (Pokémon and games).
+      allOf:
+        - { $ref: '#/components/schemas/TcgplayerPrice' }
+        - type: object
+          properties:
+            sub_type_name: { type: string, description: 'Normal, Holofoil, Reverse Holofoil, Foil...' }
+    CardmarketPrice:
+      type: object
+      description: Prices in EUR.
+      properties:
+        avg: { $ref: '#/components/schemas/Nullable_Number' }
+        low: { $ref: '#/components/schemas/Nullable_Number' }
+        trend: { $ref: '#/components/schemas/Nullable_Number' }
+        avg1: { $ref: '#/components/schemas/Nullable_Number' }
+        avg7: { $ref: '#/components/schemas/Nullable_Number' }
+        avg30: { $ref: '#/components/schemas/Nullable_Number' }
+        updated_at: { type: [string, 'null'] }
+    CardmarketVariantPrice:
+      allOf:
+        - { $ref: '#/components/schemas/CardmarketPrice' }
+        - type: object
+          properties:
+            variant_type: { type: string, description: 'normal, holo, foil...' }
+
+    # ── Pokémon-shaped card (Pokémon and the ten games) ──
+    CardInfo:
+      type: object
+      description: |
+        Common fields. The ten games add their own fields in snake_case (`mtg`: `p`,`t`,`sub_type`;
+        `ygo`: `attack`,`defense`...). Note: `set_id` is missing in a Pokémon set listing, where
+        `set_code` holds the numeric id; `card_text` and `card_type` are often `null`.
+      required: [name]
+      properties:
+        name: { type: string }
+        clean_name: { type: [string, 'null'] }
+        set_name: { type: [string, 'null'] }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: [string, 'null'] }
+        card_number: { type: [string, 'null'] }
+        rarity: { type: [string, 'null'] }
+        card_type: { type: [string, 'null'] }
+        product_type: { type: [string, 'null'], description: "`card` or sealed product." }
+        variants: { type: array, items: { type: string } }
+        card_text: { type: [string, 'null'] }
+        hp: { type: [string, 'null'] }
+        stage: { type: [string, 'null'] }
+        attacks: { type: array, items: { type: string } }
+        weakness: { type: [string, 'null'] }
+        resistance: { type: [string, 'null'] }
+        retreat_cost: { type: [string, 'null'] }
+      additionalProperties: true
+    Card:
+      type: object
+      required: [id, card_info]
+      description: "`id` is `pk_<hex>`, `<code>_<hex>` or a 64-character hex CardMarket `encrypted_id` (CardMarket-only cards)."
+      properties:
+        id: { type: string }
+        card_info: { $ref: '#/components/schemas/CardInfo' }
+        images:
+          type: object
+          properties:
+            languages: { type: array, items: { type: string } }
+        tcgplayer:
+          type: [object, 'null']
+          properties:
+            prices: { type: array, items: { $ref: '#/components/schemas/TcgplayerVariantPrice' } }
+            url: { type: string }
+        cardmarket:
+          type: [object, 'null']
+          properties:
+            product_name: { type: [string, 'null'] }
+            prices: { type: array, items: { $ref: '#/components/schemas/CardmarketVariantPrice' } }
+            product_url: { type: string }
+    Pagination:
+      type: object
+      required: [page, limit, total, total_pages]
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+        total_pages: { type: [integer, 'null'], description: "Pokémon with `limit=0`: `Infinity` becomes `null` in JSON." }
+    SearchResponse:
+      type: object
+      required: [query, results, pagination]
+      properties:
+        query: { type: string }
+        results: { type: array, items: { $ref: '#/components/schemas/Card' } }
+        pagination: { $ref: '#/components/schemas/Pagination' }
+        metadata:
+          type: object
+          properties:
+            total_count: { type: integer }
+            tcg: { type: integer }
+            cardmarket: { type: integer }
+            tcg_only: { type: integer }
+            cardmarket_only: { type: integer }
+            both_sources: { type: integer }
+            truncated: { type: boolean, description: Games only. }
+
+    # ── Sets ──
+    SetListEntry:
+      type: object
+      required: [name, set_id]
+      properties:
+        name: { type: string }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: string, description: "Numeric, as a string, possibly negative (CardMarket-only)." }
+        card_count: { type: integer }
+        sealed_count: { type: integer }
+        number_count: { type: integer, description: Pokémon only. }
+        language: { type: [string, 'null'] }
+        release_date: { type: [string, 'null'], description: "Pokémon: `3rd August, 2007`; games: ISO 8601." }
+    SetListResponse:
+      type: object
+      required: [success, data, total]
+      properties:
+        success: { type: boolean }
+        data: { type: array, items: { $ref: '#/components/schemas/SetListEntry' } }
+        total: { type: integer }
+    SetDetail:
+      type: object
+      required: [name, set_id]
+      properties:
+        name: { type: string }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: string }
+        total_cards: { type: integer }
+        language: { type: [string, 'null'] }
+        release_date: { type: [string, 'null'] }
+    SetCardsResponse:
+      type: object
+      required: [success, set, cards, pagination]
+      properties:
+        success: { type: boolean }
+        set: { $ref: '#/components/schemas/SetDetail' }
+        cards: { type: array, items: { $ref: '#/components/schemas/Card' } }
+        pagination: { $ref: '#/components/schemas/Pagination' }
+    SetMatch:
+      type: object
+      properties:
+        set_id: { type: string }
+        set_code: { type: [string, 'null'] }
+        name: { type: string }
+        language: { type: [string, 'null'] }
+        release_date: { type: [string, 'null'] }
+    Disambiguation:
+      type: object
+      required: [disambiguation, matches]
+      properties:
+        disambiguation: { type: boolean, const: true }
+        ambiguity: { type: string, enum: [set] }
+        message: { type: string }
+        matches: { type: array, items: { $ref: '#/components/schemas/SetMatch' } }
+        total: { type: integer }
+
+    # ── Set prices (Pro) ──
+    PriceRow:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: string }
+        card_number: { type: [string, 'null'] }
+        name: { type: string }
+        variant: { type: [string, 'null'] }
+        product_type: { type: string }
+        tcgplayer: { oneOf: [{ $ref: '#/components/schemas/TcgplayerPrice' }, { type: 'null' }] }
+        cardmarket: { oneOf: [{ $ref: '#/components/schemas/CardmarketPrice' }, { type: 'null' }] }
+    PokemonPricesResponse:
+      type: object
+      description: "The set id is called `group_id` here (`set_id` in the games)."
+      properties:
+        success: { type: boolean }
+        source: { type: string, enum: [both, tcg, cm] }
+        set_code: { type: [string, 'null'] }
+        group_id: { type: string }
+        data: { type: array, items: { $ref: '#/components/schemas/PriceRow' } }
+        total: { type: integer }
+    GamePricesResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        source: { type: string, enum: [both, tcg, cm] }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: string }
+        data: { type: array, items: { $ref: '#/components/schemas/PriceRow' } }
+        total: { type: integer }
+
+    StatisticsResponse:
+      type: object
+      required: [set_info, price_statistics, rarity_breakdown]
+      properties:
+        set_info:
+          type: object
+          description: "Pokémon: `set_code` is the numeric `set_id`; `set_id` is missing."
+          properties:
+            name: { type: string }
+            set_code: { type: [string, 'null'] }
+            set_id: { type: string }
+            total_cards: { type: integer }
+        price_statistics:
+          type: object
+          properties:
+            tcgplayer: { $ref: '#/components/schemas/PriceStats' }
+            cardmarket: { $ref: '#/components/schemas/PriceStats' }
+        rarity_breakdown: { type: object, additionalProperties: { type: integer } }
+    PriceStats:
+      type: [object, 'null']
+      additionalProperties: true
+      properties:
+        avg_market_price: { type: string, description: "A string (`\"25.92\"`), unlike the other prices." }
+        avg_price: { type: string }
+        min_price: { type: number }
+        max_price: { type: number }
+        most_expensive:
+          type: object
+          properties:
+            id: { type: string, description: Missing in Pokémon. }
+            name: { type: string }
+            price: { type: number }
+        trend_direction: { type: string, enum: [up, down, stable] }
+    CompletionValueResponse:
+      type: object
+      required: [set_info, completion_cost, breakdown_by_rarity]
+      properties:
+        set_info: { type: object, additionalProperties: true }
+        completion_cost:
+          type: object
+          properties:
+            tcgplayer:
+              type: object
+              properties:
+                currency: { type: string }
+                low_estimate: { type: number }
+                market_estimate: { type: number }
+                high_estimate: { type: number }
+            cardmarket:
+              type: object
+              properties:
+                currency: { type: string }
+                low_estimate: { type: number }
+                avg_estimate: { type: number }
+                trend_estimate: { type: number }
+            note: { type: string }
+        breakdown_by_rarity:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              count: { type: integer }
+              total_cost: { type: number }
+    TrendingResponse:
+      type: object
+      required: [period, trending_sets]
+      properties:
+        period: { type: string }
+        trending_sets:
+          type: array
+          items:
+            type: object
+            properties:
+              set_name: { type: [string, 'null'] }
+              set_code: { type: [string, 'null'] }
+              set_id: { type: string, description: Missing in Pokémon. }
+              card_count: { type: integer }
+              cardmarket:
+                type: object
+                properties:
+                  price_change: { type: string, description: "`+446.7%`" }
+                  avg_price_current: { type: number }
+                  avg_price_previous: { type: number }
+                  top_movers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name: { type: [string, 'null'] }
+                        change: { type: string }
+              tcgplayer:
+                type: [object, 'null']
+                description: "`{status:'work_in_progress'}` or `null` (CardMarket-only sets)."
+                additionalProperties: true
+    TopCardsResponse:
+      type: object
+      required: [metric, source, top_cards]
+      properties:
+        metric: { type: string, enum: [price, growth] }
+        source: { type: string, enum: [tcg, cm] }
+        top_cards:
+          type: array
+          items:
+            type: object
+            required: [id, card_info, current_price]
+            properties:
+              id: { type: string }
+              card_info: { $ref: '#/components/schemas/CardInfo' }
+              current_price: { type: number }
+              previous_price_7d: { type: number }
+              change_7d: { type: string }
+    PriceHistory:
+      type: object
+      required: [id]
+      properties:
+        id: { type: string }
+        card_name: { type: [string, 'null'] }
+        tcgplayer: { $ref: '#/components/schemas/HistorySide' }
+        cardmarket: { $ref: '#/components/schemas/HistorySide' }
+    HistorySide:
+      type: [object, 'null']
+      description: "Per finish, as fixed snapshots (not a time series). The keys of `variants` are the finish names."
+      properties:
+        variants:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+            properties:
+              current: { type: object, additionalProperties: { type: [number, 'null'] } }
+              price_7d: { type: [number, 'null'] }
+              price_14d: { type: [number, 'null'] }
+              price_30d: { type: [number, 'null'] }
+              price_60d: { type: [number, 'null'] }
+              price_120d: { type: [number, 'null'] }
+              change_7d: { type: [string, 'null'] }
+              change_14d: { type: [string, 'null'] }
+              change_30d: { type: [string, 'null'] }
+              change_60d: { type: [string, 'null'] }
+              change_120d: { type: [string, 'null'] }
+              last_updated: { type: [string, 'null'] }
+
+    # ── One Piece ──
+    OpCard:
+      type: object
+      description: "Flat card: no `card_info`, `ext_*` fields; `prices` is a single object (Pokémon: an array per finish)."
+      required: [id, name]
+      properties:
+        id: { type: string, description: "`op_<hex>`" }
+        card_number: { type: [string, 'null'] }
+        name: { type: string }
+        clean_name: { type: [string, 'null'] }
+        sub_type_name: { type: [string, 'null'] }
+        rarity: { type: [string, 'null'] }
+        card_type: { type: [string, 'null'] }
+        ext_color: { type: [string, 'null'] }
+        ext_cost: { type: [string, 'null'] }
+        ext_power: { type: [string, 'null'] }
+        ext_subtypes: { type: [string, 'null'], description: "Separated by `;`." }
+        ext_attribute: { type: [string, 'null'] }
+        ext_life: { type: [string, 'null'] }
+        ext_counterplus: { type: [string, 'null'] }
+        ext_description: { type: [string, 'null'] }
+        tcgplayer:
+          type: [object, 'null']
+          properties:
+            url: { type: string }
+            prices: { oneOf: [{ $ref: '#/components/schemas/TcgplayerPrice' }, { type: 'null' }] }
+        cardmarket:
+          type: [object, 'null']
+          properties:
+            product_name: { type: [string, 'null'] }
+            product_url: { type: string }
+            prices: { oneOf: [{ $ref: '#/components/schemas/CardmarketPrice' }, { type: 'null' }] }
+    OpCardDetail:
+      allOf:
+        - type: object
+          properties:
+            success: { type: boolean }
+        - { $ref: '#/components/schemas/OpCard' }
+    OpCardList:
+      type: object
+      description: "Flat pagination: `total`, `page`, `limit` next to `data`."
+      required: [success, data, total, page, limit]
+      properties:
+        success: { type: boolean }
+        data: { type: array, items: { $ref: '#/components/schemas/OpCard' } }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+    OpSetEntry:
+      type: object
+      properties:
+        name: { type: string }
+        set_code: { type: string }
+        group_id: { type: string, description: "Numeric, as a string or a number, possibly negative." }
+        language: { type: [string, 'null'] }
+        release_date: { type: [string, 'null'] }
+    OpSetListResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data: { type: array, items: { $ref: '#/components/schemas/OpSetEntry' } }
+        total: { type: integer }
+    OpSetCardsResponse:
+      allOf:
+        - { $ref: '#/components/schemas/OpCardList' }
+        - type: object
+          properties:
+            set: { $ref: '#/components/schemas/OpSetEntry' }
+    OpPricesResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        group_id: { type: [string, integer] }
+        data: { type: array, items: { $ref: '#/components/schemas/PriceRow' } }
+        total: { type: integer }

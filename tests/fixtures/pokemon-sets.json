@@ -1,0 +1,36 @@
+{
+ "success": true,
+ "data": [
+  {
+   "name": "10th Movie Commemoration Set",
+   "set_code": "10M",
+   "set_id": "24146",
+   "card_count": 11,
+   "sealed_count": 0,
+   "number_count": 11,
+   "language": "jap",
+   "release_date": "3rd August, 2007"
+  },
+  {
+   "name": "11th Movie Commemoration Set",
+   "set_code": "11M",
+   "set_id": "24145",
+   "card_count": 9,
+   "sealed_count": 0,
+   "number_count": 9,
+   "language": "jap",
+   "release_date": "1st August, 2008"
+  },
+  {
+   "name": "2022 World Championship Decks",
+   "set_code": "WCD22",
+   "set_id": "-188",
+   "card_count": 108,
+   "sealed_count": 0,
+   "number_count": 108,
+   "language": "eng",
+   "release_date": null
+  }
+ ],
+ "total": 864
+}

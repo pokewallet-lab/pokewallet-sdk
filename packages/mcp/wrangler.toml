@@ -1,0 +1,17 @@
+# Remote MCP server for PokeWallet. Stateless: no Durable Objects, no KV, no secrets.
+# The caller's own API key arrives in the Authorization header on every request and is
+# forwarded as-is. NOTHING here deploys by itself: `wrangler deploy` is a manual step.
+name = "pokewallet-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# --- Placeholders to fill in before the first deploy (decisions for the owner) ---
+# account_id = "<CLOUDFLARE_ACCOUNT_ID>"   # the account that owns pokewallet.io
+#
+# [[routes]]
+# pattern = "mcp.pokewallet.io"            # custom domain for the MCP endpoint
+# custom_domain = true
+
+[observability]
+enabled = false

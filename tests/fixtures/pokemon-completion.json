@@ -1,0 +1,52 @@
+{
+ "set_info": {
+  "name": "Plasma Freeze",
+  "set_code": "PLF",
+  "total_cards": 222
+ },
+ "completion_cost": {
+  "tcgplayer": {
+   "currency": "USD",
+   "low_estimate": 4618.45,
+   "market_estimate": 5754.3,
+   "high_estimate": 35295.11
+  },
+  "cardmarket": {
+   "currency": "EUR",
+   "low_estimate": 397.9,
+   "avg_estimate": 5178.64,
+   "trend_estimate": 2641.44
+  },
+  "note": "TCGPlayer prices in USD, CardMarket prices in EUR. Cross-currency comparison not available."
+ },
+ "breakdown_by_rarity": {
+  "Common": {
+   "count": 64,
+   "total_cost": 125.93
+  },
+  "Rare": {
+   "count": 44,
+   "total_cost": 361.61
+  },
+  "Uncommon": {
+   "count": 64,
+   "total_cost": 349.11
+  },
+  "Holo Rare": {
+   "count": 28,
+   "total_cost": 628.93
+  },
+  "Rare Ace": {
+   "count": 2,
+   "total_cost": 7.82
+  },
+  "Ultra Rare": {
+   "count": 14,
+   "total_cost": 1947.35
+  },
+  "Secret Rare": {
+   "count": 6,
+   "total_cost": 2333.55
+  }
+ }
+}
