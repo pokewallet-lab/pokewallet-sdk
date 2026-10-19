@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { NotFoundError, type Card, type PokeWallet } from '../../src/index.js'
+import { NotFoundError, ValidationError, type Card, type PokeWallet } from '../../src/index.js'
 import { fail, HAS_KEY, liveClient } from './setup.js'
 
 describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
@@ -40,10 +40,17 @@ describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
     const prices = await pw.onepiece.prices('OP01')
     expect(prices.rows.length).toBeGreaterThan(100)
     expect(prices.setId).toBe('3188')
+    expect(prices.setCode).toBe('OP01')
+    expect(prices.rows[0]!.productType).toBeTruthy()
     const byId = await pw.onepiece.prices('3188')
     expect(byId.total).toBe(prices.total)
     const stats = await pw.onepiece.statistics('OP01')
-    expect(stats.set.id).toBe('3188')
+    expect(stats.set).toMatchObject({ id: '3188', code: 'OP01' })
+    // Statistics skip sealed products and count a card once. A few cards have a Normal and a Foil row sharing one id.
+    const ids = new Set(prices.rows.filter((r) => r.productType !== 'sealed').map((r) => r.id)).size
+    expect(stats.set.totalCards).toBeGreaterThanOrEqual(ids)
+    expect(stats.set.totalCards).toBeLessThanOrEqual(prices.rows.length)
+    expect(stats.cardmarket!.mostExpensive!.id).toMatch(/^op_/)
     const comp = await pw.onepiece.completionValue('OP01')
     expect(comp.cardmarket!.currency).toBe('EUR')
   })
@@ -51,6 +58,7 @@ describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
   it('trending and top cards (growth needs CardMarket)', async () => {
     const t = await pw.onepiece.trending({ limit: 3 })
     expect(t.length).toBeGreaterThan(0)
+    expect(await fail(pw.onepiece.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
     const top = await pw.onepiece.topCards({ limit: 3 })
     expect(top[0]!.id).toMatch(/^op_/)
     const growth = await pw.onepiece.topCards({ metric: 'growth', source: 'cm', limit: 3 })

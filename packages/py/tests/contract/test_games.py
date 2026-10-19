@@ -1,6 +1,6 @@
 import pytest
 
-from pokewallet import GAME_CODES, AmbiguousSetError, NotFoundError
+from pokewallet import GAME_CODES, AmbiguousSetError, NotFoundError, ValidationError
 
 from ..conftest import failure
 
@@ -34,8 +34,11 @@ def test_mtg_ambiguous_set_is_200_on_listing_and_409_on_pro_route(pw):
 
 
 def test_mtg_pro_endpoints(pw):
-    assert pw.games.mtg.statistics("FRA").set.code == "FRA"
+    s = pw.games.mtg.statistics("FRA")
+    assert (s.set.code, s.set.id) == ("FRA", "24684")
+    assert s.set.total_cards == len({r.id for r in pw.games.mtg.prices("FRA").rows if r.product_type != "sealed"})
     assert pw.games.mtg.trending(limit=3)
+    assert isinstance(failure(pw.games.mtg.trending, period="30d"), ValidationError)
     assert pw.games.mtg.top_cards(metric="growth", source="cm", limit=3)
 
 

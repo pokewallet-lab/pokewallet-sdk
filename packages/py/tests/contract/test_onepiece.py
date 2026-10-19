@@ -1,4 +1,4 @@
-from pokewallet import NotFoundError
+from pokewallet import NotFoundError, ValidationError
 
 from ..conftest import failure
 
@@ -30,12 +30,19 @@ def test_prices_statistics_completion(pw):
     prices = pw.onepiece.prices("OP01")
     assert len(prices.rows) > 100 and prices.set_id == "3188"
     assert pw.onepiece.prices("3188").total == prices.total
-    assert pw.onepiece.statistics("OP01").set.id == "3188"
+    assert prices.set_code == "OP01" and prices.rows[0].product_type
+    stats = pw.onepiece.statistics("OP01")
+    assert (stats.set.id, stats.set.code) == ("3188", "OP01")
+    # Statistics skip sealed products and count a card once. A few cards have a Normal and a Foil row sharing one id.
+    ids = len({r.id for r in prices.rows if r.product_type != "sealed"})
+    assert ids <= stats.set.total_cards <= len(prices.rows)
+    assert stats.cardmarket.most_expensive.id.startswith("op_")
     assert pw.onepiece.completion_value("OP01").cardmarket.currency == "EUR"
 
 
 def test_trending_and_top_cards(pw):
     assert pw.onepiece.trending(limit=3)
+    assert isinstance(failure(pw.onepiece.trending, period="30d"), ValidationError)
     assert pw.onepiece.top_cards(limit=3)[0].id.startswith("op_")
     assert pw.onepiece.top_cards(metric="growth", source="cm", limit=3)[0].change_7d.endswith("%")
 

@@ -52,13 +52,30 @@ def test_statistics_and_completion_value(pw):
     assert isinstance(s.raw["price_statistics"]["tcgplayer"]["avg_market_price"], str)  # a string on the wire
     c = pw.pokemon.completion_value("PLF")
     assert c.tcgplayer.currency == "USD" and c.set.code == "PLF"
+    assert (s.set.code, s.set.id) == ("PLF", "1382") and s.tcgplayer.most_expensive.id.startswith("pk_")
+    # "holo" is only a legacy alias on the wire: the SDK sends normal or foil.
+    assert isinstance(failure(pw.pokemon.statistics, "PLF", variant="holo"), ValidationError)
+    assert pw.pokemon.statistics("PLF", variant="foil").set.total_cards <= s.set.total_cards
+
+
+def test_statistics_total_cards_equals_distinct_ids_in_prices(pw):
+    s = pw.pokemon.statistics("PLF")
+    prices = pw.pokemon.prices("PLF")
+    assert prices.set_id == "1382" and prices.raw["group_id"] == prices.raw["set_id"]
+    assert s.set.total_cards == len({r.id for r in prices.rows if r.product_type != "sealed"})
 
 
 def test_trending_and_top_cards(pw):
     t7 = pw.pokemon.trending(limit=3)
     assert t7 and isinstance(t7[0].change_pct, float)
-    assert pw.pokemon.trending(period="30d", limit=3)
-    assert isinstance(pw.pokemon.top_cards(limit=3)[0].price, float)
+    assert t7[0].set.id
+    assert isinstance(failure(pw.pokemon.trending, period="30d"), ValidationError)
+    top = pw.pokemon.top_cards(limit=5)
+    prices = [c.price for c in top]
+    # Highest market price first: the first item is the most expensive TCG card.
+    assert isinstance(prices[0], float) and prices == sorted(prices, reverse=True)
+    assert top[0].raw["card_info"]["name"] == top[0].name and "previous_price_7d" not in top[0].raw
+    assert pw.pokemon.card(top[0].id).id == top[0].id
     assert pw.pokemon.top_cards(metric="growth", limit=3)[0].change_7d.endswith("%")
 
 

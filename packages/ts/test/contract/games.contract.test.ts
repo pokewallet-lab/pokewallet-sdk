@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AmbiguousSetError, GAME_CODES, NotFoundError, type PokeWallet } from '../../src/index.js'
+import { AmbiguousSetError, GAME_CODES, NotFoundError, ValidationError, type PokeWallet } from '../../src/index.js'
 import { fail, HAS_KEY, liveClient } from './setup.js'
 
 describe.skipIf(!HAS_KEY)('contract: ten games (live API)', () => {
@@ -41,9 +41,12 @@ describe.skipIf(!HAS_KEY)('contract: ten games (live API)', () => {
 
   it('mtg: Pro endpoints', async () => {
     const s = await pw.games.mtg.statistics('FRA')
-    expect(s.set.code).toBe('FRA')
+    expect(s.set).toMatchObject({ code: 'FRA', id: '24684' })
+    const prices = await pw.games.mtg.prices('FRA')
+    expect(s.set.totalCards).toBe(new Set(prices.rows.filter((r) => r.productType !== 'sealed').map((r) => r.id)).size)
     const t = await pw.games.mtg.trending({ limit: 3 })
     expect(t.length).toBeGreaterThan(0)
+    expect(await fail(pw.games.mtg.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
     const top = await pw.games.mtg.topCards({ metric: 'growth', source: 'cm', limit: 3 })
     expect(top.length).toBeGreaterThan(0)
   })

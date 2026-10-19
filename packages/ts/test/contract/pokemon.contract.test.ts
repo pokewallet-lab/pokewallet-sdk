@@ -79,16 +79,35 @@ describe.skipIf(!HAS_KEY)('contract: Pokémon (live API)', () => {
     const c = await pw.pokemon.completionValue('PLF')
     expect(c.tcgplayer!.currency).toBe('USD')
     expect(c.set.code).toBe('PLF')
+    expect(s.set).toMatchObject({ code: 'PLF', id: '1382' })
+    expect(s.tcgplayer!.mostExpensive!.id).toMatch(/^pk_/)
+    const foil = await pw.pokemon.statistics('PLF', { variant: 'foil' })
+    expect(foil.set.totalCards).toBeLessThanOrEqual(s.set.totalCards!)
+    // 'holo' is only a legacy alias on the wire: the SDK sends normal or foil.
+    expect(await fail(pw.pokemon.statistics('PLF', { variant: 'holo' as any }))).toBeInstanceOf(ValidationError)
   })
 
-  it('trending (7d and 30d) and top cards (price and growth)', async () => {
+  it('statistics total_cards counts cards: it equals the distinct non-sealed ids in the set prices', async () => {
+    const [s, prices] = await Promise.all([pw.pokemon.statistics('PLF'), pw.pokemon.prices('PLF')])
+    expect(prices.setId).toBe('1382')
+    expect((prices.raw as any).group_id).toBe((prices.raw as any).set_id)
+    expect(s.set.totalCards).toBe(new Set(prices.rows.filter((r) => r.productType !== 'sealed').map((r) => r.id)).size)
+  })
+
+  it('trending (7d only: 30d is refused before any request) and top cards (price and growth)', async () => {
     const t7 = await pw.pokemon.trending({ limit: 3 })
     expect(t7.length).toBeGreaterThan(0)
     expect(t7[0]!.changePct).toBeTypeOf('number')
-    const t30 = await pw.pokemon.trending({ period: '30d', limit: 3 })
-    expect(t30.length).toBeGreaterThan(0)
-    const price = await pw.pokemon.topCards({ limit: 3 })
+    expect(t7[0]!.set.id).toBeTruthy()
+    expect(await fail(pw.pokemon.trending({ period: '30d' as any }))).toBeInstanceOf(ValidationError)
+    const price = await pw.pokemon.topCards({ limit: 5 })
     expect(price[0]!.price).toBeTypeOf('number')
+    // The ranking is by market price, highest first, so the first item is the most expensive TCG card.
+    const prices = price.map((c) => c.price!)
+    expect(prices).toEqual([...prices].sort((a, b) => b - a))
+    expect((price[0]!.raw as any).card_info).toMatchObject({ name: price[0]!.name })
+    expect(price[0]!.raw).not.toHaveProperty('previous_price_7d')
+    expect((await pw.pokemon.card(price[0]!.id)).id).toBe(price[0]!.id)
     const growth = await pw.pokemon.topCards({ metric: 'growth', limit: 3 })
     expect(growth[0]!.change7d).toMatch(/%$/)
   })
