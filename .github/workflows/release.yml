@@ -30,7 +30,7 @@ jobs:
           node-version: 22
       - name: The tag version must match package.json and the VERSION constant
         working-directory: .
-        run: python3 scripts/check_release_version.py ts "${GITHUB_REF_NAME#ts-v}"
+        run: python3 .github/scripts/check_release_version.py ts "${GITHUB_REF_NAME#ts-v}"
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
@@ -83,7 +83,7 @@ jobs:
           python-version: '3.12'
       - name: The tag version must match pyproject.toml and the VERSION constant
         working-directory: .
-        run: python3 scripts/check_release_version.py py "${GITHUB_REF_NAME#py-v}"
+        run: python3 .github/scripts/check_release_version.py py "${GITHUB_REF_NAME#py-v}"
       - name: Unit tests
         run: |
           python -m pip install -e '.[test]'
