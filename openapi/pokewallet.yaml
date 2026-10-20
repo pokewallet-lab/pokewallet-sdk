@@ -83,6 +83,7 @@ paths:
       operationId: pokemonSearch
       summary: Search Pokémon cards by name, number, set or rarity
       description: |
+        `metadata.truncated` is true when the candidates were cut at 500: a more specific query is needed.
         `page` and `limit`: a missing, non-numeric or lower-than-1 value falls back to the default, and a
         value above the cap (100 for `limit`) is clamped. The SDKs still check both before sending.
         A name may contain parentheses, e.g. `Pikachu (Cosmos Holo)`.
@@ -153,8 +154,9 @@ paths:
         **200** with `disambiguation: true` and `matches`; on `/prices/{setCode}` it is **300**, on
         statistics and completion-value it is **409**. Disambiguate with `?language=` or the numeric `set_id`.
 
-        Note: in this listing `card_info.set_code` holds the `set_id` ("1382"), while
-        `/cards/{id}` and `/search` hold the real code ("PLF"). `prices` is always `[]` here.
+        In this listing `card_info.set_code` and `card_info.set_id` hold the set's real code ("PLF") and
+        numeric id ("1382"), the same as in `/cards/{id}` and `/search`; the `set` object carries `set_id` too.
+        `prices` is always `[]` here.
 
         Note: send `limit` and `page` within range (see `/search`).
       parameters:
@@ -966,8 +968,8 @@ components:
       type: object
       description: |
         Common fields. The ten games add their own fields in snake_case (`mtg`: `p`,`t`,`sub_type`;
-        `ygo`: `attack`,`defense`...). Note: `set_id` is missing in a Pokémon set listing, where
-        `set_code` holds the numeric id; `card_text` and `card_type` are often `null`.
+        `ygo`: `attack`,`defense`...). `set_code` is the set's real code and `set_id` its numeric id,
+        also in Pokémon set listings; `card_text` and `card_type` are often `null`.
       required: [name]
       properties:
         name: { type: string }
@@ -979,7 +981,7 @@ components:
         rarity: { type: [string, 'null'] }
         card_type: { type: [string, 'null'] }
         product_type: { type: [string, 'null'], description: "`card` or sealed product." }
-        variants: { type: array, items: { type: string } }
+        variants: { type: array, items: { type: string }, description: "Finishes, `Normal` first, then alphabetical. Present in Pokémon search and detail too." }
         card_text: { type: [string, 'null'] }
         hp: { type: [string, 'null'] }
         stage: { type: [string, 'null'] }
@@ -1034,7 +1036,7 @@ components:
             tcg_only: { type: integer }
             cardmarket_only: { type: integer }
             both_sources: { type: integer }
-            truncated: { type: boolean, description: Games only. }
+            truncated: { type: boolean, description: "True when the candidate list was cut at its cap (500 for Pokémon): use a more specific query." }
 
     # ── Sets ──
     SetListEntry:
@@ -1275,7 +1277,7 @@ components:
     # ── One Piece ──
     OpCard:
       type: object
-      description: "Flat card: no `card_info`, `ext_*` fields; `prices` is a single object (Pokémon: an array per finish)."
+      description: "Flat card: no `card_info`, `ext_*` fields; `prices` is a single object (Pokémon: an array per finish). CardMarket prices are attached to the cards of the English sets too (OP15, OP14, PRB-02, EB04), so more search and detail answers carry a `cardmarket` block."
       required: [id, name]
       properties:
         id: { type: string, description: "`op_<hex>`" }

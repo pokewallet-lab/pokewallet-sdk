@@ -80,7 +80,7 @@ class CardDialect:
         if is_disambiguation(b):
             raise ambiguous_set_error(200, b)
         s = normalize_set(b.get("set"))
-        # The Pokémon listing puts the numeric id in card_info.set_code: trust the set object instead.
+        # A set listing names its set once: use the set object for every card.
         ctx = SetPair(s.id or None, s.code)
         items = [normalize_card(c, ctx) for c in arr(b.get("cards"))]
         return SetPage(items=items, set=s, **make_page_meta(rec(b.get("pagination")), len(items)))

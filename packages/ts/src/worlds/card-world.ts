@@ -87,7 +87,7 @@ export class CardWorld implements World {
     // 200 with a candidate list instead of cards: same condition as the 300/409 answers.
     if (isDisambiguation(body)) throw ambiguousSetError(200, body)
     const set = normalizeSet(body.set)
-    // The Pokémon listing puts the numeric id in card_info.set_code: trust the set object instead.
+    // A set listing names its set once: use the set object for every card.
     const ctx = { setId: set.id || null, setCode: set.code }
     const items = arr(body.cards).map((c) => normalizeCard(c, ctx))
     const p = rec(body.pagination)

@@ -176,7 +176,7 @@ Three worlds with the same methods: `pw.pokemon`, `pw.onepiece`, and `pw.games.<
 
 "Pro" means a Pro plan or the 7-day trial for Pokémon and One Piece, and an Ultra plan or the trial for the ten other games. Limits: `limit` is at most 100 for searches, 200 for set pages, 50 for trending and 100 for top cards; the SDK checks `page`, `limit`, `period` and `variant` before sending anything.
 
-Statistics and completion value describe a set the same way in every world: `set` has `id`, `code`, `name` and `totalCards` (cards, not finishes; sealed products are not counted), and the most expensive card of each side has its `id`, `name` and `price`. Card ids from rankings open with `card(id)`.
+Statistics and completion value describe a set the same way in every world: `set` has `id`, `code`, `name` and `totalCards` (cards, not finishes; sealed products are not counted), and the most expensive card of each side has its `id`, `name` and `price`. Card ids from rankings open with `card(id)`. A search page has `truncated`, true when the candidate list was cut at its cap (Pokémon and the ten games): refine the query instead of paging. A card's `variants` lists its finishes, `Normal` first, then alphabetical.
 
 Every returned object has the same fields in both languages (`camelCase` in TypeScript, `snake_case` in Python): a card has `id`, `name`, `number`, `rarity`, `setId`, `setCode`, `setName`, `tcgplayer.prices[]` (finish, `market`, `low`, `mid`, `high`, `directLow`) and `cardmarket.prices[]` (`avg`, `low`, `trend`, `avg1`, `avg7`, `avg30`). Prices are numbers, or `null` / `None` when missing. Game-specific fields (`hp`, `attacks`, Magic's `p` and `t`, One Piece `ext_*`) are in `card.info`, and the untouched server value is always in `card.raw`.
 

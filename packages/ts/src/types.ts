@@ -43,8 +43,8 @@ export interface Card {
   variants: string[]
   /**
    * Set identifiers. `setId` is the numeric id (possibly negative); `setCode` the short code.
-   * Source: `card_info.set_id` / `card_info.set_code`, except for cards listed by a set, where both come
-   * from the response's `set` object (the Pokémon listing puts the numeric id in `card_info.set_code`).
+   * Source: `card_info.set_id` / `card_info.set_code`; for cards listed by a set, both come from the
+   * response's `set` object.
    * One Piece search and detail answers carry neither, so both are null there.
    */
   setId: string | null
@@ -80,7 +80,7 @@ export interface Page<T> {
 }
 
 export interface SearchPage extends Page<Card> {
-  /** Games only: the search stopped at its cap, refine the query instead of paging. */
+  /** Pokémon and games: the candidate list was cut at its cap, refine the query instead of paging. Always false for One Piece. */
   truncated: boolean
 }
 

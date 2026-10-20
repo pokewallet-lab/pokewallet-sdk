@@ -54,9 +54,8 @@ class Card:
     """A card.
 
     ``set_id`` is the numeric id (possibly negative), ``set_code`` the short code. Source:
-    ``card_info.set_id`` / ``card_info.set_code``, except for cards listed by a set, where both
-    come from the response's ``set`` object (the Pokémon listing puts the numeric id in
-    ``card_info.set_code``). One Piece search and detail answers carry neither, so both are None.
+    ``card_info.set_id`` / ``card_info.set_code``; for cards listed by a set, both come from the
+    response's ``set`` object. One Piece search and detail answers carry neither, so both are None.
     """
 
     #: ``pk_…``, ``op_…``, ``<code>_…`` or a 64-character hex CardMarket id. Reuse as is.
@@ -105,7 +104,7 @@ class Page:
 
 @dataclass
 class SearchPage(Page):
-    #: Games only: the search stopped at its cap, refine the query instead of paging.
+    #: Pokémon and games: the candidate list was cut at its cap, refine the query instead of paging. Always False for One Piece.
     truncated: bool = False
 
 
