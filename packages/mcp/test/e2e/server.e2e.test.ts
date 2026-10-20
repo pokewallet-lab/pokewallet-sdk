@@ -146,6 +146,20 @@ live('MCP over Streamable HTTP against the production API', () => {
     expect(sets.sets.every((s: { name: string }) => /plasma/i.test(s.name))).toBe(true)
   })
 
+  it('no internal field is ever returned by a tool', async () => {
+    const outputs = [
+      (await call(client, 'search_cards', { query: 'charizard', limit: 3 })).text,
+      (await call(client, 'search_cards', { query: 'cavendish', game: 'onepiece', limit: 5 })).text,
+      (await call(client, 'get_card', { id: pokemonId })).text,
+      (await call(client, 'get_set', { set: 'PLF', limit: 5 })).text,
+      (await call(client, 'set_statistics', { set: 'PLF' })).text,
+      (await call(client, 'set_completion_value', { set: 'PLF' })).text,
+      (await call(client, 'top_cards', { limit: 5 })).text,
+      (await call(client, 'trending_sets', { limit: 5 })).text,
+    ]
+    for (const text of outputs) expect(text).not.toMatch(/product_id|encrypted_id|public_url|cardmarket_product_id/)
+  })
+
   it('get_set pages a set; an ambiguous code returns alternatives, not an error', async () => {
     const page = (await call(client, 'get_set', { set: 'PLF', limit: 5 })).json()
     expect(page.cards).toHaveLength(5)

@@ -7,7 +7,7 @@ import {
   type Card,
   type PokeWallet,
 } from '../../src/index.js'
-import { fail, HAS_KEY, liveClient } from './setup.js'
+import { fail, HAS_KEY, internalFields, liveClient } from './setup.js'
 
 describe.skipIf(!HAS_KEY)('contract: Pokémon (live API)', () => {
   let pw: PokeWallet
@@ -33,6 +33,29 @@ describe.skipIf(!HAS_KEY)('contract: Pokémon (live API)', () => {
     }
     expect(p.market === null || typeof p.market === 'number').toBe(true)
     expect(pw.lastRateLimit?.limitHour).toBeGreaterThan(0)
+    // Finishes are listed Normal first, then alphabetically; the search flags a capped candidate list.
+    expect(sample.variants.length).toBeGreaterThan(0)
+    for (const c of page.items) {
+      const rest = c.variants.filter((v) => v !== 'Normal')
+      if (c.variants.includes('Normal')) expect(c.variants[0]).toBe('Normal')
+      expect(rest).toEqual([...rest].sort())
+    }
+    expect(page.truncated).toBeTypeOf('boolean')
+  })
+
+  it('no internal field leaves the API', async () => {
+    const card = await pw.pokemon.card(sample.id)
+    const answers = [
+      sample.raw,
+      card.raw,
+      (await pw.pokemon.set('PLF', { limit: 2 })).items.map((c) => c.raw),
+      (await pw.pokemon.prices('PLF')).raw,
+      (await pw.pokemon.statistics('PLF')).raw,
+      (await pw.pokemon.completionValue('PLF')).raw,
+      (await pw.pokemon.topCards({ limit: 3 })).map((c) => c.raw),
+      (await pw.pokemon.trending({ limit: 3 })).map((s) => s.raw),
+    ]
+    for (const a of answers) expect(internalFields(a)).toEqual([])
   })
 
   it('card: same id, same identity as the search hit', async () => {
@@ -42,14 +65,13 @@ describe.skipIf(!HAS_KEY)('contract: Pokémon (live API)', () => {
     expect(card.setCode).toBe(sample.setCode)
   })
 
-  it('sets and one set listing (the set_code difference is hidden)', async () => {
+  it('sets and one set listing (card_info agrees with the set object)', async () => {
     const sets = await pw.pokemon.sets({ language: 'eng' })
     expect(sets.length).toBeGreaterThan(100)
     const page = await pw.pokemon.set('PLF', { limit: 3 })
     expect(page.set).toMatchObject({ code: 'PLF', id: '1382' })
     expect(page.items[0]!.setCode).toBe('PLF')
-    // The raw listing still holds the numeric id in card_info.set_code.
-    expect((page.items[0]!.raw as any).card_info.set_code).toBe('1382')
+    expect((page.items[0]!.raw as any).card_info).toMatchObject({ set_code: 'PLF', set_id: '1382' })
   })
 
   it('ambiguous set: 200 on the listing, 300 on prices, 409 on statistics, one error class', async () => {

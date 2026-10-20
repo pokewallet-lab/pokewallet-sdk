@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { AmbiguousSetError, GAME_CODES, NotFoundError, ValidationError, type PokeWallet } from '../../src/index.js'
-import { fail, HAS_KEY, liveClient } from './setup.js'
+import { fail, HAS_KEY, internalFields, liveClient } from './setup.js'
 
 describe.skipIf(!HAS_KEY)('contract: ten games (live API)', () => {
   let pw: PokeWallet
@@ -37,6 +37,12 @@ describe.skipIf(!HAS_KEY)('contract: ten games (live API)', () => {
     const b = await fail(pw.games.mtg.statistics('MOC'))
     expect(b).toBeInstanceOf(AmbiguousSetError)
     expect(b.status).toBe(409)
+  })
+
+  it('mtg: no internal field leaves the API', async () => {
+    const page = await pw.games.mtg.search('Emrakul', { limit: 3 })
+    const prices = await pw.games.mtg.prices('FRA')
+    for (const a of [page.items.map((c) => c.raw), prices.raw]) expect(internalFields(a)).toEqual([])
   })
 
   it('mtg: Pro endpoints', async () => {

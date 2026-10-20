@@ -2,7 +2,7 @@ import pytest
 
 from pokewallet import AmbiguousSetError, BadRequestError, NotFoundError, ValidationError
 
-from ..conftest import failure
+from ..conftest import failure, internal_fields
 
 _state = {}
 
@@ -19,6 +19,29 @@ def test_search_pagination_normalized_card_and_wire_price_types(pw):
     assert isinstance(p.raw["market_price"], (int, float, type(None)))
     assert p.market is None or isinstance(p.market, float)
     assert pw.last_rate_limit.limit_hour > 0
+    # Finishes are listed Normal first, then alphabetically; the search flags a capped candidate list.
+    assert sample.variants
+    for c in page.items:
+        rest = [v for v in c.variants if v != "Normal"]
+        assert "Normal" not in c.variants or c.variants[0] == "Normal"
+        assert rest == sorted(rest)
+    assert isinstance(page.truncated, bool)
+
+
+def test_no_internal_field_leaves_the_api(pw):
+    s = _state["sample"]
+    answers = [
+        s.raw,
+        pw.pokemon.card(s.id).raw,
+        [c.raw for c in pw.pokemon.set("PLF", limit=2).items],
+        pw.pokemon.prices("PLF").raw,
+        pw.pokemon.statistics("PLF").raw,
+        pw.pokemon.completion_value("PLF").raw,
+        [c.raw for c in pw.pokemon.top_cards(limit=3)],
+        [t.raw for t in pw.pokemon.trending(limit=3)],
+    ]
+    for a in answers:
+        assert internal_fields(a) == []
 
 
 def test_card_matches_the_search_hit(pw):
@@ -27,12 +50,12 @@ def test_card_matches_the_search_hit(pw):
     assert (card.id, card.name, card.set_code) == (s.id, s.name, s.set_code)
 
 
-def test_sets_and_listing_hide_the_set_code_difference(pw):
+def test_sets_and_listing_agree_on_the_set(pw):
     assert len(pw.pokemon.sets(language="eng")) > 100
     page = pw.pokemon.set("PLF", limit=3)
     assert (page.set.code, page.set.id) == ("PLF", "1382")
     assert page.items[0].set_code == "PLF"
-    assert page.items[0].raw["card_info"]["set_code"] == "1382"  # the raw listing keeps the original value
+    assert page.items[0].raw["card_info"]["set_code"] == "PLF" and page.items[0].raw["card_info"]["set_id"] == "1382"
 
 
 def test_ambiguous_set_is_one_error_across_200_300_409(pw):

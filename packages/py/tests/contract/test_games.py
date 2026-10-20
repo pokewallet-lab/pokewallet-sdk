@@ -2,7 +2,7 @@ import pytest
 
 from pokewallet import GAME_CODES, AmbiguousSetError, NotFoundError, ValidationError
 
-from ..conftest import failure
+from ..conftest import failure, internal_fields
 
 
 def test_games_endpoint_lists_the_codes_the_sdk_knows(pw):
@@ -44,3 +44,9 @@ def test_mtg_pro_endpoints(pw):
 
 def test_mtg_unknown_set_is_not_found(pw):
     assert isinstance(failure(pw.games.mtg.set, "NOSUCHSETZZ"), NotFoundError)
+
+
+def test_mtg_no_internal_field_leaves_the_api(pw):
+    page = pw.games.mtg.search("Emrakul", limit=3)
+    for a in ([c.raw for c in page.items], pw.games.mtg.prices("FRA").raw):
+        assert internal_fields(a) == []

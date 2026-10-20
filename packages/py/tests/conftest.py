@@ -58,3 +58,14 @@ def failure(fn: Any, *args: Any, **kwargs: Any) -> BaseException:
     except BaseException as exc:  # noqa: BLE001
         return exc
     pytest.fail("expected an exception")
+
+
+INTERNAL_FIELDS = ("product_id", "encrypted_id", "public_url", "cardmarket_product_id")
+
+
+def internal_fields(value: Any) -> list:
+    """Keys that must never appear in an answer, at any depth."""
+    import json
+
+    text = json.dumps(value, default=str)
+    return [k for k in INTERNAL_FIELDS if f'"{k}"' in text]

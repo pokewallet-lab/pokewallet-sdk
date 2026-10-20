@@ -1,6 +1,6 @@
 from pokewallet import NotFoundError, ValidationError
 
-from ..conftest import failure
+from ..conftest import failure, internal_fields
 
 _state = {}
 
@@ -49,3 +49,13 @@ def test_trending_and_top_cards(pw):
 
 def test_unknown_set_is_not_found(pw):
     assert isinstance(failure(pw.onepiece.set, "NOSUCHSET99"), NotFoundError)
+
+
+def test_en_sets_carry_cardmarket_prices_and_no_internal_field(pw):
+    page = pw.onepiece.search("cavendish", limit=20)
+    assert any(c.cardmarket and c.cardmarket.prices for c in page.items)
+    prices = pw.onepiece.prices("OP01")
+    assert all(r.product_type for r in prices.rows)
+    card = pw.onepiece.card(page.items[0].id)
+    for a in ([c.raw for c in page.items], card.raw, prices.raw):
+        assert internal_fields(a) == []

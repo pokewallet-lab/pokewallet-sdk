@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { NotFoundError, ValidationError, type Card, type PokeWallet } from '../../src/index.js'
-import { fail, HAS_KEY, liveClient } from './setup.js'
+import { fail, HAS_KEY, internalFields, liveClient } from './setup.js'
 
 describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
   let pw: PokeWallet
@@ -19,6 +19,15 @@ describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
     expect(sample.tcgplayer?.prices.length ?? 0).toBeLessThanOrEqual(1)
     // The raw payload is flat: no card_info.
     expect((sample.raw as any).card_info).toBeUndefined()
+  })
+
+  it('EN sets carry CardMarket prices and no internal field leaves the API', async () => {
+    const page = await pw.onepiece.search('cavendish', { limit: 20 })
+    expect(page.items.some((c) => (c.cardmarket?.prices.length ?? 0) > 0)).toBe(true)
+    const card = await pw.onepiece.card(sample.id)
+    const prices = await pw.onepiece.prices('OP01')
+    expect(prices.rows.every((r) => r.productType)).toBe(true)
+    for (const a of [page.items.map((c) => c.raw), card.raw, prices.raw]) expect(internalFields(a)).toEqual([])
   })
 
   it('card and sets', async () => {
