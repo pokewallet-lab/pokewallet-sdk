@@ -26,12 +26,19 @@ describe('Pokémon cards', () => {
     expect(c.tcgplayer!.prices[0]!.variant).toBe('Normal')
     expect(c.cardmarket!.prices[0]!.variant).toBe('normal')
     expect(c.info).toHaveProperty('hp')
+    expect(c.variants).toEqual(['Normal'])
     expect(c.raw).toBeTypeOf('object')
   })
 
-  it('takes the set pair from the set object, not from card_info.set_code, in a set listing', async () => {
+  it('exposes truncated on a Pokémon search too', async () => {
+    const body = fixture('pokemon-search')
+    body.metadata.truncated = true
+    expect((await sdk([{ body }]).pw.pokemon.search('weedle', { limit: 3 })).truncated).toBe(true)
+  })
+
+  it('takes the set pair from the set object in a set listing', async () => {
     const body = fixture('pokemon-set')
-    expect(body.cards[0].card_info.set_code).toBe('1382') // the difference the SDK hides
+    expect(body.cards[0].card_info).toMatchObject({ set_code: 'PLF', set_id: '1382' }) // card_info now agrees with the set object
     const { pw } = sdk([{ body }])
     const page = await pw.pokemon.set('PLF', { limit: 3 })
     expect(page.set).toMatchObject({ id: '1382', code: 'PLF', name: 'Plasma Freeze' })
@@ -127,13 +134,14 @@ describe('One Piece', () => {
     const { pw, calls } = sdk([{ body: fixture('op-search') }])
     const page = await pw.onepiece.search('cavendish', { limit: 3 })
     expect(calls[0]!.url).toBe('https://api.pokewallet.io/op/search?q=cavendish&limit=3')
-    expect(page).toMatchObject({ page: 1, limit: 3, total: 192, totalPages: 64 })
+    expect(page).toMatchObject({ page: 1, limit: 3, total: 37, totalPages: 13 })
     const c = page.items[0]!
     expect(c.id).toMatch(/^op_/)
     expect(c.rarity).toBe('SR')
     expect(c.info.ext_color).toBe('Green')
     expect(c.tcgplayer!.prices).toHaveLength(1)
-    expect(c.tcgplayer!.prices[0]).toMatchObject({ market: 0.73, variant: 'Normal' })
+    expect(c.tcgplayer!.prices[0]).toMatchObject({ variant: 'Foil' })
+    expect(c.cardmarket!.prices.length).toBeGreaterThan(0)
     expect(c.setId).toBeNull()
   })
 

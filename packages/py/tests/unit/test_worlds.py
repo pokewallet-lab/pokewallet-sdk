@@ -15,11 +15,18 @@ def test_pokemon_search_normalizes_and_computes_total_pages():
     assert isinstance(c.tcgplayer.prices[0].market, float) and c.tcgplayer.prices[0].variant == "Normal"
     assert c.cardmarket.prices[0].variant == "normal"
     assert "hp" in c.info and isinstance(c.raw, dict)
+    assert c.variants == ["Normal"]
 
 
-def test_set_pair_comes_from_the_set_object_in_a_listing():
+def test_pokemon_search_exposes_truncated():
+    body = fixture("pokemon-search")
+    body["metadata"]["truncated"] = True
+    assert mock({"body": body}).client().pokemon.search("weedle", limit=3).truncated is True
+
+
+def test_set_pair_in_a_listing():
     body = fixture("pokemon-set")
-    assert body["cards"][0]["card_info"]["set_code"] == "1382"  # the difference the SDK hides
+    assert (body["cards"][0]["card_info"]["set_code"], body["cards"][0]["card_info"]["set_id"]) == ("PLF", "1382")
     page = mock({"body": body}).client().pokemon.set("PLF", limit=3)
     assert (page.set.id, page.set.code, page.set.name) == ("1382", "PLF", "Plasma Freeze")
     assert all(c.set_id == "1382" and c.set_code == "PLF" for c in page.items)
@@ -88,10 +95,11 @@ def test_one_piece_flat_shape_and_set_identity():
     m = mock({"body": fixture("op-search")})
     page = m.client().onepiece.search("cavendish", limit=3)
     assert m.calls[0]["url"] == "https://api.pokewallet.io/op/search?q=cavendish&limit=3"
-    assert (page.page, page.limit, page.total, page.total_pages) == (1, 3, 192, 64)
+    assert (page.page, page.limit, page.total, page.total_pages) == (1, 3, 37, 13)
     c = page.items[0]
     assert c.id.startswith("op_") and c.rarity == "SR" and c.info["ext_color"] == "Green" and c.set_id is None
-    assert len(c.tcgplayer.prices) == 1 and c.tcgplayer.prices[0].market == 0.73 and c.tcgplayer.prices[0].variant == "Normal"
+    assert len(c.tcgplayer.prices) == 1 and c.tcgplayer.prices[0].variant == "Foil"
+    assert c.cardmarket is not None and len(c.cardmarket.prices) > 0
 
     s = mock({"body": fixture("op-set")}).client().onepiece.set("OP01", limit=3)
     assert (s.set.id, s.set.code, s.set.name, s.total) == ("3188", "OP01", "Romance Dawn", 159)

@@ -18,32 +18,39 @@
   ],
   "weakness": "Rx2",
   "resistance": null,
-  "retreat_cost": "1.0"
+  "retreat_cost": "1.0",
+  "variants": [
+   "Normal",
+   "Reverse Holofoil"
+  ]
  },
  "images": {
   "languages": [
    "en",
    "it",
-   "fr"
+   "fr",
+   "de",
+   "es",
+   "pt"
   ]
  },
  "tcgplayer": {
   "prices": [
    {
     "low_price": 0.17,
-    "mid_price": 0.32,
-    "high_price": 19.82,
-    "updated_at": "2026-10-02T10:48:34.951475",
-    "market_price": 0.36,
-    "direct_low_price": 0.25,
+    "mid_price": 0.35,
+    "high_price": 19.76,
+    "updated_at": "2026-10-20T09:43:46.404708",
+    "market_price": 0.37,
+    "direct_low_price": null,
     "sub_type_name": "Normal"
    },
    {
     "low_price": 0.51,
-    "mid_price": 1.51,
-    "high_price": 24.84,
-    "updated_at": "2026-10-02T10:48:34.951475",
-    "market_price": 1.58,
+    "mid_price": 1.5,
+    "high_price": 24.78,
+    "updated_at": "2026-10-20T09:43:46.404708",
+    "market_price": 1.59,
     "direct_low_price": null,
     "sub_type_name": "Reverse Holofoil"
    }
@@ -54,23 +61,23 @@
   "product_name": "Weedle",
   "prices": [
    {
-    "avg": 0.15,
+    "avg": 0.17,
     "low": 0.02,
     "avg1": 0.25,
-    "avg7": 0.18,
-    "avg30": 0.17,
-    "trend": 0.19,
-    "updated_at": "2026-10-02T10:25:31.336544",
+    "avg7": 0.21,
+    "avg30": 0.18,
+    "trend": 0.2,
+    "updated_at": "2026-10-20T09:19:43.59667",
     "variant_type": "normal"
    },
    {
-    "avg": 0.34,
-    "low": 0.14,
-    "avg1": 0.35,
-    "avg7": 0.67,
-    "avg30": 0.66,
-    "trend": 0.8,
-    "updated_at": "2026-10-02T10:25:31.336544",
+    "avg": 0.53,
+    "low": 0.1,
+    "avg1": 2.95,
+    "avg7": 0.79,
+    "avg30": 0.75,
+    "trend": 1.07,
+    "updated_at": "2026-10-20T09:19:43.59667",
     "variant_type": "holo"
    }
   ],

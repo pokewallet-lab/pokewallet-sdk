@@ -15,7 +15,8 @@
     "name": "Weedle",
     "clean_name": "Weedle",
     "set_name": "Plasma Freeze",
-    "set_code": "1382",
+    "set_code": "PLF",
+    "set_id": "1382",
     "card_number": "1/116",
     "rarity": "Common",
     "card_type": null,
@@ -38,7 +39,10 @@
     "languages": [
      "en",
      "it",
-     "fr"
+     "fr",
+     "de",
+     "es",
+     "pt"
     ]
    },
    "tcgplayer": {
@@ -57,7 +61,8 @@
     "name": "Cacturne",
     "clean_name": "Cacturne",
     "set_name": "Plasma Freeze",
-    "set_code": "1382",
+    "set_code": "PLF",
+    "set_id": "1382",
     "card_number": "10/116",
     "rarity": "Rare",
     "card_type": null,
@@ -81,7 +86,10 @@
     "languages": [
      "en",
      "it",
-     "fr"
+     "fr",
+     "de",
+     "es",
+     "pt"
     ]
    },
    "tcgplayer": {
@@ -100,7 +108,8 @@
     "name": "Frozen City (Team Plasma)",
     "clean_name": "Frozen City Team Plasma",
     "set_name": "Plasma Freeze",
-    "set_code": "1382",
+    "set_code": "PLF",
+    "set_id": "1382",
     "card_number": "100/116",
     "rarity": "Uncommon",
     "card_type": "Stadium",
@@ -123,7 +132,10 @@
     "languages": [
      "en",
      "it",
-     "fr"
+     "fr",
+     "de",
+     "es",
+     "pt"
     ]
    },
    "tcgplayer": {

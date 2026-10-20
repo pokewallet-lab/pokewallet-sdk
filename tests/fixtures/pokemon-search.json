@@ -21,7 +21,10 @@
     ],
     "weakness": "R",
     "resistance": null,
-    "retreat_cost": "1.0"
+    "retreat_cost": "1.0",
+    "variants": [
+     "Normal"
+    ]
    },
    "images": {
     "languages": [
@@ -31,12 +34,12 @@
    "tcgplayer": {
     "prices": [
      {
-      "low_price": 0.13,
-      "mid_price": 0.5,
+      "low_price": 0.05,
+      "mid_price": 0.47,
       "high_price": 100,
-      "updated_at": "2026-10-02T10:48:37.747076",
-      "market_price": 0.57,
-      "direct_low_price": 0.5,
+      "updated_at": "2026-10-20T09:43:49.880767",
+      "market_price": 0.47,
+      "direct_low_price": 0.33,
       "sub_type_name": "Normal"
      }
     ],
@@ -46,13 +49,13 @@
     "product_name": "Weedle",
     "prices": [
      {
-      "avg": 0.24,
+      "avg": 0.23,
       "low": 0.02,
-      "avg1": 0.1,
-      "avg7": 0.34,
-      "avg30": 0.29,
-      "trend": 0.14,
-      "updated_at": "2026-10-02T10:25:25.392497",
+      "avg1": 0.15,
+      "avg7": 0.25,
+      "avg30": 0.24,
+      "trend": 0.3,
+      "updated_at": "2026-10-20T09:19:39.202108",
       "variant_type": "normal"
      },
      {
@@ -62,7 +65,7 @@
       "avg7": 0.05,
       "avg30": 0.05,
       "trend": 0.05,
-      "updated_at": "2026-10-02T10:25:25.392497",
+      "updated_at": "2026-10-20T09:19:39.202108",
       "variant_type": "holo"
      }
     ],
@@ -89,7 +92,11 @@
     ],
     "weakness": "R",
     "resistance": null,
-    "retreat_cost": "1.0"
+    "retreat_cost": "1.0",
+    "variants": [
+     "1st Edition",
+     "Unlimited"
+    ]
    },
    "images": {
     "languages": [
@@ -99,21 +106,21 @@
    "tcgplayer": {
     "prices": [
      {
-      "low_price": 34.1,
-      "mid_price": 39.99,
-      "high_price": 280.55,
-      "updated_at": "2026-10-02T10:48:37.747076",
-      "market_price": 57.52,
-      "direct_low_price": 280.55,
+      "low_price": 32.49,
+      "mid_price": 44.99,
+      "high_price": 699.99,
+      "updated_at": "2026-10-20T09:43:49.880767",
+      "market_price": 58.65,
+      "direct_low_price": 33.49,
       "sub_type_name": "1st Edition"
      },
      {
       "low_price": 1,
-      "mid_price": 2.7,
+      "mid_price": 2.49,
       "high_price": 96.95,
-      "updated_at": "2026-10-02T10:48:37.747076",
-      "market_price": 3.26,
-      "direct_low_price": 4.31,
+      "updated_at": "2026-10-20T09:43:49.880767",
+      "market_price": 3.51,
+      "direct_low_price": null,
       "sub_type_name": "Unlimited"
      }
     ],
@@ -123,13 +130,13 @@
     "product_name": "Weedle (Shadowless)",
     "prices": [
      {
-      "avg": 4.4,
+      "avg": 2.82,
       "low": 1.14,
-      "avg1": 3.16,
-      "avg7": 2.73,
-      "avg30": 6.68,
-      "trend": 8.71,
-      "updated_at": "2026-10-02T10:25:43.020832",
+      "avg1": 1.5,
+      "avg7": 2.82,
+      "avg30": 6.78,
+      "trend": 3.98,
+      "updated_at": "2026-10-20T09:19:53.625623",
       "variant_type": "normal"
      },
      {
@@ -139,7 +146,7 @@
       "avg7": null,
       "avg30": null,
       "trend": 0,
-      "updated_at": "2026-10-02T10:25:43.020832",
+      "updated_at": "2026-10-20T09:19:53.625623",
       "variant_type": "holo"
      }
     ],
@@ -166,7 +173,10 @@
     ],
     "weakness": "R",
     "resistance": null,
-    "retreat_cost": "1.0"
+    "retreat_cost": "1.0",
+    "variants": [
+     "Normal"
+    ]
    },
    "images": {
     "languages": [
@@ -177,12 +187,12 @@
    "tcgplayer": {
     "prices": [
      {
-      "low_price": 0.19,
-      "mid_price": 0.5,
+      "low_price": 0.2,
+      "mid_price": 0.51,
       "high_price": 80,
-      "updated_at": "2026-10-02T10:48:37.747076",
-      "market_price": 0.66,
-      "direct_low_price": 0.79,
+      "updated_at": "2026-10-20T09:43:49.880767",
+      "market_price": 0.56,
+      "direct_low_price": 0.7,
       "sub_type_name": "Normal"
      }
     ],
@@ -198,17 +208,17 @@
       "avg7": 5.92,
       "avg30": 5.92,
       "trend": 4.57,
-      "updated_at": "2026-10-02T10:25:25.392497",
+      "updated_at": "2026-10-20T09:19:39.202108",
       "variant_type": "holo"
      },
      {
-      "avg": 0.96,
+      "avg": 0.91,
       "low": 0.02,
-      "avg1": 0.96,
-      "avg7": 1.63,
-      "avg30": 0.89,
-      "trend": 1.02,
-      "updated_at": "2026-10-02T10:25:25.392497",
+      "avg1": 0.67,
+      "avg7": 1.06,
+      "avg30": 0.96,
+      "trend": 1.46,
+      "updated_at": "2026-10-20T09:19:39.202108",
       "variant_type": "normal"
      }
     ],
@@ -225,9 +235,10 @@
  "metadata": {
   "total_count": 66,
   "tcg": 58,
-  "cardmarket": 58,
-  "tcg_only": 8,
+  "cardmarket": 60,
+  "tcg_only": 6,
   "cardmarket_only": 8,
-  "both_sources": 50
+  "both_sources": 52,
+  "truncated": false
  }
 }

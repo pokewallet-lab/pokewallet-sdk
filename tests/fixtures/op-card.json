@@ -18,25 +18,25 @@
  "tcgplayer": {
   "url": "https://www.tcgplayer.com/product/454512",
   "prices": {
-   "low_price": 1.49,
-   "mid_price": 3.35,
+   "low_price": 1.67,
+   "mid_price": 3.23,
    "high_price": 34.99,
-   "market_price": 2.05,
+   "market_price": 1.67,
    "direct_low_price": null,
-   "updated_at": "2026-10-02T11:56:40.197781"
+   "updated_at": "2026-10-20T10:58:14.272579"
   }
  },
  "cardmarket": {
   "product_name": "Roronoa Zoro (OP01-001) (V.1)",
   "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Romance-Dawn/Roronoa-Zoro-OP01-001-V1",
   "prices": {
-   "avg": 2.34,
-   "low": 0.5,
-   "trend": 2.1,
-   "avg1": 2.17,
-   "avg7": 1.83,
-   "avg30": 2.31,
-   "updated_at": "2026-10-02T10:15:27.142921"
+   "avg": 2.02,
+   "low": 0.8,
+   "trend": 2.23,
+   "avg1": 2.22,
+   "avg7": 2.19,
+   "avg30": 2.03,
+   "updated_at": "2026-10-20T09:04:21.148792"
   }
  }
 }
