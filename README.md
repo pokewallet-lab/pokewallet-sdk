@@ -242,7 +242,7 @@ An ambiguous set code is reported the same way on every endpoint, even though th
 
 ## 6. MCP server
 
-`packages/mcp` is a small server for the [Model Context Protocol](https://modelcontextprotocol.io). It lets an MCP client (Claude Code, Cursor, Claude Desktop through `mcp-remote`, ...) search cards and read prices using **your own key**: the client sends `Authorization: Bearer pk_…`, the server forwards it to PokeWallet and keeps nothing. Your plan and quota stay yours, and every tool call uses one request of your quota.
+`packages/mcp` is a small server for the [Model Context Protocol](https://modelcontextprotocol.io). It lets any MCP client (Claude Code, Claude Desktop, Cursor, VS Code, Gemini CLI, your own agents, ...) search cards and read prices using **your own key**: the client sends `Authorization: Bearer pk_…`, the server forwards it to PokeWallet and keeps nothing. Your plan and quota stay yours, and every tool call uses one request of your quota.
 
 Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
 
@@ -255,7 +255,7 @@ claude mcp add --transport http pokewallet https://mcp.pokewallet.io/mcp \
   --header "Authorization: Bearer $POKEWALLET_API_KEY"
 ```
 
-This saves the key in Claude Code's own config on your machine, like any header you pass.
+This saves the key in Claude Code's own config on your machine, like any header you pass. Add `--scope user` to have the server in every project; `/mcp` inside Claude Code shows whether it is connected.
 
 **Cursor** — `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project):
 
@@ -265,6 +265,36 @@ This saves the key in Claude Code's own config on your machine, like any header 
     "pokewallet": {
       "url": "https://mcp.pokewallet.io/mcp",
       "headers": { "Authorization": "Bearer ${env:POKEWALLET_API_KEY}" }
+    }
+  }
+}
+```
+
+**VS Code** (Copilot agent mode) — `.vscode/mcp.json` in a project, or *MCP: Open User Configuration* for every project. VS Code asks for the key on first start and stores it securely:
+
+```json
+{
+  "servers": {
+    "pokewallet": {
+      "type": "http",
+      "url": "https://mcp.pokewallet.io/mcp",
+      "headers": { "Authorization": "Bearer ${input:pokewallet-key}" }
+    }
+  },
+  "inputs": [
+    { "type": "promptString", "id": "pokewallet-key", "description": "PokeWallet API key", "password": true }
+  ]
+}
+```
+
+**Gemini CLI** — `~/.gemini/settings.json` (or `.gemini/settings.json` in a project):
+
+```json
+{
+  "mcpServers": {
+    "pokewallet": {
+      "httpUrl": "https://mcp.pokewallet.io/mcp",
+      "headers": { "Authorization": "Bearer $POKEWALLET_API_KEY" }
     }
   }
 }
@@ -284,7 +314,11 @@ This saves the key in Claude Code's own config on your machine, like any header 
 }
 ```
 
-Replace `pk_live_xxx` with your key; this file is the one place where it has to be written down, so keep the file private.
+Replace `pk_live_xxx` with your key; this file is the one place where it has to be written down, so keep the file private. For Claude Desktop the file is `claude_desktop_config.json` (*Settings → Developer → Edit Config*); restart the app after saving.
+
+**Other clients** (Windsurf, Cline, Zed, your own code with an MCP SDK, ...): give them the URL `https://mcp.pokewallet.io/mcp` (Streamable HTTP) and the header `Authorization: Bearer <your key>`. A client that only runs local servers can use the `mcp-remote` setup above.
+
+The custom connectors of the claude.ai and ChatGPT web apps cannot send an API key header (they support OAuth or no authentication), so they cannot connect to this server for now.
 
 **Run it locally instead** (needs the repo, Node 22+):
 
