@@ -9,7 +9,7 @@ info:
     or "Note").
 
     Out of scope: images (`/images/{id}`, `/{game}/images/{id}`, `/sets/{setCode}/image`),
-    `/user/*`, `/admin/*`, and endpoints that are not mounted (`/search/by-price-range`,
+    account endpoints, and endpoints that are not mounted (`/search/by-price-range`,
     `/search/by-type`, `/cards/{id}/variants`, `/cards/{id}/price-comparison`: they answer 404).
 
     Three families with different shapes:
