@@ -1,8 +1,8 @@
 # PokeWallet SDKs
 
 [![CI](https://github.com/pokewallet-lab/pokewallet-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/pokewallet-lab/pokewallet-sdk/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@pokewallet/sdk)](https://www.npmjs.com/package/@pokewallet/sdk)
-[![PyPI](https://img.shields.io/pypi/v/pokewallet)](https://pypi.org/project/pokewallet/)
+[![npm](https://img.shields.io/npm/v/@pokewallet/sdk?label=npm)](https://www.npmjs.com/package/@pokewallet/sdk)
+[![PyPI](https://img.shields.io/pypi/v/pokewallet?label=PyPI)](https://pypi.org/project/pokewallet/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [PokeWallet](https://pokewallet.io) is a card price API: Pokémon, One Piece and ten more trading card games (Magic, Yu-Gi-Oh!, Lorcana, Digimon, Flesh and Blood and others), with TCGPlayer prices in USD and CardMarket prices in EUR. This repo has the official **TypeScript** and **Python** SDKs, which put all twelve games behind one interface, and an **MCP server** that lets MCP clients such as Claude Code and Cursor look up cards and prices with your own key.
