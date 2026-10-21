@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Actions are pinned to commit hashes; Dependabot proposes the new hash and version comment.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
