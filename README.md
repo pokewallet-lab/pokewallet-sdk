@@ -50,7 +50,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install pokewallet
 ```
 
-The files of release v0.1.1, with their checksums (`SHA256SUMS`), also remain available on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
+The files of release v0.1.3, with their checksums (`SHA256SUMS`), also remain available on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
 
 ## 3. Quickstart
 
@@ -368,6 +368,6 @@ Contract and end-to-end tests skip cleanly without a key (the two key-less endpo
 Releases are published by GitHub Actions from version tags: `ts-v<semver>` for the TypeScript package and `py-v<semver>` for the Python package. A tag runs `release.yml`, which checks that the tag matches the version in the package files, runs the unit tests, builds, and publishes after a maintainer approves the run on the `release` environment. Each pull request runs a publish dry-run (`publish-check.yml`), and a weekly job (`drift.yml`) runs the contract tests against the live API.
 
 - **PyPI** uses Trusted Publishing; no token is stored.
-- **npm**: the first version (0.1.1) was published manually, which is how a new package is created. Later versions are published by the workflow through npm Trusted Publishing, which must be configured in the settings of `@pokewallet/sdk` on npmjs.com: provider GitHub Actions, owner `pokewallet-lab`, repository `pokewallet-sdk`, workflow `release.yml`, environment `release`. Staged publishing of a new package needs an approval with two-factor authentication on npmjs.com; new releases of an existing package go through the workflow.
+- **npm**: the first version (0.1.1) was published manually, which is how a new package is created. Later versions are published by the workflow through npm Trusted Publishing, which must be configured in the settings of `@pokewallet/sdk` on npmjs.com: provider GitHub Actions, owner `pokewallet-lab`, repository `pokewallet-sdk`, workflow `release.yml`, environment `release`, with **Allow `npm publish`** checked (without it only `npm stage publish` is allowed and the workflow fails with `403 OIDC permission denied for this action`). Staged publishing of a new package needs an approval with two-factor authentication on npmjs.com; new releases of an existing package go through the workflow.
 
 </details>
