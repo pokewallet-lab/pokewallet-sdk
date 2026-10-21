@@ -14,4 +14,4 @@ npm run test:e2e          # starts `wrangler dev` locally; live tests need POKEW
 npm run dev               # local server at http://127.0.0.1:8787/mcp
 ```
 
-`wrangler.toml` has commented placeholders for the account and the custom domain. Nothing deploys from this repo by itself.
+The hosted server runs at `https://mcp.pokewallet.io/mcp` (account and custom domain are in `wrangler.toml`). Nothing deploys from this repo by itself: a maintainer logged in to that Cloudflare account deploys with `npm run build:sdk && npx wrangler deploy`.

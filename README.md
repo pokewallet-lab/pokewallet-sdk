@@ -246,22 +246,12 @@ An ambiguous set code is reported the same way on every endpoint, even though th
 
 Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
 
-> **The hosted server is not live yet.** For now you run it on your own machine. A public URL will replace `http://127.0.0.1:8787/mcp` below once it exists.
-
-Run it locally (needs the repo, Node 22+):
-
-```sh
-gh repo clone pokewallet-lab/pokewallet-sdk && cd pokewallet-sdk
-(cd packages/ts && npm install && npm run build)
-cd packages/mcp && npm install && npx wrangler dev
-```
-
-The endpoint is `http://127.0.0.1:8787/mcp`. Then connect a client, passing your key as a Bearer header.
+The hosted server is at `https://mcp.pokewallet.io/mcp`. Connect a client, passing your key as a Bearer header.
 
 **Claude Code:**
 
 ```sh
-claude mcp add --transport http pokewallet http://127.0.0.1:8787/mcp \
+claude mcp add --transport http pokewallet https://mcp.pokewallet.io/mcp \
   --header "Authorization: Bearer $POKEWALLET_API_KEY"
 ```
 
@@ -273,7 +263,7 @@ This saves the key in Claude Code's own config on your machine, like any header 
 {
   "mcpServers": {
     "pokewallet": {
-      "url": "http://127.0.0.1:8787/mcp",
+      "url": "https://mcp.pokewallet.io/mcp",
       "headers": { "Authorization": "Bearer ${env:POKEWALLET_API_KEY}" }
     }
   }
@@ -287,14 +277,24 @@ This saves the key in Claude Code's own config on your machine, like any header 
   "mcpServers": {
     "pokewallet": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "http://127.0.0.1:8787/mcp", "--allow-http", "--header", "Authorization:${AUTH_HEADER}"],
+      "args": ["-y", "mcp-remote", "https://mcp.pokewallet.io/mcp", "--header", "Authorization:${AUTH_HEADER}"],
       "env": { "AUTH_HEADER": "Bearer pk_live_xxx" }
     }
   }
 }
 ```
 
-Replace `pk_live_xxx` with your key; this file is the one place where it has to be written down, so keep the file private. `--allow-http` is only for the local `http://` URL; drop it once the server has an `https://` address. See [`packages/mcp`](packages/mcp) for details.
+Replace `pk_live_xxx` with your key; this file is the one place where it has to be written down, so keep the file private.
+
+**Run it locally instead** (needs the repo, Node 22+):
+
+```sh
+gh repo clone pokewallet-lab/pokewallet-sdk && cd pokewallet-sdk
+(cd packages/ts && npm install && npm run build)
+cd packages/mcp && npm install && npx wrangler dev
+```
+
+The local endpoint is `http://127.0.0.1:8787/mcp`: use it in place of the hosted URL above, and add `--allow-http` to the `mcp-remote` arguments, since the URL is plain `http://`. See [`packages/mcp`](packages/mcp) for details.
 
 ## 7. Versioning and compatibility
 
@@ -338,7 +338,7 @@ This is about the data and the service. The MIT license of the code is separate.
 | `openapi/pokewallet.yaml` | Hand-written OpenAPI 3.1 spec of the API as it behaves today; the TypeScript types are generated from it |
 | `packages/ts` | `@pokewallet/sdk`, zero runtime dependencies, ESM + CJS, Node 18+ |
 | `packages/py` | `pokewallet`, Python 3.9+, `httpx` only, sync and async |
-| `packages/mcp` | Stateless MCP server for a Cloudflare Worker (hosted version not live yet) |
+| `packages/mcp` | Stateless MCP server on a Cloudflare Worker, hosted at `https://mcp.pokewallet.io/mcp` |
 | `examples/ts`, `examples/py` | Runnable examples |
 | `.github/scripts` | Helper scripts used by the CI and release workflows |
 | `tests/fixtures` | Recorded API answers shared by the TypeScript, Python and MCP unit tests |

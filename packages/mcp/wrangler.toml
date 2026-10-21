@@ -6,12 +6,11 @@ main = "src/index.ts"
 compatibility_date = "2026-10-01"
 compatibility_flags = ["nodejs_compat"]
 
-# --- Placeholders to fill in before the first deploy (decisions for the owner) ---
-# account_id = "<CLOUDFLARE_ACCOUNT_ID>"   # the account that owns pokewallet.io
-#
-# [[routes]]
-# pattern = "mcp.pokewallet.io"            # custom domain for the MCP endpoint
-# custom_domain = true
+account_id = "e603be717a34b85fa7ebfb8d03c83820"   # the account that owns pokewallet.io
+
+[[routes]]
+pattern = "mcp.pokewallet.io"            # custom domain for the MCP endpoint
+custom_domain = true
 
 [observability]
 enabled = false
