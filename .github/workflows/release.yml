@@ -63,12 +63,10 @@ jobs:
         with:
           name: npm-tarball
           path: dist
+      # No token here on purpose: the package has an npm trusted publisher, and an empty
+      # NODE_AUTH_TOKEN would be sent as a credential instead of letting npm use OIDC.
       - name: Publish
         run: npm publish ./dist/*.tgz --provenance --access public
-        env:
-          # Empty once the package has an npm trusted publisher; set the NPM_TOKEN environment
-          # secret (a granular read-and-write token for @pokewallet) for the very first publish, before the package exists.
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   verify-pypi:
     if: startsWith(github.ref_name, 'py-v')
