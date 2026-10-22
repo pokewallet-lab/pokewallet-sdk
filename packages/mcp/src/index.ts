@@ -1,5 +1,5 @@
 import { createMcpHandler } from 'agents/mcp/server'
-import { bearerKey, unauthorized } from './auth.js'
+import { bearerKey, clientName, unauthorized } from './auth.js'
 import { buildServer } from './server.js'
 import { MCP_VERSION } from './version.js'
 
@@ -27,7 +27,7 @@ export default {
       (context) => {
         const key = bearerKey(context.requestInfo?.headers.get('authorization'))
         if (!key) throw new Error('Missing API key')
-        return buildServer(key)
+        return buildServer(key, { clientName: clientName(context.requestInfo?.headers.get('user-agent')) })
       },
       { route: ROUTE },
     )

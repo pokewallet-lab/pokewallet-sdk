@@ -40,6 +40,15 @@ describe('request basics', () => {
     expect(calls[0]!.headers['User-Agent']).toMatch(/^pokewallet-sdk-ts\/\d+\.\d+\.\d+$/)
   })
 
+  it('identifies the integration in X-PokeWallet-Client, with an override', async () => {
+    const a = client([{ body: {} }])
+    await a.http.get('/search')
+    expect(a.calls[0]!.headers['X-PokeWallet-Client']).toMatch(/^pokewallet-sdk-ts\/\d+\.\d+\.\d+$/)
+    const m = mockFetch([{ body: {} }])
+    await new HttpClient({ apiKey: TEST_KEY, client: 'my-app/2', fetch: m.fetch }).get('/search')
+    expect(m.calls[0]!.headers['X-PokeWallet-Client']).toBe('my-app/2')
+  })
+
   it('rejects a malformed key at construction, but a missing key is allowed', () => {
     expect(() => new HttpClient({ apiKey: 'abc', fetch: mockFetch([{}]).fetch })).toThrow(/pk_/)
     expect(() => new HttpClient({ apiKey: '', fetch: mockFetch([{}]).fetch })).not.toThrow()

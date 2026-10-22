@@ -14,6 +14,12 @@ export interface ClientOptions {
   baseUrl?: string
   /** Sent on every request. Some network layers reject the default user agents of HTTP libraries. */
   userAgent?: string
+  /**
+   * Sent as `X-PokeWallet-Client`, so the API can tell which integration made a call. Browsers
+   * cannot set `User-Agent`, so this is the only identification they can send. Default
+   * `pokewallet-sdk-ts/<version>`.
+   */
+  client?: string
   /** Custom `fetch`, mainly for tests. Defaults to the global one. */
   fetch?: FetchLike
   /** Retries after a 429 (with `Retry-After`) or a 503. Default 2. */
@@ -76,6 +82,7 @@ export class HttpClient {
   readonly #key: string | undefined
   private readonly baseUrl: string
   private readonly userAgent: string
+  private readonly client: string
   private readonly fetchImpl: FetchLike
   private readonly maxRetries: number
   private readonly capSeconds: number
@@ -86,6 +93,7 @@ export class HttpClient {
     this.#key = readKey(options)
     this.baseUrl = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, '')
     this.userAgent = options.userAgent ?? DEFAULT_USER_AGENT
+    this.client = options.client ?? DEFAULT_USER_AGENT
     const g = globalThis as { fetch?: FetchLike }
     const f = options.fetch ?? (g.fetch ? g.fetch.bind(globalThis) : undefined)
     if (!f) throw new ValidationError('No fetch available: pass options.fetch (Node 18+ has one built in)')
@@ -149,6 +157,7 @@ export class HttpClient {
         headers: {
           ...(this.#key === undefined ? {} : { 'X-API-Key': this.#key }),
           'User-Agent': this.userAgent,
+          'X-PokeWallet-Client': this.client,
           Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.timeoutMs),

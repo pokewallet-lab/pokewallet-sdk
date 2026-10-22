@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { PokeWallet } from '@pokewallet/sdk'
 import { toolError } from '../../src/errors.js'
-import { bearerKey } from '../../src/auth.js'
+import { bearerKey, clientName } from '../../src/auth.js'
 import { fixture, stubFetch, type Reply } from './helpers.js'
 
 async function errorFor(reply: Reply, call: (pw: PokeWallet) => Promise<unknown>) {
@@ -65,5 +65,16 @@ describe('bearerKey', () => {
     for (const bad of [null, undefined, '', 'Bearer', 'Bearer abc', 'Bearer sk_live_abc', 'pk_live_abc', 'Basic pk_live_abc', 'Bearer pk_a b']) {
       expect(bearerKey(bad as string | null)).toBeNull()
     }
+  })
+})
+
+describe('clientName', () => {
+  it('takes the first product token of the User-Agent and nothing unsafe', () => {
+    expect(clientName('Claude-User/1.0 (+https://claude.ai)')).toBe('Claude-User')
+    expect(clientName('Cursor/0.45 node')).toBe('Cursor')
+    expect(clientName('a<b>"c')).toBe('abc')
+    expect(clientName('x'.repeat(100))).toHaveLength(40)
+    expect(clientName(null)).toBeNull()
+    expect(clientName('///')).toBeNull()
   })
 })

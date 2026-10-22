@@ -20,3 +20,14 @@ export function unauthorized(): Response {
     },
   )
 }
+
+/**
+ * The calling MCP client (Claude, Cursor, ...), taken from the first product token of its
+ * `User-Agent`. Stateless requests carry no `initialize` payload, so the header is all there is.
+ * Anything outside a plain token alphabet is dropped, and the result is capped.
+ */
+export function clientName(userAgent: string | null | undefined): string | null {
+  const token = userAgent?.trim().split(/\s+/)[0]?.split('/')[0] ?? ''
+  const clean = token.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 40)
+  return clean || null
+}
