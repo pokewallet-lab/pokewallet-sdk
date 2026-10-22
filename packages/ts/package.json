@@ -1,6 +1,6 @@
 {
   "name": "@pokewallet/sdk",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Official TypeScript SDK for the PokeWallet API",
   "license": "MIT",
   "type": "module",
