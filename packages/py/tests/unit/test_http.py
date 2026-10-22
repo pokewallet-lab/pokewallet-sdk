@@ -27,6 +27,14 @@ def test_sends_key_and_own_user_agent_and_skips_empty_query():
     assert call["headers"]["user-agent"].startswith("pokewallet-sdk-py/")
 
 
+def test_identifies_the_integration_in_the_client_header():
+    m = mock({"body": {}}, {"body": {}})
+    m.client().pokemon.search("pikachu")
+    assert m.calls[0]["headers"]["x-pokewallet-client"].startswith("pokewallet-sdk-py/")
+    m.client(client="my-app/2").pokemon.search("pikachu")
+    assert m.calls[1]["headers"]["x-pokewallet-client"] == "my-app/2"
+
+
 def test_rejects_a_malformed_key_but_allows_a_missing_one(monkeypatch):
     monkeypatch.delenv("POKEWALLET_API_KEY", raising=False)
     with pytest.raises(ValidationError, match="pk_"):

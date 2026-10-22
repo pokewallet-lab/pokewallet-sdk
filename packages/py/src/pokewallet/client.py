@@ -55,13 +55,14 @@ class PokeWallet(_ClientBase):
         *,
         base_url: Optional[str] = None,
         user_agent: Optional[str] = None,
+        client: Optional[str] = None,
         max_retries: int = 2,
         retry_after_cap: float = 30.0,
         timeout: float = 30.0,
         transport: Optional[httpx.BaseTransport] = None,
         sleep: Optional[Callable[[float], Any]] = None,
     ) -> None:
-        self._core = Core(api_key, base_url, user_agent, max_retries, retry_after_cap, timeout)
+        self._core = Core(api_key, base_url, user_agent, client, max_retries, retry_after_cap, timeout)
         self._http = httpx.Client(transport=transport)
         t = SyncTransport(self._core, self._http, sleep or _sync_sleep)
         self._t = t
@@ -109,13 +110,14 @@ class AsyncPokeWallet(_ClientBase):
         *,
         base_url: Optional[str] = None,
         user_agent: Optional[str] = None,
+        client: Optional[str] = None,
         max_retries: int = 2,
         retry_after_cap: float = 30.0,
         timeout: float = 30.0,
         transport: Optional[httpx.AsyncBaseTransport] = None,
         sleep: Optional[Callable[[float], Any]] = None,
     ) -> None:
-        self._core = Core(api_key, base_url, user_agent, max_retries, retry_after_cap, timeout)
+        self._core = Core(api_key, base_url, user_agent, client, max_retries, retry_after_cap, timeout)
         self._http = httpx.AsyncClient(transport=transport)
         t = AsyncTransport(self._core, self._http, sleep or _async_sleep)
         self._t = t

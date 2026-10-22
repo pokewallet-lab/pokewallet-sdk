@@ -105,6 +105,7 @@ class Core:
         api_key: Optional[str],
         base_url: Optional[str],
         user_agent: Optional[str],
+        client: Optional[str],
         max_retries: int,
         retry_after_cap: float,
         timeout: float,
@@ -112,6 +113,7 @@ class Core:
         self.credentials = Credentials(read_key(api_key))
         self.base_url = (base_url or DEFAULT_BASE_URL).rstrip("/")
         self.user_agent = user_agent or DEFAULT_USER_AGENT
+        self.client = client or DEFAULT_USER_AGENT
         self.max_retries = max_retries
         self.retry_after_cap = retry_after_cap
         self.timeout = timeout
@@ -122,7 +124,7 @@ class Core:
 
     def headers(self) -> dict:
         key = self.credentials.header_value()
-        base = {"User-Agent": self.user_agent, "Accept": "application/json"}
+        base = {"User-Agent": self.user_agent, "X-PokeWallet-Client": self.client, "Accept": "application/json"}
         return base if key is None else {"X-API-Key": key, **base}
 
     def require_key(self, public: bool) -> None:
