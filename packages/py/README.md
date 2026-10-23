@@ -34,10 +34,11 @@ Pokémon, One Piece and the ten games (`pw.games.mtg`, `pw.games.ygo`, ... or `p
 - **Validation:** `limit` and `page` are checked before the request is sent.
 - **Normalization:** prices are `float | None`; set identifiers are exposed as `set_id` / `set_code`; every object keeps the server value in `raw`. Ambiguous set answers (200, 300 and 409 on the wire) all raise `AmbiguousSetError`.
 - **Key safety:** the key is held in a closure and shown as `pk_***` by `repr`, `str` and errors; clients cannot be pickled.
-- **Images:** `image_url(card_id)` only builds the URL; the image routes need the `X-API-Key` header.
+- **Images:** `image_url(card_id)` only builds the URL; the image routes need the `X-API-Key` header. A 404 `Image not found` means the source has no image (do not retry it in the same run); 5xx answers are temporary (retry with backoff); on 429 wait for `Retry-After`.
+- **CardMarket-only sets** (negative `set_id`): each `prices` row is one CardMarket product, and its `cardmarket` block is the `normal` price. A `tcgplayer` block there is an extra link with no finish and must not be compared or added to it; for European prices by finish use `card(id)`. An ambiguous `set_code` on `prices` is resolved with the numeric `set_id`.
 
 The client can be created without a key: `health()` and `list_games()` are public and work without one (the `X-API-Key` header is sent only when a key is set); every other call raises `ValidationError` before any request is made.
 
-Every request carries `User-Agent: pokewallet-sdk-py/<version>`.
+Every request carries `User-Agent: pokewallet-sdk-py/<version>` and `X-PokeWallet-Client: pokewallet-sdk-py/<version>`; the `client` argument replaces the latter with your app name.
 
 Attribution: if you show data obtained through the PokeWallet API, SDKs or MCP server to other people, credit PokéWallet with visible text "Data by PokéWallet" (or "Powered by PokéWallet") linking to <https://pokewallet.io>; private use needs no attribution. See the [Terms of Use](https://pokewallet.io/terms-conditions). This concerns the data and the service; the MIT license of the code is separate.

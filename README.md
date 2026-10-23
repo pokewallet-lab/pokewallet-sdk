@@ -238,7 +238,9 @@ except AmbiguousSetError as e:
 
 An ambiguous set code is reported the same way on every endpoint, even though the API answers it three different ways.
 
-**Retries.** The SDK retries only two situations: a **429** that carries a `Retry-After` header within 30 seconds (and whose quota is not already exhausted), and a **503**, up to 2 times, honoring `Retry-After`. It never retries other errors, and never guesses a wait. Options: `maxRetries`, `retryAfterCapSeconds`, `timeoutMs`, `fetch` (TypeScript); `max_retries`, `retry_after_cap`, `timeout`, `transport` (Python).
+**Retries.** The SDK retries only two situations: a **429** that carries a `Retry-After` header within 30 seconds (and whose quota is not already exhausted), and a **503**, up to 2 times, honoring `Retry-After`. It never retries other errors, and never guesses a wait. Options: `maxRetries`, `retryAfterCapSeconds`, `timeoutMs`, `client`, `fetch` (TypeScript); `max_retries`, `retry_after_cap`, `timeout`, `client`, `transport` (Python).
+
+**Client header.** Every request carries `X-PokeWallet-Client: pokewallet-sdk-ts/<version>` (Python: `pokewallet-sdk-py/<version>`), next to the `User-Agent`. Browsers cannot set `User-Agent`, so this header is how a browser app identifies itself; the `client` option replaces its value with your own app name.
 
 **Quota.** After any call, `pw.lastRateLimit` (Python: `pw.last_rate_limit`) holds `limitHour`, `remainingHour`, `limitDay` and `remainingDay`. The free plan allows 100 requests per hour; a `RateLimitError` has `limits` (`hourly` / `daily`) showing what is left. Error responses count against your quota too.
 

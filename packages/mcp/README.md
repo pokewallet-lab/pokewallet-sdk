@@ -2,7 +2,7 @@
 
 Stateless remote [MCP](https://modelcontextprotocol.io) server for the PokeWallet API, built on a Cloudflare Worker with `createMcpHandler` (Streamable HTTP at `/mcp`). No Durable Objects, no KV, no server-side key.
 
-**Auth (mode A):** each request carries `Authorization: Bearer pk_…`, the caller's own PokeWallet key. The Worker answers 401 for anything that is not a Bearer `pk_` token before calling upstream, then forwards the key through `@pokewallet/sdk` with `User-Agent: pokewallet-mcp/<version>`. Plan limits and quota stay the caller's own. The key is never logged or echoed.
+**Auth (mode A):** each request carries `Authorization: Bearer pk_…`, the caller's own PokeWallet key. The Worker answers 401 for anything that is not a Bearer `pk_` token before calling upstream, then forwards the key through `@pokewallet/sdk` with `User-Agent: pokewallet-mcp/<version>` and an `X-PokeWallet-Client` header that adds the name of the calling MCP client, taken from its `User-Agent` (for example `pokewallet-mcp/<version> (Claude-User)`). Plan limits and quota stay the caller's own. The key is never logged or echoed.
 
 Tools (all read-only, each call costs one request of the caller's quota): `list_games`, `search_cards` (max 10 results), `get_card`, `list_sets`, `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics` (optional `variant`: `normal` or `foil`), `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter selects `pokemon` (default), `onepiece` or one of the ten game codes. Whole-set price dumps and images are deliberately not exposed.
 
