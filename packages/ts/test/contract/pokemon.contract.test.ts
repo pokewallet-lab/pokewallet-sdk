@@ -139,6 +139,21 @@ describe.skipIf(!HAS_KEY)('contract: Pokémon (live API)', () => {
     expect(Object.keys(h.tcgplayer ?? h.cardmarket ?? {}).length).toBeGreaterThan(0)
   })
 
+  it('Trainer Gallery and Galarian Gallery sets carry CardMarket prices everywhere', async () => {
+    for (const code of ['CRZ:GG', 'SWSH09:TG', 'SWSH10:TG', 'SWSH11: TG', 'SWSH12: TG']) {
+      const prices = await pw.pokemon.prices(code)
+      expect(prices.rows.length).toBeGreaterThan(0)
+      expect(prices.rows.filter((r) => r.cardmarket === null)).toEqual([])
+    }
+    const listing = await pw.pokemon.set('CRZ:GG', { limit: 3 })
+    expect(listing.items.every((c) => c.cardmarket !== null)).toBe(true)
+    const card = await pw.pokemon.card(listing.items[0]!.id)
+    expect(card.cardmarket).not.toBeNull()
+    const found = await pw.pokemon.search('Eevee Crown Zenith', { limit: 5 })
+    expect(found.items.length).toBeGreaterThan(0)
+    expect(found.items.every((c) => c.cardmarket !== null)).toBe(true)
+  })
+
   it('errors: unknown set is NotFoundError, a garbage id is BadRequestError', async () => {
     expect(await fail(pw.pokemon.set('ZZZZNOSUCHSET'))).toBeInstanceOf(NotFoundError)
     expect(await fail(pw.pokemon.card('pk_not-a-real-id'))).toBeInstanceOf(BadRequestError)

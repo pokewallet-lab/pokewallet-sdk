@@ -182,6 +182,10 @@ Every returned object has the same fields in both languages (`camelCase` in Type
 
 **Images:** `imageUrl(id)` only builds the URL. Image routes need your key in the `X-API-Key` header, so the URL cannot go straight into an `<img>` tag; fetch it with the header or proxy it from your server.
 
+Image outcomes: **404** `Image not found` means the source has no image, so do not retry it in the same run (check again from time to time); **502**, **503** and other 5xx answers are temporary, so retry with backoff; on **429** wait for `Retry-After` when it is present.
+
+**Prices of CardMarket-only sets.** For a set with a negative id (`source` is `cm`), each `prices` row is one CardMarket product and its `cardmarket` block is the `normal` price of that product. A `tcgplayer` block, when there is one, is an extra link made through CardTrader: its `variant` is `null` and it can be for a different finish than the CardMarket one (for example 1st Edition Holofoil), so do not compare or add the two. For European prices by finish (`normal` and `holo`), use `card(id)`. An ambiguous `set_code` on `prices` answers 300 with `matches`: pass the numeric `set_id` instead.
+
 ## 5. Errors, retries and limits
 
 Every failure is a typed error, all subclasses of `PokeWalletError`:

@@ -12,6 +12,11 @@ info:
     account endpoints, and endpoints that are not mounted (`/search/by-price-range`,
     `/search/by-type`, `/cards/{id}/variants`, `/cards/{id}/price-comparison`: they answer 404).
 
+    Images are not described path by path, but their outcomes are the same everywhere:
+    **404** `Image not found` means the source has no image (do not retry within the same run; check
+    again from time to time), **5xx** answers (502, 503...) are temporary and worth retrying with
+    backoff, and **429** means wait for `Retry-After` when it is present.
+
     Three families with different shapes:
     - **Pokémon** (root `/`): lists in `results` / `cards`, nested `pagination`.
     - **One Piece** (`/op`): flat card, single price object, flat pagination
@@ -232,7 +237,19 @@ paths:
       summary: Prices of every card in a set (Pro or trial; hundreds of rows)
       description: |
         The response carries both `set_id` and `group_id` (the same value).
-        Ambiguous set: **300** with the `Disambiguation` body (no `error` field).
+        Ambiguous set: **300** with the `Disambiguation` body (no `error` field); send the numeric
+        `set_id` of the match you want instead of the `set_code`.
+
+        Sets with a negative `set_id` exist on CardMarket only (`source` is `cm`). Each row is one
+        CardMarket product and its `cardmarket` block is the `normal` price of that product. A
+        `tcgplayer` block, when present, is an extra link made through CardTrader: it has no finish
+        (`variant` is `null`) and may be for another finish than the CardMarket one (for example
+        1st Edition Holofoil). Do not compare or add the two. For European prices by finish
+        (`normal` and `holo`), use `/cards/{id}`.
+
+        Trainer Gallery and Galarian Gallery sets (`CRZ:GG`, `SWSH09:TG`, `SWSH10:TG`, `SWSH11: TG`,
+        `SWSH12: TG`) carry a `cardmarket` block on every card here, in `/cards/{id}`, `/sets/{setCode}`
+        and `/search`. Their CardMarket rows live in the main set and are matched by the TG / GG number.
       parameters:
         - { $ref: '#/components/parameters/SetCode' }
         - { name: source, in: query, schema: { type: string, enum: [tcg, cm] } }

@@ -108,6 +108,18 @@ def test_price_history(pw):
 
 
 
+def test_gallery_sets_carry_cardmarket_prices_everywhere(pw):
+    for code in ["CRZ:GG", "SWSH09:TG", "SWSH10:TG", "SWSH11: TG", "SWSH12: TG"]:
+        prices = pw.pokemon.prices(code)
+        assert prices.rows
+        assert [r.id for r in prices.rows if r.cardmarket is None] == []
+    listing = pw.pokemon.set("CRZ:GG", limit=3)
+    assert all(c.cardmarket is not None for c in listing.items)
+    assert pw.pokemon.card(listing.items[0].id).cardmarket is not None
+    found = pw.pokemon.search("Eevee Crown Zenith", limit=5)
+    assert found.items and all(c.cardmarket is not None for c in found.items)
+
+
 def test_errors_and_local_validation(pw):
     assert isinstance(failure(pw.pokemon.set, "ZZZZNOSUCHSET"), NotFoundError)
     assert isinstance(failure(pw.pokemon.card, "pk_not-a-real-id"), BadRequestError)
