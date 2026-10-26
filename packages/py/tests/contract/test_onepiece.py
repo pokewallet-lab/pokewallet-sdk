@@ -47,6 +47,16 @@ def test_trending_and_top_cards(pw):
     assert pw.onepiece.top_cards(metric="growth", source="cm", limit=3)[0].change_7d.endswith("%")
 
 
+def test_every_entry_has_its_own_id_and_a_product_type_and_sets_carry_counts(pw):
+    prices = pw.onepiece.prices("OP01")
+    assert len({r.id for r in prices.rows}) == len(prices.rows)
+    assert all(r.product_type is not None for r in prices.rows)
+    page = pw.onepiece.set("OP01", limit=200)
+    assert len({c.id for c in page.items}) == len(page.items)
+    assert all(c.product_type is not None for c in page.items)
+    assert all(isinstance(s.card_count, int) and isinstance(s.sealed_count, int) for s in pw.onepiece.sets())
+
+
 def test_unknown_set_is_not_found(pw):
     assert isinstance(failure(pw.onepiece.set, "NOSUCHSET99"), NotFoundError)
 

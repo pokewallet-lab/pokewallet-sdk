@@ -63,7 +63,7 @@ export function normalizeOpCard(raw: unknown, ctx?: SetContext): Card {
     number: str(r.card_number),
     rarity: str(r.rarity),
     cardType: str(r.card_type),
-    productType: null,
+    productType: str(r.product_type),
     text: str(r.ext_description),
     variants: typeof finish === 'string' ? [finish] : [],
     setId: ctx?.setId ?? null,

@@ -54,7 +54,7 @@ describe('card shaping', () => {
     const page = await pw.onepiece.search('x', { limit: 3 })
     const s = cardSummary(page.items[0]!) as any
     expect(s).toMatchObject({ rarity: 'SR' })
-    expect(s.tcgplayerUsd).toEqual({ Foil: 17.85 })
+    expect(s.tcgplayerUsd).toEqual({ Foil: 18.15 })
     expect(s.id).toMatch(/^op_/)
   })
 })

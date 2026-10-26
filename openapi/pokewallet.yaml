@@ -575,7 +575,7 @@ paths:
       tags: [games]
       operationId: gameListSets
       summary: All sets of a game
-      description: "`set_code` can be `null`. `card_count`/`sealed_count` are missing if the SQL counts function is not installed."
+      description: "`set_code` can be `null`. `card_count` and `sealed_count` are present on every set."
       parameters:
         - { $ref: '#/components/parameters/Game' }
       responses:
@@ -1297,9 +1297,10 @@ components:
       description: "Flat card: no `card_info`, `ext_*` fields; `prices` is a single object (Pokémon: an array per finish). CardMarket prices are attached to the cards of the English sets too (OP15, OP14, PRB-02, EB04), so more search and detail answers carry a `cardmarket` block."
       required: [id, name]
       properties:
-        id: { type: string, description: "`op_<hex>`" }
+        id: { type: string, description: "`op_<hex>`. One per entry: a Normal and a Foil entry of the same card have different ids." }
         card_number: { type: [string, 'null'] }
         name: { type: string }
+        product_type: { type: [string, 'null'], description: "`card` or a sealed product type." }
         clean_name: { type: [string, 'null'] }
         sub_type_name: { type: [string, 'null'] }
         rarity: { type: [string, 'null'] }
@@ -1347,6 +1348,8 @@ components:
         group_id: { type: string, description: "Numeric, as a string or a number, possibly negative." }
         language: { type: [string, 'null'] }
         release_date: { type: [string, 'null'] }
+        card_count: { type: integer, description: "Cards in the set (sealed products are counted apart)." }
+        sealed_count: { type: integer }
     OpSetListResponse:
       type: object
       properties:

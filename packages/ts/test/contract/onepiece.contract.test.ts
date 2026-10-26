@@ -74,6 +74,17 @@ describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
     expect(growth[0]!.change7d).toMatch(/%$/)
   })
 
+  it('every entry has its own id and a product type, and sets carry their counts', async () => {
+    const prices = await pw.onepiece.prices('OP01')
+    expect(new Set(prices.rows.map((r) => r.id)).size).toBe(prices.rows.length)
+    expect(prices.rows.every((r) => r.productType !== null)).toBe(true)
+    const page = await pw.onepiece.set('OP01', { limit: 200 })
+    expect(new Set(page.items.map((c) => c.id)).size).toBe(page.items.length)
+    expect(page.items.every((c) => c.productType !== null)).toBe(true)
+    const sets = await pw.onepiece.sets()
+    expect(sets.every((s) => typeof s.cardCount === 'number' && typeof s.sealedCount === 'number')).toBe(true)
+  })
+
   it('unknown set is NotFoundError', async () => {
     expect(await fail(pw.onepiece.set('NOSUCHSET99'))).toBeInstanceOf(NotFoundError)
   })

@@ -97,6 +97,7 @@ def test_one_piece_flat_shape_and_set_identity():
     assert m.calls[0]["url"] == "https://api.pokewallet.io/op/search?q=cavendish&limit=3"
     assert (page.page, page.limit, page.total, page.total_pages) == (1, 3, 37, 13)
     c = page.items[0]
+    assert [x.product_type for x in page.items] == ["card", "card", "card"]
     assert c.id.startswith("op_") and c.rarity == "SR" and c.info["ext_color"] == "Green" and c.set_id is None
     assert len(c.tcgplayer.prices) == 1 and c.tcgplayer.prices[0].variant == "Foil"
     assert c.cardmarket is not None and len(c.cardmarket.prices) > 0
@@ -119,6 +120,7 @@ def test_one_piece_sets_statistics_trending_top_cards():
     pw = mock({"body": fixture("op-sets")}).client()
     s = pw.onepiece.sets()[0]
     assert (s.id, s.code, s.language) == ("-3", "OP01-JP", "jp")
+    assert (s.card_count, s.sealed_count) == (155, 0)
     m = mock({"body": fixture("op-statistics")})
     st = m.client().onepiece.statistics("OP01")
     assert m.calls[0]["url"] == "https://api.pokewallet.io/op/sets/OP01/statistics"

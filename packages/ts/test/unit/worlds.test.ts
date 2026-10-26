@@ -138,6 +138,7 @@ describe('One Piece', () => {
     const c = page.items[0]!
     expect(c.id).toMatch(/^op_/)
     expect(c.rarity).toBe('SR')
+    expect(page.items.map((x) => x.productType)).toEqual(['card', 'card', 'card'])
     expect(c.info.ext_color).toBe('Green')
     expect(c.tcgplayer!.prices).toHaveLength(1)
     expect(c.tcgplayer!.prices[0]).toMatchObject({ variant: 'Foil' })
@@ -164,7 +165,7 @@ describe('One Piece', () => {
 
   it('lists sets with group_id as id; statistics/trending/top cards use /op routes', async () => {
     const sets = await sdk([{ body: fixture('op-sets') }]).pw.onepiece.sets()
-    expect(sets[0]).toMatchObject({ id: '-3', code: 'OP01-JP', language: 'jp' })
+    expect(sets[0]).toMatchObject({ id: '-3', code: 'OP01-JP', language: 'jp', cardCount: 155, sealedCount: 0 })
 
     const stats = sdk([{ body: fixture('op-statistics') }])
     const s = await stats.pw.onepiece.statistics('OP01')

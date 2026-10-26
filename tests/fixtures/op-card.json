@@ -7,6 +7,7 @@
  "sub_type_name": "Normal",
  "rarity": "L",
  "card_type": "Leader",
+ "product_type": "card",
  "ext_color": "Red",
  "ext_cost": null,
  "ext_power": "5000",
@@ -18,25 +19,25 @@
  "tcgplayer": {
   "url": "https://www.tcgplayer.com/product/454512",
   "prices": {
-   "low_price": 1.67,
+   "low_price": 1.74,
    "mid_price": 3.23,
    "high_price": 34.99,
-   "market_price": 1.67,
+   "market_price": 1.83,
    "direct_low_price": null,
-   "updated_at": "2026-10-20T10:58:14.272579"
+   "updated_at": "2026-10-26T12:19:06.711729"
   }
  },
  "cardmarket": {
   "product_name": "Roronoa Zoro (OP01-001) (V.1)",
   "product_url": "https://www.cardmarket.com/it/OnePiece/Products/Singles/Romance-Dawn/Roronoa-Zoro-OP01-001-V1",
   "prices": {
-   "avg": 2.02,
+   "avg": 2.12,
    "low": 0.8,
-   "trend": 2.23,
-   "avg1": 2.22,
-   "avg7": 2.19,
-   "avg30": 2.03,
-   "updated_at": "2026-10-20T09:04:21.148792"
+   "trend": 2.31,
+   "avg1": 2.24,
+   "avg7": 2.4,
+   "avg30": 2.13,
+   "updated_at": "2026-10-26T09:35:57.670777"
   }
  }
 }
