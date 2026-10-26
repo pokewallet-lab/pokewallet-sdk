@@ -2,6 +2,12 @@
 
 Changes to the TypeScript SDK, the Python SDK and the MCP server. The full notes of each version are on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
 
+## 0.1.7
+
+- One Piece: a card now reports its `product_type` (`card` or a sealed type) in `productType` / `product_type`, and set listings report `cardCount` / `sealedCount`. Each entry has its own id, so a Normal and a Foil entry of the same card no longer share one.
+- Tests: re-recorded One Piece fixtures and contract checks for ids, product types and set counts.
+- CI: the Python matrix runs on `ubuntu-24.04`, which still ships Python 3.9.
+
 ## 0.1.6
 
 - Documentation: Trainer Gallery and Galarian Gallery sets (`CRZ:GG`, `SWSH09:TG`, `SWSH10:TG`, `SWSH11: TG`, `SWSH12: TG`) now carry CardMarket prices on every card, in `prices`, card detail, set listings and search. Only the values change; there are no new fields.
