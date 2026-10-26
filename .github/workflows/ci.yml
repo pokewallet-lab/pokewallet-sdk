@@ -55,7 +55,8 @@ jobs:
           node -e "const { PokeWallet } = require('./dist/index.cjs'); new PokeWallet({ apiKey: 'pk_ci_placeholder', fetch: async () => new Response('{}') }).pokemon.sets().then(() => console.log('cjs ok'))"
 
   python:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, which has no Python 3.9 build.
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: packages/py
