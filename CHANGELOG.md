@@ -2,6 +2,11 @@
 
 Changes to the TypeScript SDK, the Python SDK and the MCP server. The full notes of each version are on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
 
+## 0.1.8
+
+- One Piece: `card(id)` and search now report each card's set in `setId`, `setCode` and `setName` / `set_id`, `set_code` and `set_name` (before, only set listings had `setId` and `setCode`). The hosted MCP server shows the set on One Piece cards too.
+- Tests: re-recorded One Piece search and card fixtures, unit tests for the set of an entry and contract checks on detail and search.
+
 ## 0.1.7
 
 - One Piece: a card now reports its `product_type` (`card` or a sealed type) in `productType` / `product_type`, and set listings report `cardCount` / `sealedCount`. Each entry has its own id, so a Normal and a Foil entry of the same card no longer share one.

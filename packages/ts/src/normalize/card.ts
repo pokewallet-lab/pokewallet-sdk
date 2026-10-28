@@ -66,9 +66,10 @@ export function normalizeOpCard(raw: unknown, ctx?: SetContext): Card {
     productType: str(r.product_type),
     text: str(r.ext_description),
     variants: typeof finish === 'string' ? [finish] : [],
-    setId: ctx?.setId ?? null,
-    setCode: ctx?.setCode ?? null,
-    setName: null,
+    // Detail and search entries carry their set; set listings leave it to the `set` block (ctx).
+    setId: str(r.set_id) ?? str(r.group_id) ?? ctx?.setId ?? null,
+    setCode: str(r.set_code) ?? ctx?.setCode ?? null,
+    setName: str(r.set_name),
     tcgplayer: tcg ? { url: str(tcg.url), prices: tcg.prices ? [tcgPrice(tcg.prices, finish)] : [] } : null,
     cardmarket: cm
       ? { productName: str(cm.product_name), url: str(cm.product_url), prices: cm.prices ? [cardmarketPrice(cm.prices, finish)] : [] }

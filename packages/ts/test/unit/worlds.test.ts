@@ -143,14 +143,35 @@ describe('One Piece', () => {
     expect(c.tcgplayer!.prices).toHaveLength(1)
     expect(c.tcgplayer!.prices[0]).toMatchObject({ variant: 'Foil' })
     expect(c.cardmarket!.prices.length).toBeGreaterThan(0)
-    expect(c.setId).toBeNull()
+    expect(c).toMatchObject({ setId: '23333', setCode: 'EB-01', setName: 'Extra Booster: Memorial Collection' })
+    expect(page.items.map((x) => x.setCode)).toEqual(['EB-01', 'OP-PR', 'PRB-02'])
+  })
+
+  it('reads the set of a card from the entry itself', async () => {
+    const { pw, calls } = sdk([{ body: fixture('op-card') }])
+    const c = await pw.onepiece.card('op_abc')
+    expect(calls[0]!.url).toBe('https://api.pokewallet.io/op/cards/op_abc')
+    expect(c).toMatchObject({ number: 'OP01-001', setId: '3188', setCode: 'OP01', setName: 'Romance Dawn' })
+  })
+
+  it('falls back to group_id when an entry has no set_id', async () => {
+    const { set_id: _, ...entry } = fixture('op-card')
+    const c = await sdk([{ body: entry }]).pw.onepiece.card('op_abc')
+    expect(c.setId).toBe('3188')
   })
 
   it('reads set identity from the set object (group_id)', async () => {
     const page = await sdk([{ body: fixture('op-set') }]).pw.onepiece.set('OP01', { limit: 3 })
     expect(page.set).toMatchObject({ id: '3188', code: 'OP01', name: 'Romance Dawn' })
-    expect(page.items[0]).toMatchObject({ setId: '3188', setCode: 'OP01', number: 'OP01-001' })
+    expect(page.items[0]).toMatchObject({ setId: '3188', setCode: 'OP01', setName: null, number: 'OP01-001' })
     expect(page.total).toBe(159)
+  })
+
+  it("prefers an entry's own set over the listing's", async () => {
+    const base = fixture('op-set')
+    const own = { ...base.data[0], set_name: 'Romance Dawn (JP)', set_code: 'OP01-JP', set_id: '-3', group_id: '-3' }
+    const page = await sdk([{ body: { ...base, data: [own] } }]).pw.onepiece.set('OP01')
+    expect(page.items[0]).toMatchObject({ setId: '-3', setCode: 'OP01-JP', setName: 'Romance Dawn (JP)' })
   })
 
   it('sends set prices in the query: set_code for codes, group_id for numbers', async () => {

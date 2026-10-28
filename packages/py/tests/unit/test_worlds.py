@@ -98,13 +98,32 @@ def test_one_piece_flat_shape_and_set_identity():
     assert (page.page, page.limit, page.total, page.total_pages) == (1, 3, 37, 13)
     c = page.items[0]
     assert [x.product_type for x in page.items] == ["card", "card", "card"]
-    assert c.id.startswith("op_") and c.rarity == "SR" and c.info["ext_color"] == "Green" and c.set_id is None
+    assert c.id.startswith("op_") and c.rarity == "SR" and c.info["ext_color"] == "Green"
+    assert (c.set_id, c.set_code, c.set_name) == ("23333", "EB-01", "Extra Booster: Memorial Collection")
+    assert [x.set_code for x in page.items] == ["EB-01", "OP-PR", "PRB-02"]
     assert len(c.tcgplayer.prices) == 1 and c.tcgplayer.prices[0].variant == "Foil"
     assert c.cardmarket is not None and len(c.cardmarket.prices) > 0
 
     s = mock({"body": fixture("op-set")}).client().onepiece.set("OP01", limit=3)
     assert (s.set.id, s.set.code, s.set.name, s.total) == ("3188", "OP01", "Romance Dawn", 159)
-    assert (s.items[0].set_id, s.items[0].set_code, s.items[0].number) == ("3188", "OP01", "OP01-001")
+    assert (s.items[0].set_id, s.items[0].set_code, s.items[0].set_name, s.items[0].number) == ("3188", "OP01", None, "OP01-001")
+
+
+def test_one_piece_card_reads_its_set_from_the_entry():
+    m = mock({"body": fixture("op-card")})
+    c = m.client().onepiece.card("op_abc")
+    assert m.calls[0]["url"] == "https://api.pokewallet.io/op/cards/op_abc"
+    assert (c.number, c.set_id, c.set_code, c.set_name) == ("OP01-001", "3188", "OP01", "Romance Dawn")
+
+    entry = {k: v for k, v in fixture("op-card").items() if k != "set_id"}
+    assert mock({"body": entry}).client().onepiece.card("op_abc").set_id == "3188"
+
+
+def test_one_piece_entry_set_wins_over_the_listing():
+    body = fixture("op-set")
+    own = {**body["data"][0], "set_name": "Romance Dawn (JP)", "set_code": "OP01-JP", "set_id": "-3", "group_id": "-3"}
+    c = mock({"body": {**body, "data": [own]}}).client().onepiece.set("OP01").items[0]
+    assert (c.set_id, c.set_code, c.set_name) == ("-3", "OP01-JP", "Romance Dawn (JP)")
 
 
 def test_one_piece_prices_go_in_the_query():

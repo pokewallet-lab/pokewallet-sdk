@@ -4,6 +4,10 @@
  "card_number": "OP01-001",
  "name": "Roronoa Zoro (001)",
  "clean_name": "Roronoa Zoro 001",
+ "set_name": "Romance Dawn",
+ "set_code": "OP01",
+ "set_id": "3188",
+ "group_id": "3188",
  "sub_type_name": "Normal",
  "rarity": "L",
  "card_type": "Leader",
@@ -20,11 +24,11 @@
   "url": "https://www.tcgplayer.com/product/454512",
   "prices": {
    "low_price": 1.74,
-   "mid_price": 3.23,
+   "mid_price": 3.22,
    "high_price": 34.99,
-   "market_price": 1.83,
+   "market_price": 1.98,
    "direct_low_price": null,
-   "updated_at": "2026-10-26T12:19:06.711729"
+   "updated_at": "2026-10-27T11:39:08.786976"
   }
  },
  "cardmarket": {
@@ -33,11 +37,11 @@
   "prices": {
    "avg": 2.12,
    "low": 0.8,
-   "trend": 2.31,
-   "avg1": 2.24,
-   "avg7": 2.4,
-   "avg30": 2.13,
-   "updated_at": "2026-10-26T09:35:57.670777"
+   "trend": 2.39,
+   "avg1": 2.93,
+   "avg7": 2.51,
+   "avg30": 2.15,
+   "updated_at": "2026-10-27T09:32:04.165623"
   }
  }
 }

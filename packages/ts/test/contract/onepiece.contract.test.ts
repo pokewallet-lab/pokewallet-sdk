@@ -45,6 +45,21 @@ describe.skipIf(!HAS_KEY)('contract: One Piece (live API)', () => {
     expect(page.total).toBeGreaterThan(100)
   })
 
+  it('detail and search carry the set of each entry', async () => {
+    const listing = await pw.onepiece.set('OP01', { limit: 1 })
+    const card = await pw.onepiece.card(listing.items[0]!.id)
+    expect(card).toMatchObject({ setId: listing.set.id, setCode: 'OP01' })
+    expect(card.setName).toBeTruthy()
+    const page = await pw.onepiece.search('zoro', { limit: 5 })
+    for (const c of page.items) {
+      expect(c.setId).toMatch(/^-?\d+$/)
+      expect(c.setCode).toBeTruthy()
+      expect(c.setName).toBeTruthy()
+    }
+    const hit = page.items[0]!
+    expect(await pw.onepiece.card(hit.id)).toMatchObject({ setId: hit.setId, setCode: hit.setCode, setName: hit.setName })
+  })
+
   it('prices (set in the query), statistics, completion value', async () => {
     const prices = await pw.onepiece.prices('OP01')
     expect(prices.rows.length).toBeGreaterThan(100)

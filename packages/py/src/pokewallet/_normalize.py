@@ -152,9 +152,10 @@ def normalize_op_card(raw: Any, ctx: Optional[SetPair] = None) -> Card:
         product_type=text(r.get("product_type")),
         text=text(r.get("ext_description")),
         variants=[finish] if isinstance(finish, str) else [],
-        set_id=ctx.id if ctx else None,
-        set_code=ctx.code if ctx else None,
-        set_name=None,
+        # Detail and search entries carry their set; set listings leave it to the ``set`` block (ctx).
+        set_id=text(r.get("set_id")) or text(r.get("group_id")) or (ctx.id if ctx else None),
+        set_code=text(r.get("set_code")) or (ctx.code if ctx else None),
+        set_name=text(r.get("set_name")),
         tcgplayer=TcgplayerBlock(text(tcg.get("url")), [tcg_price(tcg["prices"], finish)] if tcg.get("prices") else []) if tcg is not None else None,
         cardmarket=CardmarketBlock(
             text(cm.get("product_name")), text(cm.get("product_url")), [cardmarket_price(cm["prices"], finish)] if cm.get("prices") else []

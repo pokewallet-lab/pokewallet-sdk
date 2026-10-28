@@ -26,6 +26,17 @@ def test_set_listing_carries_group_id_identity(pw):
     assert page.total > 100
 
 
+def test_detail_and_search_carry_the_set_of_each_entry(pw):
+    listing = pw.onepiece.set("OP01", limit=1)
+    card = pw.onepiece.card(listing.items[0].id)
+    assert (card.set_id, card.set_code) == (listing.set.id, "OP01") and card.set_name
+    page = pw.onepiece.search("zoro", limit=5)
+    assert all(c.set_id.lstrip("-").isdigit() and c.set_code and c.set_name for c in page.items)
+    hit = page.items[0]
+    again = pw.onepiece.card(hit.id)
+    assert (again.set_id, again.set_code, again.set_name) == (hit.set_id, hit.set_code, hit.set_name)
+
+
 def test_prices_statistics_completion(pw):
     prices = pw.onepiece.prices("OP01")
     assert len(prices.rows) > 100 and prices.set_id == "3188"

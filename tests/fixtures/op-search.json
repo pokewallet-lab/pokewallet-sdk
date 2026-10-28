@@ -6,6 +6,10 @@
    "card_number": "EB01-012",
    "name": "Cavendish (Alternate Art)",
    "clean_name": "Cavendish Alternate Art",
+   "set_name": "Extra Booster: Memorial Collection",
+   "set_code": "EB-01",
+   "set_id": "23333",
+   "group_id": "23333",
    "sub_type_name": "Foil",
    "rarity": "SR",
    "card_type": "Character",
@@ -18,12 +22,12 @@
    "tcgplayer": {
     "url": "https://www.tcgplayer.com/product/544539",
     "prices": {
-     "low_price": 15.99,
-     "mid_price": 25.93,
+     "low_price": 17.7,
+     "mid_price": 28,
      "high_price": 120,
-     "market_price": 18.15,
+     "market_price": 18.11,
      "direct_low_price": null,
-     "updated_at": "2026-10-26T12:19:05.290594"
+     "updated_at": "2026-10-27T11:39:05.949634"
     }
    },
    "cardmarket": {
@@ -32,11 +36,11 @@
     "prices": {
      "avg": 13.79,
      "low": 10,
-     "trend": 11.91,
-     "avg1": 11.7,
-     "avg7": 12.2,
-     "avg30": 15.69,
-     "updated_at": "2026-10-26T09:35:57.670777"
+     "trend": 11.5,
+     "avg1": 12.5,
+     "avg7": 11.74,
+     "avg30": 15.57,
+     "updated_at": "2026-10-27T09:32:04.165623"
     }
    }
   },
@@ -45,6 +49,10 @@
    "card_number": "EB01-012",
    "name": "Cavendish (Treasure Cup 2024)",
    "clean_name": "Cavendish Treasure Cup 2024",
+   "set_name": "One Piece Promotion Cards",
+   "set_code": "OP-PR",
+   "set_id": "17675",
+   "group_id": "17675",
    "sub_type_name": "Foil",
    "rarity": "SR",
    "card_type": "Character",
@@ -62,7 +70,7 @@
      "high_price": 1699.97,
      "market_price": null,
      "direct_low_price": null,
-     "updated_at": "2026-10-26T12:19:06.711729"
+     "updated_at": "2026-10-27T11:39:08.786976"
     }
    },
    "cardmarket": {
@@ -75,7 +83,7 @@
      "avg1": 2500,
      "avg7": 775.9,
      "avg30": 717.42,
-     "updated_at": "2026-10-26T09:35:57.670777"
+     "updated_at": "2026-10-27T09:32:04.165623"
     }
    }
   },
@@ -84,6 +92,10 @@
    "card_number": "EB01-012",
    "name": "Cavendish - EB01-012 (Reprint)",
    "clean_name": "Cavendish EB01 012 Reprint",
+   "set_name": "Premium Booster -The Best- Vol. 2",
+   "set_code": "PRB-02",
+   "set_id": "24305",
+   "group_id": "24305",
    "sub_type_name": "Foil",
    "rarity": "SR",
    "card_type": "Character",
@@ -97,11 +109,11 @@
     "url": "https://www.tcgplayer.com/product/655981",
     "prices": {
      "low_price": 0.7,
-     "mid_price": 2.25,
+     "mid_price": 2.34,
      "high_price": 12,
-     "market_price": 1.55,
+     "market_price": 1.47,
      "direct_low_price": null,
-     "updated_at": "2026-10-26T12:19:05.290594"
+     "updated_at": "2026-10-27T11:39:05.949634"
     }
    },
    "cardmarket": {
@@ -110,11 +122,11 @@
     "prices": {
      "avg": 1.47,
      "low": 0.08,
-     "trend": 1.29,
+     "trend": 1.3,
      "avg1": 1.5,
-     "avg7": 1.31,
-     "avg30": 1.5,
-     "updated_at": "2026-10-26T09:35:59.735191"
+     "avg7": 1.36,
+     "avg30": 1.48,
+     "updated_at": "2026-10-27T09:32:06.676457"
     }
    }
   }

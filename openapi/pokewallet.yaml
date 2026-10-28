@@ -1302,6 +1302,10 @@ components:
         name: { type: string }
         product_type: { type: [string, 'null'], description: "`card` or a sealed product type." }
         clean_name: { type: [string, 'null'] }
+        set_name: { type: [string, 'null'], description: "Set name from the set mapping; falls back to the code. In `/op/cards/:id` and `/op/search` only: set listings carry it in the `set` block." }
+        set_code: { type: [string, 'null'] }
+        set_id: { type: string, description: "The set's `group_id`, always a string; negative for CardMarket-only sets." }
+        group_id: { type: string, description: "Alias of `set_id`." }
         sub_type_name: { type: [string, 'null'] }
         rarity: { type: [string, 'null'] }
         card_type: { type: [string, 'null'] }

@@ -53,8 +53,9 @@ describe('card shaping', () => {
     const pw = new PokeWallet({ apiKey: 'pk_test_not_a_real_key', fetch: stubFetch([{ body: fixture('op-search') }]) })
     const page = await pw.onepiece.search('x', { limit: 3 })
     const s = cardSummary(page.items[0]!) as any
-    expect(s).toMatchObject({ rarity: 'SR' })
-    expect(s.tcgplayerUsd).toEqual({ Foil: 18.15 })
+    expect(s).toMatchObject({ rarity: 'SR', set: 'Extra Booster: Memorial Collection (EB-01)' })
+    expect(s.setId).toBeUndefined()
+    expect(s.tcgplayerUsd).toEqual({ Foil: 18.11 })
     expect(s.id).toMatch(/^op_/)
   })
 })
