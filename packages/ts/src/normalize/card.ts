@@ -1,4 +1,4 @@
-import type { Card } from '../types.js'
+import type { Card, CardImage, CardLanguageParts } from '../types.js'
 import { arr, rec, setPair, str, type Rec } from './common.js'
 import { cardmarketPrice, tcgPrice } from './prices.js'
 
@@ -10,7 +10,7 @@ export interface SetContext {
 
 const KNOWN = new Set([
   'name', 'clean_name', 'set_name', 'set_code', 'set_id', 'card_number', 'rarity', 'card_type',
-  'product_type', 'variants', 'card_text',
+  'product_type', 'variants', 'card_text', 'language', 'languages',
 ])
 
 /** Card in the Pokémon shape (Pokémon and the ten games): `{id, card_info, tcgplayer, cardmarket}`. */
@@ -38,7 +38,28 @@ export function normalizeCard(raw: unknown, ctx?: SetContext): Card {
       ? { productName: str(cm.product_name), url: str(cm.product_url), prices: arr(cm.prices).map((p) => cardmarketPrice(p)) }
       : null,
     info: extras(info),
+    language: str(info.language),
+    languages: languageMap(info.languages),
+    image: imageBlock(r.images),
     raw,
+  }
+}
+
+function languageMap(value: unknown): Record<string, CardLanguageParts[]> {
+  const out: Record<string, CardLanguageParts[]> = {}
+  for (const [lang, parts] of Object.entries(rec(value))) {
+    out[lang] = arr(parts).filter((p): p is CardLanguageParts => p === 'data' || p === 'image')
+  }
+  return out
+}
+
+function imageBlock(value: unknown): CardImage | null {
+  if (!value || typeof value !== 'object') return null
+  const i = rec(value)
+  return {
+    languages: arr(i.languages).filter((l): l is string => typeof l === 'string'),
+    path: str(i.path),
+    language: str(i.language),
   }
 }
 
@@ -75,6 +96,9 @@ export function normalizeOpCard(raw: unknown, ctx?: SetContext): Card {
       ? { productName: str(cm.product_name), url: str(cm.product_url), prices: cm.prices ? [cardmarketPrice(cm.prices, finish)] : [] }
       : null,
     info,
+    language: null,
+    languages: {},
+    image: null,
     raw,
   }
 }

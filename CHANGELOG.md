@@ -2,6 +2,16 @@
 
 Changes to the TypeScript SDK, the Python SDK and the MCP server. The full notes of each version are on the [Releases page](https://github.com/pokewallet-lab/pokewallet-sdk/releases).
 
+## 0.1.9
+
+Requires the API release that serves `lang`; against an older API nothing is translated.
+
+- Card languages (Pokémon): `search`, `card` and `set` take `lang` (`de es fr it pt ko zh-cn zh-tw th id`; `en` and `ja` are the default). Both SDKs check the value before sending, and refuse `lang` for One Piece and the ten games.
+- New card fields: `language` / `language`, `languages` (what exists per language: `data`, `image`) and `image` with `path`, `language` and `languages` (`image.path` is the relative path of the image in the language asked). `imageUrl()` / `image_url()` accept that path and add only the host.
+- The hosted MCP server: `search_cards`, `get_card` and `get_set` take an optional `lang` and show the language served, the languages available and the image path.
+- OpenAPI: `lang` on `/search`, `/cards/{id}` and `/sets/{setCode}`, `card_info.language`, `card_info.languages`, `images.path` and `images.language`.
+- Tests: fixtures for translated cards, unit tests, and contract and end-to-end checks that run with `POKEWALLET_LANG_LIVE=1`.
+
 ## 0.1.8
 
 - One Piece: `card(id)` and search now report each card's set in `setId`, `setCode` and `setName` / `set_id`, `set_code` and `set_name` (before, only set listings had `setId` and `setCode`). The hosted MCP server shows the set on One Piece cards too.

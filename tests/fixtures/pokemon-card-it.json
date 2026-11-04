@@ -1,0 +1,115 @@
+{
+ "id": "pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5",
+ "card_info": {
+  "name": "Weedle",
+  "clean_name": "Weedle",
+  "set_name": "Plasma Freeze",
+  "set_code": "PLF",
+  "set_id": "1382",
+  "card_number": "1/116",
+  "rarity": "Comune",
+  "card_type": null,
+  "product_type": "card",
+  "hp": "50.0",
+  "stage": "Base",
+  "card_text": null,
+  "attacks": [
+   "[G] Triple Stab (10x) Flip 3 coins.  This attack does 10 damage times the number of heads."
+  ],
+  "weakness": "Fuoco ×2",
+  "resistance": null,
+  "retreat_cost": "1.0",
+  "variants": [
+   "Normal",
+   "Reverse Holofoil"
+  ],
+  "languages": {
+   "en": [
+    "data",
+    "image"
+   ],
+   "de": [
+    "data",
+    "image"
+   ],
+   "es": [
+    "data",
+    "image"
+   ],
+   "fr": [
+    "data",
+    "image"
+   ],
+   "it": [
+    "data",
+    "image"
+   ],
+   "pt": [
+    "data",
+    "image"
+   ]
+  },
+  "language": "it"
+ },
+ "images": {
+  "languages": [
+   "en",
+   "it",
+   "fr",
+   "de",
+   "es",
+   "pt"
+  ],
+  "path": "/images/pk_4687f4c4a0499fd6a7fa267a9bef2cb4c462f19478522c5a85eaf116ca1d1f0c8ad2ba5fc8ac3c668627bce5?lang=it",
+  "language": "it"
+ },
+ "tcgplayer": {
+  "prices": [
+   {
+    "low_price": 0.35,
+    "mid_price": 1.49,
+    "high_price": 24.68,
+    "updated_at": "2026-11-04T13:09:31.913293",
+    "market_price": 1.59,
+    "direct_low_price": null,
+    "sub_type_name": "Reverse Holofoil"
+   },
+   {
+    "low_price": 0.18,
+    "mid_price": 0.35,
+    "high_price": 19.66,
+    "updated_at": "2026-11-04T13:09:31.913293",
+    "market_price": 0.37,
+    "direct_low_price": null,
+    "sub_type_name": "Normal"
+   }
+  ],
+  "url": "https://www.tcgplayer.com/product/90547"
+ },
+ "cardmarket": {
+  "product_name": "Weedle",
+  "prices": [
+   {
+    "avg": 0.19,
+    "low": 0.02,
+    "avg1": 0.04,
+    "avg7": 0.16,
+    "avg30": 0.17,
+    "trend": 0.14,
+    "updated_at": "2026-11-04T12:10:51.553057",
+    "variant_type": "normal"
+   },
+   {
+    "avg": 1.05,
+    "low": 0.1,
+    "avg1": 0.95,
+    "avg7": 0.88,
+    "avg30": 0.79,
+    "trend": 0.98,
+    "updated_at": "2026-11-04T12:10:51.553057",
+    "variant_type": "holo"
+   }
+  ],
+  "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Plasma-Freeze/Weedle-PLF1"
+ }
+}

@@ -24,7 +24,13 @@
     "retreat_cost": "1.0",
     "variants": [
      "Normal"
-    ]
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ]
+    }
    },
    "images": {
     "languages": [
@@ -96,7 +102,22 @@
     "variants": [
      "1st Edition",
      "Unlimited"
-    ]
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data"
+     ],
+     "fr": [
+      "data"
+     ],
+     "it": [
+      "data"
+     ]
+    }
    },
    "images": {
     "languages": [
@@ -176,7 +197,23 @@
     "retreat_cost": "1.0",
     "variants": [
      "Normal"
-    ]
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data"
+     ],
+     "fr": [
+      "data",
+      "image"
+     ],
+     "it": [
+      "data"
+     ]
+    }
    },
    "images": {
     "languages": [

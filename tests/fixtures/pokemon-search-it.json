@@ -1,0 +1,298 @@
+{
+ "query": "pinsir ethan",
+ "results": [
+  {
+   "id": "pk_fb19de2f941e96bca0987476525fa14a764dd1396bcf41cdb8c04dd582cfa30ba22940073ca1a1bea6b8915e0888",
+   "card_info": {
+    "name": "Pinsir di Armonio",
+    "clean_name": "Pinsir di Armonio",
+    "set_name": "SV10: Destined Rivals",
+    "set_code": "DRI",
+    "set_id": "24269",
+    "card_number": "001/182",
+    "rarity": "Non comune",
+    "card_type": "Erba",
+    "product_type": "card",
+    "hp": "120.0",
+    "stage": "Base",
+    "card_text": null,
+    "attacks": [
+     "[G] Presa (20)",
+     "[CCC] Incitacorno (70+)<br> Se uno qualsiasi dei tuoi Pokémon di Armonio è stato messo KO dai danni inflitti da un attacco durante l'ultimo turno del tuo avversario, questo attacco infligge 100 danni in più."
+    ],
+    "weakness": "Fuoco ×2",
+    "resistance": null,
+    "retreat_cost": "2.0",
+    "variants": [
+     "Normal",
+     "Reverse Holofoil"
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data",
+      "image"
+     ],
+     "es": [
+      "data",
+      "image"
+     ],
+     "fr": [
+      "data",
+      "image"
+     ],
+     "it": [
+      "data",
+      "image"
+     ],
+     "pt": [
+      "data",
+      "image"
+     ]
+    },
+    "language": "it"
+   },
+   "images": {
+    "languages": [
+     "en",
+     "it",
+     "fr",
+     "de",
+     "es",
+     "pt"
+    ],
+    "path": "/images/pk_fb19de2f941e96bca0987476525fa14a764dd1396bcf41cdb8c04dd582cfa30ba22940073ca1a1bea6b8915e0888?lang=it",
+    "language": "it"
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 0.01,
+      "mid_price": 0.15,
+      "high_price": 19.66,
+      "updated_at": "2026-11-04T13:09:35.476161",
+      "market_price": 0.15,
+      "direct_low_price": 0.07,
+      "sub_type_name": "Normal"
+     },
+     {
+      "low_price": 0.1,
+      "mid_price": 0.32,
+      "high_price": 19.66,
+      "updated_at": "2026-11-04T13:09:35.476161",
+      "market_price": 0.31,
+      "direct_low_price": 0.3,
+      "sub_type_name": "Reverse Holofoil"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/632829"
+   },
+   "cardmarket": {
+    "product_name": "Ethan's Pinsir",
+    "prices": [
+     {
+      "avg": 0.03,
+      "low": 0.02,
+      "avg1": 0.04,
+      "avg7": 0.03,
+      "avg30": 0.03,
+      "trend": 0.03,
+      "updated_at": "2026-11-04T12:11:14.940034",
+      "variant_type": "normal"
+     },
+     {
+      "avg": 0.24,
+      "low": 0.02,
+      "avg1": 0.07,
+      "avg7": 0.13,
+      "avg30": 0.23,
+      "trend": 0.15,
+      "updated_at": "2026-11-04T12:11:14.940034",
+      "variant_type": "holo"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Destined-Rivals/Ethans-Pinsir-DRI001"
+   }
+  },
+  {
+   "id": "pk_01fc1513439f7481ebb31c029a43f870de6b1d7d3d0580199c02f28b9d69befd23a1cdf2cfdcee5f5d441170c18f",
+   "card_info": {
+    "name": "Ethan's Pinsir",
+    "clean_name": "Ethans Pinsir",
+    "set_name": "SV9a: Heat Wave Arena",
+    "set_code": "SV9a",
+    "set_id": "24260",
+    "card_number": "001/063",
+    "rarity": "Uncommon",
+    "card_type": "Grass",
+    "product_type": "card",
+    "hp": "120.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[Grass] Vise Grip (20)",
+     "[Colorless][Colorless][Colorless] Single-Horn Payback (70+)<br> If any of your Ethan's Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 100 more damage."
+    ],
+    "weakness": "Fire x2",
+    "resistance": null,
+    "retreat_cost": "2.0",
+    "variants": [
+     "Normal"
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ]
+    },
+    "language": "en"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ],
+    "path": "/images/pk_01fc1513439f7481ebb31c029a43f870de6b1d7d3d0580199c02f28b9d69befd23a1cdf2cfdcee5f5d441170c18f",
+    "language": "en"
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 0.01,
+      "mid_price": 0.15,
+      "high_price": 1.99,
+      "updated_at": "2026-11-04T13:09:43.658142",
+      "market_price": 0.12,
+      "direct_low_price": null,
+      "sub_type_name": "Normal"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/623247"
+   },
+   "cardmarket": {
+    "product_name": "Ethan's Pinsir",
+    "prices": [
+     {
+      "avg": 0.02,
+      "low": 0.02,
+      "avg1": 0.02,
+      "avg7": 0.02,
+      "avg30": 0.03,
+      "trend": 0.02,
+      "updated_at": "2026-11-04T12:11:14.940034",
+      "variant_type": "normal"
+     },
+     {
+      "avg": null,
+      "low": null,
+      "avg1": null,
+      "avg7": null,
+      "avg30": null,
+      "trend": 0,
+      "updated_at": "2026-11-04T12:11:14.940034",
+      "variant_type": "holo"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/Heat-Wave-Arena/Ethans-Pinsir-sv9a001"
+   }
+  },
+  {
+   "id": "pk_928ec90f9ee5f532eb3b3f5651e7f20d2e307c31cda7e44da3598eb23d5927471c84b5821eeb700d02b633fada5e",
+   "card_info": {
+    "name": "Ethan's Pinsir",
+    "clean_name": "Ethans Pinsir",
+    "set_name": "MEGA Dream ex",
+    "set_code": "M2a",
+    "set_id": "24499",
+    "card_number": "001/193",
+    "rarity": null,
+    "card_type": "Grass",
+    "product_type": "card",
+    "hp": "120.0",
+    "stage": "Basic",
+    "card_text": null,
+    "attacks": [
+     "[Grass] Vise Grip (20)",
+     "[Colorless][Colorless][Colorless] Rallying Horn (70+)<br> If any of your Ethan's Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 100 more damage."
+    ],
+    "weakness": "Firex2",
+    "resistance": null,
+    "retreat_cost": "2.0",
+    "variants": [
+     "Normal"
+    ],
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ]
+    },
+    "language": "en"
+   },
+   "images": {
+    "languages": [
+     "en"
+    ],
+    "path": "/images/pk_928ec90f9ee5f532eb3b3f5651e7f20d2e307c31cda7e44da3598eb23d5927471c84b5821eeb700d02b633fada5e",
+    "language": "en"
+   },
+   "tcgplayer": {
+    "prices": [
+     {
+      "low_price": 0.01,
+      "mid_price": 0.15,
+      "high_price": 1,
+      "updated_at": "2026-11-04T13:09:44.088321",
+      "market_price": 0.1,
+      "direct_low_price": null,
+      "sub_type_name": "Normal"
+     }
+    ],
+    "url": "https://www.tcgplayer.com/product/665672"
+   },
+   "cardmarket": {
+    "product_name": "Ethan's Pinsir",
+    "prices": [
+     {
+      "avg": 0.03,
+      "low": 0.02,
+      "avg1": 0.02,
+      "avg7": 0.02,
+      "avg30": 0.04,
+      "trend": 0.05,
+      "updated_at": "2026-11-04T12:11:19.962108",
+      "variant_type": "normal"
+     },
+     {
+      "avg": null,
+      "low": null,
+      "avg1": null,
+      "avg7": null,
+      "avg30": null,
+      "trend": 0,
+      "updated_at": "2026-11-04T12:11:19.962108",
+      "variant_type": "holo"
+     }
+    ],
+    "product_url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/MEGA-Dream-ex/Ethans-Pinsir-m2a001"
+   }
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 3,
+  "total": 5,
+  "total_pages": 2
+ },
+ "metadata": {
+  "total_count": 5,
+  "tcg": 5,
+  "cardmarket": 5,
+  "tcg_only": 0,
+  "cardmarket_only": 0,
+  "both_sources": 5,
+  "truncated": false
+ }
+}

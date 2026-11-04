@@ -1,6 +1,6 @@
 {
   "name": "@pokewallet/mcp",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Remote MCP server for the PokeWallet API (stateless, Bearer key forwarded per request)",
   "license": "MIT",
   "private": true,

@@ -6,6 +6,7 @@ from typing import Any, Dict, List, NamedTuple, Optional
 
 from .types import (
     Card,
+    CardImage,
     CardmarketBlock,
     CardmarketPrice,
     SetRef,
@@ -17,7 +18,7 @@ from .types import (
 _NUMERIC_ID = re.compile(r"^-?\d+$")
 _KNOWN = {
     "name", "clean_name", "set_name", "set_code", "set_id", "card_number", "rarity",
-    "card_type", "product_type", "variants", "card_text",
+    "card_type", "product_type", "variants", "card_text", "language", "languages",
 }
 
 
@@ -133,6 +134,23 @@ def normalize_card(raw: Any, ctx: Optional[SetPair] = None) -> Card:
         ) if cm is not None else None,
         info={k: v for k, v in info.items() if k not in _KNOWN},
         raw=raw,
+        language=text(info.get("language")),
+        languages=_language_map(info.get("languages")),
+        image=_image_block(r.get("images")),
+    )
+
+
+def _language_map(value: Any) -> Dict[str, List[str]]:
+    return {lang: [p for p in arr(parts) if p in ("data", "image")] for lang, parts in rec(value).items()}
+
+
+def _image_block(value: Any) -> Optional[CardImage]:
+    if not isinstance(value, dict):
+        return None
+    return CardImage(
+        languages=[x for x in arr(value.get("languages")) if isinstance(x, str)],
+        path=text(value.get("path")),
+        language=text(value.get("language")),
     )
 
 

@@ -40,3 +40,26 @@ export function checkText(name: string, value: string, min = 1): string {
 export function seg(value: string): string {
   return encodeURIComponent(checkText('id', value))
 }
+
+/** Languages the API serves card data in, besides the default one (`en` and `ja` are the default). */
+export const CARD_LANGUAGES = ['de', 'es', 'fr', 'it', 'pt', 'ko', 'zh-cn', 'zh-tw', 'th', 'id'] as const
+export type CardLanguage = (typeof CARD_LANGUAGES)[number]
+
+/**
+ * `lang` for Pokémon cards: any case is accepted and sent in lowercase. `en`, `ja` and an absent
+ * value mean the default language and send nothing. Anything else throws before the request.
+ */
+export function checkLang(lang: string | undefined): CardLanguage | undefined {
+  if (lang === undefined) return undefined
+  const value = typeof lang === 'string' ? lang.trim().toLowerCase() : ''
+  if (value === 'en' || value === 'ja') return undefined
+  if (!(CARD_LANGUAGES as readonly string[]).includes(value)) {
+    throw new ValidationError(`lang must be one of ${CARD_LANGUAGES.join(', ')} (en and ja return the default language), got ${JSON.stringify(lang)}`)
+  }
+  return value as CardLanguage
+}
+
+/** One Piece and the ten games have no translations: `lang` is rejected instead of silently ignored. */
+export function rejectLang(lang: string | undefined): void {
+  if (lang !== undefined) throw new ValidationError('lang is only available for Pokémon cards')
+}

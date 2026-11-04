@@ -54,7 +54,34 @@ export interface Card {
   cardmarket: { productName: string | null; url: string | null; prices: CardmarketPrice[] } | null
   /** Game-specific fields: `hp`, `attacks`, `p`, `t`, `ext_color`... as sent by the API. */
   info: Record<string, unknown>
+  /**
+   * Pokémon only. The language the text fields are in: set when `lang` was requested, `en` when the card
+   * has no translation in that language. Null when `lang` was not requested.
+   */
+  language: string | null
+  /**
+   * Pokémon only. What exists for this card, per language: `data` (name, rarity, attacks, text) and/or
+   * `image`. `en` is always there. Empty for One Piece and the ten games.
+   */
+  languages: Record<string, CardLanguageParts[]>
+  /** The card's images block. Null when the answer has none (One Piece). */
+  image: CardImage | null
   raw: unknown
+}
+
+export type CardLanguageParts = 'data' | 'image'
+
+export interface CardImage {
+  /** Languages the card has an image in (`images.languages`). */
+  languages: string[]
+  /**
+   * Relative path of the image in the requested language, for example `/images/pk_…?lang=it`. It is
+   * `/images/pk_…` when the card has no image in that language. Present when `lang` was requested.
+   * Pass it to `imageUrl()`; the request still needs the API key header.
+   */
+  path: string | null
+  /** Language of the image at `path`. Present when `lang` was requested. */
+  language: string | null
 }
 
 export interface SetSummary {
@@ -179,8 +206,14 @@ export interface PriceHistory {
   raw: unknown
 }
 
-export type SearchOptions = { page?: number; limit?: number }
-export type SetOptions = { page?: number; limit?: number; language?: string }
+/**
+ * `lang` (Pokémon only) returns names, rarity, attacks and text in that language: `de es fr it pt ko zh-cn zh-tw th id`.
+ * `en` and `ja` are the default. Translations can be partial (some fields stay in English), and a card
+ * without a translation is served in English: see `Card.language` and `Card.languages`.
+ */
+export type SearchOptions = { page?: number; limit?: number; lang?: string }
+export type SetOptions = { page?: number; limit?: number; language?: string; lang?: string }
+export type CardOptions = { lang?: string }
 export type PricesOptions = { source?: 'tcg' | 'cm' }
 export type StatisticsOptions = { variant?: 'normal' | 'foil' }
 export type TrendingOptions = { period?: '7d'; limit?: number }

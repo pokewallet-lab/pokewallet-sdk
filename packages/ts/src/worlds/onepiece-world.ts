@@ -13,6 +13,7 @@ import { normalizeSet } from '../normalize/sets.js'
 import { makePage, paginate } from '../pagination.js'
 import type {
   Card,
+  CardOptions,
   CompletionValue,
   PricesOptions,
   SearchOptions,
@@ -28,7 +29,7 @@ import type {
   TrendingOptions,
   TrendingSet,
 } from '../types.js'
-import { checkLimit, checkPage, checkPeriod, checkText, checkVariant, seg } from '../validation.js'
+import { checkLimit, checkPage, checkPeriod, checkText, checkVariant, rejectLang, seg } from '../validation.js'
 import { LIMITS, type World } from './world.js'
 
 const NUMERIC_ID = /^-?\d+$/
@@ -42,6 +43,7 @@ export class OnePieceWorld implements World {
   constructor(private readonly http: HttpClient) {}
 
   async search(q: string, options: SearchOptions = {}): Promise<SearchPage> {
+    rejectLang(options.lang)
     const body = rec(
       await this.http.get('/op/search', {
         q: checkText('q', q),
@@ -54,11 +56,12 @@ export class OnePieceWorld implements World {
     return { ...page, truncated: false }
   }
 
-  searchAll(q: string, options: { limit?: number; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
-    return paginate((page) => this.search(q, { page, limit: options.limit }), { maxItems: options.maxItems })
+  searchAll(q: string, options: { limit?: number; lang?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
+    return paginate((page) => this.search(q, { page, limit: options.limit, lang: options.lang }), { maxItems: options.maxItems })
   }
 
-  async card(id: string): Promise<Card> {
+  async card(id: string, options: CardOptions = {}): Promise<Card> {
+    rejectLang(options.lang)
     return normalizeOpCard(await this.http.get(`/op/cards/${seg(id)}`))
   }
 
@@ -69,6 +72,7 @@ export class OnePieceWorld implements World {
 
   /** `options.language` is ignored: One Piece maps a code to its first matching set. */
   async set(code: string, options: SetOptions = {}): Promise<SetPage> {
+    rejectLang(options.lang)
     const body = rec(
       await this.http.get(`/op/sets/${seg(code)}`, {
         page: checkPage(options.page),
@@ -82,8 +86,8 @@ export class OnePieceWorld implements World {
     return { ...page, set }
   }
 
-  setCards(code: string, options: { limit?: number; language?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
-    return paginate((page) => this.set(code, { page, limit: options.limit }), { maxItems: options.maxItems })
+  setCards(code: string, options: { limit?: number; language?: string; lang?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
+    return paginate((page) => this.set(code, { page, limit: options.limit, lang: options.lang }), { maxItems: options.maxItems })
   }
 
   /** The set goes in the query here (`group_id` for numeric ids, `set_code` otherwise). */

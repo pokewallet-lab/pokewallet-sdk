@@ -9,13 +9,13 @@ from .errors import (
     ServerError, SetMatch, UnavailableError, ValidationError,
 )
 from .types import (
-    GAME_CODES, Card, CardmarketPrice, CompletionValue, Game, Health, HealthCheck, Page, PriceHistory, PriceRow,
+    GAME_CODES, Card, CardImage, CardmarketPrice, CompletionValue, Game, Health, HealthCheck, Page, PriceHistory, PriceRow,
     SearchPage, SetPage, SetPrices, SetStatistics, SetSummary, TcgPrice, TopCard,
     TrendingSet,
 )
 
 __all__ = [
-    "AmbiguousSetError", "AsyncPokeWallet", "AuthError", "BadRequestError", "Card", "CardmarketPrice",
+    "AmbiguousSetError", "AsyncPokeWallet", "AuthError", "BadRequestError", "Card", "CardImage", "CardmarketPrice",
     "CompletionValue", "FeatureNotEnabledError", "GAME_CODES", "Game", "GameUnavailableError", "Health", "HealthCheck", "LimitWindow",
     "NetworkError", "NotFoundError", "Page", "PlanRequiredError", "PokeWallet", "PokeWalletError",
     "PriceHistory", "PriceRow", "RateLimitError", "RateLimitInfo", "SearchPage",

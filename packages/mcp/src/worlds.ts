@@ -10,6 +10,11 @@ export const gameParam = z
   .default('pokemon')
   .describe('Which card game: pokemon (default), onepiece, mtg, ygo, cfv, dbs, fab, dgm, swu, lor, rft or cpk.')
 
+export const langParam = z
+  .string()
+  .optional()
+  .describe('Pokémon only: language of the card text: de, es, fr, it, pt, ko, zh-cn, zh-tw, th or id. Omit (or en, ja) for the default. Rejected for other games.')
+
 export function worldFor(pw: PokeWallet, game: GameValue): World {
   if (game === 'pokemon') return pw.pokemon
   if (game === 'onepiece') return pw.onepiece

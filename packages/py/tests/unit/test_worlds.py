@@ -253,3 +253,94 @@ def test_exposes_the_quota_of_the_last_call_and_keeps_versions_in_step():
 
     toml = (Path(__file__).resolve().parents[2] / "pyproject.toml").read_text()
     assert re.search(r'^version = "%s"$' % re.escape(pokewallet.__version__), toml, re.M)
+
+
+API = "https://api.pokewallet.io"
+
+
+def test_lang_is_sent_in_lowercase_and_nothing_for_en_ja_or_no_value():
+    m = mock({"body": fixture("pokemon-card-it")}, {"body": fixture("pokemon-search-it")}, {"body": fixture("pokemon-set-it")}, {"body": fixture("pokemon-card")})
+    pw = m.client()
+    pw.pokemon.card("pk_x", lang="IT")
+    pw.pokemon.search("pinsir", lang="Zh-CN", limit=1)
+    pw.pokemon.set("PLF", lang="fr", limit=1)
+    pw.pokemon.card("pk_x", lang="EN")
+    assert [c["url"] for c in m.calls] == [
+        f"{API}/cards/pk_x?lang=it",
+        f"{API}/search?q=pinsir&limit=1&lang=zh-cn",
+        f"{API}/sets/PLF?limit=1&lang=fr",
+        f"{API}/cards/pk_x",
+    ]
+    ja = mock({"body": fixture("pokemon-card")})
+    ja.client().pokemon.card("pk_x", lang="ja")
+    assert ja.calls[0]["url"] == f"{API}/cards/pk_x"
+
+
+def test_unknown_lang_is_rejected_before_any_request():
+    m = mock({"body": {}})
+    pw = m.client()
+    e = failure(pw.pokemon.card, "pk_x", lang="xx")
+    assert isinstance(e, ValidationError) and "de, es, fr, it, pt, ko, zh-cn, zh-tw, th, id" in str(e)
+    assert isinstance(failure(pw.pokemon.search, "pinsir", lang="english"), ValidationError)
+    assert isinstance(failure(pw.pokemon.set, "PLF", lang=""), ValidationError)
+    assert m.calls == []
+
+
+def test_lang_is_rejected_for_one_piece_and_the_games_as_pokemon_only():
+    m = mock({"body": {}})
+    pw = m.client()
+    for world in (pw.onepiece, pw.games.mtg):
+        for fn, arg in ((world.search, "dragon"), (world.card, "x"), (world.set, "X")):
+            e = failure(fn, arg, lang="it")
+            assert isinstance(e, ValidationError) and "only available for Pokémon" in str(e)
+    assert m.calls == []
+
+
+def test_translated_card_has_language_languages_and_image_block():
+    c = mock({"body": fixture("pokemon-card-it")}).client().pokemon.card("pk_x", lang="it")
+    assert (c.name, c.rarity, c.language) == ("Weedle", "Comune", "it")
+    assert c.languages["it"] == ["data", "image"] and c.languages["en"] == ["data", "image"]
+    assert c.image.language == "it" and c.image.path.startswith("/images/pk_") and c.image.path.endswith("?lang=it")
+    assert "it" in c.image.languages
+    assert "language" not in c.info and "languages" not in c.info
+
+
+def test_card_without_translation_falls_back_to_english_with_the_default_image_path():
+    c = mock({"body": fixture("pokemon-card-ko")}).client().pokemon.card("pk_x", lang="ko")
+    assert c.language == "en" and c.image.language == "en"
+    assert c.image.path.startswith("/images/pk_") and "?" not in c.image.path
+    assert "ko" not in c.languages
+
+
+def test_without_lang_the_card_has_languages_but_no_language_or_image_path():
+    c = mock({"body": fixture("pokemon-card")}).client().pokemon.card("pk_x")
+    assert c.language is None and c.languages["en"] == ["data", "image"]
+    assert c.image.path is None and c.image.language is None and "en" in c.image.languages
+
+
+def test_search_and_set_listings_carry_the_same_fields_per_card():
+    a = mock({"body": fixture("pokemon-search-it")}).client().pokemon.search("pinsir ethan", lang="it", limit=3)
+    assert a.items[0].language == "it" and a.items[0].image.language == "it"
+    assert all(c.language is not None and c.image.path for c in a.items)
+    b = mock({"body": fixture("pokemon-set-it")}).client().pokemon.set("PLF", lang="it", limit=3)
+    assert all(c.language is not None and c.set_code == "PLF" for c in b.items)
+
+
+def test_search_all_passes_lang():
+    m = mock({"body": fixture("pokemon-search-it")})
+    list(m.client().pokemon.search_all("pinsir ethan", lang="it", max_items=1))
+    assert "lang=it" in m.calls[0]["url"]
+
+
+def test_one_piece_cards_have_no_languages():
+    c = mock({"body": fixture("op-card")}).client().onepiece.card("op_x")
+    assert c.language is None and c.languages == {} and c.image is None
+
+
+def test_image_url_accepts_the_relative_path_from_the_api():
+    pw = mock({"body": {}}).client()
+    assert pw.image_url("/images/pk_abc?lang=it") == f"{API}/images/pk_abc?lang=it"
+    assert image_url("/images/pk_abc") == f"{API}/images/pk_abc"
+    for bad in ("/cards/pk_abc", "//evil.example/images/x"):
+        with pytest.raises(ValidationError):
+            image_url(bad)

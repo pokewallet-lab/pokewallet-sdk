@@ -60,29 +60,29 @@ class AsyncWorld:
     async def _get(self, req: Any) -> Any:
         return await self._t.get(req.path, req.query)
 
-    async def search(self, q: str, *, page: Optional[int] = None, limit: Optional[int] = None) -> SearchPage:
+    async def search(self, q: str, *, page: Optional[int] = None, limit: Optional[int] = None, lang: Optional[str] = None) -> SearchPage:
         """One page of search results. ``q`` is 2-100 characters for the ten games."""
-        return self._d.parse_search(await self._get(self._d.search(q, page, limit)))
+        return self._d.parse_search(await self._get(self._d.search(q, page, limit, lang)))
 
-    def search_all(self, q: str, *, limit: Optional[int] = None, max_items: Optional[int] = None) -> AsyncIterator[Card]:
+    def search_all(self, q: str, *, limit: Optional[int] = None, lang: Optional[str] = None, max_items: Optional[int] = None) -> AsyncIterator[Card]:
         """Every result of a search, page after page."""
-        return self._walk(lambda p: self.search(q, page=p, limit=limit), max_items)
+        return self._walk(lambda p: self.search(q, page=p, limit=limit, lang=lang), max_items)
 
-    async def card(self, card_id: str) -> Card:
+    async def card(self, card_id: str, *, lang: Optional[str] = None) -> Card:
         """Card by id (``pk_…``, ``op_…``, ``<code>_…``, or a 64-hex CardMarket id)."""
-        return self._d.parse_card(await self._get(self._d.card(card_id)))
+        return self._d.parse_card(await self._get(self._d.card(card_id, None, lang)))
 
     async def sets(self, *, language: Optional[str] = None) -> List[SetSummary]:
         """All sets of the world. The API does not paginate this list."""
         return self._d.parse_sets(await self._get(self._d.sets(language)))
 
-    async def set(self, code: str, *, page: Optional[int] = None, limit: Optional[int] = None, language: Optional[str] = None) -> SetPage:
+    async def set(self, code: str, *, page: Optional[int] = None, limit: Optional[int] = None, language: Optional[str] = None, lang: Optional[str] = None) -> SetPage:
         """One page of a set's cards. Raises ``AmbiguousSetError`` when the code matches several sets."""
-        return self._d.parse_set(await self._get(self._d.set(code, page, limit, language)))
+        return self._d.parse_set(await self._get(self._d.set(code, page, limit, language, lang)))
 
-    def set_cards(self, code: str, *, limit: Optional[int] = None, language: Optional[str] = None, max_items: Optional[int] = None) -> AsyncIterator[Card]:
+    def set_cards(self, code: str, *, limit: Optional[int] = None, language: Optional[str] = None, lang: Optional[str] = None, max_items: Optional[int] = None) -> AsyncIterator[Card]:
         """Every card of a set, page after page."""
-        return self._walk(lambda p: self.set(code, page=p, limit=limit, language=language), max_items)
+        return self._walk(lambda p: self.set(code, page=p, limit=limit, language=language, lang=lang), max_items)
 
     async def prices(self, code: str, *, source: Optional[str] = None) -> SetPrices:
         """Prices of every card in a set: hundreds to thousands of rows. Plan-gated."""
@@ -119,9 +119,9 @@ class AsyncPokemonWorld(AsyncWorld):
     def __init__(self, transport: AsyncTransport) -> None:
         super().__init__(transport, PokemonDialect())
 
-    async def card(self, card_id: str, *, set_code: Optional[str] = None) -> Card:  # type: ignore[override]
+    async def card(self, card_id: str, *, set_code: Optional[str] = None, lang: Optional[str] = None) -> Card:  # type: ignore[override]
         """Card by id, or by plain card number together with ``set_code``."""
-        return self._d.parse_card(await self._get(self._d.card(card_id, set_code)))
+        return self._d.parse_card(await self._get(self._d.card(card_id, set_code, lang)))
 
     async def price_history(self, card_id: str) -> PriceHistory:
         """Price snapshots at 7/14/30/60/120 days, per finish (not a time series). Plan-gated."""

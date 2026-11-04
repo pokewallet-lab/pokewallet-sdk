@@ -15,7 +15,7 @@ from ._normalize_pro import (
     normalize_completion_value, normalize_price_history, normalize_set_prices,
     normalize_statistics, normalize_top_cards, normalize_trending,
 )
-from ._validation import check_limit, check_page, check_period, check_text, check_variant, seg
+from ._validation import check_lang, check_limit, check_page, check_period, check_text, check_variant, reject_lang, seg
 from .errors import ValidationError
 from .types import SearchPage, SetPage
 
@@ -41,15 +41,23 @@ def make_page_meta(meta: Any, count: int) -> Dict[str, int]:
 class CardDialect:
     """Pokémon and the ten games share one response shape."""
 
-    def __init__(self, prefix: str, min_query: int) -> None:
+    def __init__(self, prefix: str, min_query: int, translations: bool = False) -> None:
         self.prefix = prefix
         self.min_query = min_query
+        self.translations = translations
+
+    def _lang(self, lang: Optional[str]) -> Optional[str]:
+        """The ``lang`` query value: validated and normalized for Pokémon, rejected everywhere else."""
+        if self.translations:
+            return check_lang(lang)
+        reject_lang(lang)
+        return None
 
     def _p(self, rest: str) -> str:
         return f"{self.prefix}{rest}"
 
-    def search(self, q: str, page: Optional[int], limit: Optional[int]) -> Req:
-        return Req(self._p("/search"), {"q": check_text("q", q, self.min_query), "page": check_page(page), "limit": check_limit(limit, LIMITS["search"])})
+    def search(self, q: str, page: Optional[int], limit: Optional[int], lang: Optional[str] = None) -> Req:
+        return Req(self._p("/search"), {"q": check_text("q", q, self.min_query), "page": check_page(page), "limit": check_limit(limit, LIMITS["search"]), "lang": self._lang(lang)})
 
     def parse_search(self, body: Any) -> SearchPage:
         b = rec(body)
@@ -57,8 +65,8 @@ class CardDialect:
         meta = make_page_meta(rec(b.get("pagination")), len(items))
         return SearchPage(items=items, truncated=rec(b.get("metadata")).get("truncated") is True, **meta)
 
-    def card(self, card_id: str, set_code: Optional[str] = None) -> Req:
-        return Req(self._p(f"/cards/{seg(card_id)}"), {"set_code": set_code})
+    def card(self, card_id: str, set_code: Optional[str] = None, lang: Optional[str] = None) -> Req:
+        return Req(self._p(f"/cards/{seg(card_id)}"), {"set_code": set_code, "lang": self._lang(lang)})
 
     def parse_card(self, body: Any) -> Any:
         if is_disambiguation(body):
@@ -71,8 +79,8 @@ class CardDialect:
     def parse_sets(self, body: Any) -> Any:
         return [normalize_set(s) for s in arr(rec(body).get("data"))]
 
-    def set(self, code: str, page: Optional[int], limit: Optional[int], language: Optional[str]) -> Req:
-        return Req(self._p(f"/sets/{seg(code)}"), {"page": check_page(page), "limit": check_limit(limit, LIMITS["set"]), "language": language})
+    def set(self, code: str, page: Optional[int], limit: Optional[int], language: Optional[str], lang: Optional[str] = None) -> Req:
+        return Req(self._p(f"/sets/{seg(code)}"), {"page": check_page(page), "limit": check_limit(limit, LIMITS["set"]), "language": language, "lang": self._lang(lang)})
 
     def parse_set(self, body: Any) -> SetPage:
         b = rec(body)
@@ -113,7 +121,7 @@ class CardDialect:
 
 class PokemonDialect(CardDialect):
     def __init__(self) -> None:
-        super().__init__("", 1)
+        super().__init__("", 1, translations=True)
 
     def price_history(self, card_id: str) -> Req:
         return Req(f"/cards/{seg(card_id)}/price-history", {})
@@ -124,7 +132,8 @@ class PokemonDialect(CardDialect):
 class OnePieceDialect:
     """One Piece lives under ``/op`` with flat cards, flat pagination, ``group_id`` and set prices in the query."""
 
-    def search(self, q: str, page: Optional[int], limit: Optional[int]) -> Req:
+    def search(self, q: str, page: Optional[int], limit: Optional[int], lang: Optional[str] = None) -> Req:
+        reject_lang(lang)
         return Req("/op/search", {"q": check_text("q", q), "page": check_page(page), "limit": check_limit(limit, LIMITS["search"])})
 
     def parse_search(self, body: Any) -> SearchPage:
@@ -132,7 +141,8 @@ class OnePieceDialect:
         items = [normalize_op_card(c) for c in arr(b.get("data"))]
         return SearchPage(items=items, truncated=False, **make_page_meta(b, len(items)))
 
-    def card(self, card_id: str, set_code: Optional[str] = None) -> Req:
+    def card(self, card_id: str, set_code: Optional[str] = None, lang: Optional[str] = None) -> Req:
+        reject_lang(lang)
         return Req(f"/op/cards/{seg(card_id)}", {})
 
     def parse_card(self, body: Any) -> Any:
@@ -144,7 +154,8 @@ class OnePieceDialect:
     def parse_sets(self, body: Any) -> Any:
         return [normalize_set(s) for s in arr(rec(body).get("data"))]
 
-    def set(self, code: str, page: Optional[int], limit: Optional[int], language: Optional[str]) -> Req:
+    def set(self, code: str, page: Optional[int], limit: Optional[int], language: Optional[str], lang: Optional[str] = None) -> Req:
+        reject_lang(lang)
         # language is ignored: One Piece maps a code to its first matching set.
         return Req(f"/op/sets/{seg(code)}", {"page": check_page(page), "limit": check_limit(limit, LIMITS["set"])})
 

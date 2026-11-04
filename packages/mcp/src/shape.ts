@@ -49,6 +49,13 @@ function priceMaps(c: Card): { tcgplayerUsd?: Record<string, number>; cardmarket
   }
 }
 
+/** What exists per language, compactly: `{en: 'data+image', ko: 'data'}`. Pokémon only. */
+function languageMap(c: Card): Record<string, string> | undefined {
+  const out: Record<string, string> = {}
+  for (const [lang, parts] of Object.entries(c.languages)) if (parts.length) out[lang] = parts.join('+')
+  return Object.keys(out).length ? out : undefined
+}
+
 /** Search hits and set listings: enough to pick a card and read its price, nothing else. */
 export function cardSummary(c: Card): Record<string, unknown> {
   return prune({
@@ -58,6 +65,10 @@ export function cardSummary(c: Card): Record<string, unknown> {
     setId: c.setCode ? undefined : (c.setId ?? undefined),
     number: c.number,
     rarity: c.rarity,
+    // Present only when a language was asked for: the language served ("en" when the card has no translation) and its image.
+    language: c.language ?? undefined,
+    imagePath: c.image?.path ?? undefined,
+    languages: languageMap(c),
     ...priceMaps(c),
   }) as Record<string, unknown>
 }
@@ -84,6 +95,7 @@ export function cardDetail(c: Card): Record<string, unknown> {
     productType: c.productType && c.productType !== 'card' ? c.productType : undefined,
     text: c.text ? clip(c.text, 600) : undefined,
     finishes: c.variants,
+    imageLanguage: c.image?.language ?? undefined,
     details: details(c.info),
     links: { tcgplayer: c.tcgplayer?.url, cardmarket: c.cardmarket?.url },
   }) as Record<string, unknown>

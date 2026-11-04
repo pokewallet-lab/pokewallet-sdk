@@ -13,7 +13,9 @@ export interface ImageUrlOptions {
 }
 
 /**
- * Builds the image URL of a card from its id. Pure string work: nothing is fetched.
+ * Builds the image URL of a card from its id, or from the relative `path` the API returns in
+ * `Card.image.path` (`/images/pk_…?lang=it`), which already names the right language. Pure string
+ * work: nothing is fetched.
  *
  * The image routes are protected like every other route: the request MUST carry the
  * `X-API-Key` header, so the URL cannot be used directly in an `<img>` tag. Fetch it
@@ -23,6 +25,11 @@ export function imageUrl(id: string, options: ImageUrlOptions = {}): string {
   const clean = id.trim()
   if (!clean) throw new ValidationError('id is required')
   const base = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, '')
+  // A path from the API is already complete: it only needs the host.
+  if (clean.startsWith('/')) {
+    if (!/^\/([a-z]+\/)?images\/[^/?#]+(\?[^#]*)?$/.test(clean)) throw new ValidationError(`not an image path: ${clean}`)
+    return `${base}${clean}`
+  }
   const game = GAME_CODES.find((g: GameCode) => clean.toLowerCase().startsWith(`${g}_`))
   const path = game ? `/${game}/images/${encodeURIComponent(clean)}` : `/images/${encodeURIComponent(clean)}`
   const qs = new URLSearchParams()
