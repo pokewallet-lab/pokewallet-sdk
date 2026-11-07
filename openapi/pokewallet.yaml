@@ -96,6 +96,7 @@ paths:
         - { name: q, in: query, required: true, schema: { type: string } }
         - { $ref: '#/components/parameters/Page' }
         - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+        - { $ref: '#/components/parameters/CardLang' }
       responses:
         '200':
           description: OK
@@ -163,12 +164,15 @@ paths:
         numeric id ("1382"), the same as in `/cards/{id}` and `/search`; the `set` object carries `set_id` too.
         `prices` is always `[]` here.
 
+        `lang` (Pokémon) translates every card of the page; it is not the set `language` filter below.
+
         Note: send `limit` and `page` within range (see `/search`).
       parameters:
         - { $ref: '#/components/parameters/SetCode' }
         - { $ref: '#/components/parameters/Page' }
         - { name: limit, in: query, schema: { type: integer, default: 50, maximum: 200 } }
         - { $ref: '#/components/parameters/Language' }
+        - { $ref: '#/components/parameters/CardLang' }
       responses:
         '200':
           description: Cards of the set, or the list of candidate sets
@@ -179,6 +183,7 @@ paths:
                 oneOf:
                   - { $ref: '#/components/schemas/SetCardsResponse' }
                   - { $ref: '#/components/schemas/Disambiguation' }
+        '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
         '404': { $ref: '#/components/responses/NotFound' }
         '429': { $ref: '#/components/responses/TooManyRequests' }
@@ -283,6 +288,7 @@ paths:
       parameters:
         - { name: id, in: path, required: true, schema: { type: string } }
         - { name: set_code, in: query, description: Disambiguates a plain card number., schema: { type: string } }
+        - { $ref: '#/components/parameters/CardLang' }
       responses:
         '200':
           description: OK
@@ -795,6 +801,16 @@ components:
       in: query
       description: "`normal` or `foil`; anything else gives 400 `Invalid parameter`. On Pokémon `holo` is still accepted as a legacy alias of `foil`."
       schema: { type: string, enum: [normal, foil] }
+    CardLang:
+      name: lang
+      in: query
+      description: |
+        Pokémon only. Returns names, rarity, attacks and text in this language (any case). `en`, `ja` or no
+        value give the default answer. Anything else is **400**. Translations can be partial (some fields stay
+        in English), and a card without one is served in English: see `card_info.language`.
+        `card_info.languages` lists what exists for each card. One Piece and the ten games ignore it; the
+        SDKs reject it for them before sending.
+      schema: { type: string, enum: [de, es, fr, it, pt, ko, zh-cn, zh-tw, th, id, en, ja] }
     Language:
       name: language
       in: query
@@ -1006,6 +1022,19 @@ components:
         weakness: { type: [string, 'null'] }
         resistance: { type: [string, 'null'] }
         retreat_cost: { type: [string, 'null'] }
+        language:
+          type: string
+          description: "Pokémon, only when `lang` is valid: the language the text fields are in. `en` when the card has no translation in the requested language."
+        languages:
+          type: object
+          description: |
+            Pokémon, always present: what exists for this card in each language. `data` is the name, rarity,
+            attacks and text; `image` is a card image. `en` is always there; a language with neither is left out.
+            One Piece and the games do not have it.
+          additionalProperties:
+            type: array
+            items: { type: string, enum: [data, image] }
+          example: { en: [data, image], it: [data, image], ko: [data], pt: [image] }
       additionalProperties: true
     Card:
       type: object
@@ -1017,7 +1046,14 @@ components:
         images:
           type: object
           properties:
-            languages: { type: array, items: { type: string } }
+            languages: { type: array, items: { type: string }, description: Languages the card has an image in. }
+            path:
+              type: string
+              description: |
+                Only with a valid `lang`. Relative path of the image in that language, for example
+                `/images/pk_…?lang=it` (same host, same key header). It is `/images/pk_…` without `?lang` when the
+                card has no image in that language.
+            language: { type: string, description: "Only with a valid `lang`: the language of the image at `path`. Images exist for `it fr de es pt`; for the other languages it is `en`." }
         tcgplayer:
           type: [object, 'null']
           properties:

@@ -33,7 +33,33 @@
     ],
     "weakness": "Rx2",
     "resistance": null,
-    "retreat_cost": "1.0"
+    "retreat_cost": "1.0",
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data",
+      "image"
+     ],
+     "es": [
+      "data",
+      "image"
+     ],
+     "fr": [
+      "data",
+      "image"
+     ],
+     "it": [
+      "data",
+      "image"
+     ],
+     "pt": [
+      "data",
+      "image"
+     ]
+    }
    },
    "images": {
     "languages": [
@@ -80,7 +106,33 @@
     ],
     "weakness": "Rx2",
     "resistance": "W-20",
-    "retreat_cost": "1.0"
+    "retreat_cost": "1.0",
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data",
+      "image"
+     ],
+     "es": [
+      "data",
+      "image"
+     ],
+     "fr": [
+      "data",
+      "image"
+     ],
+     "it": [
+      "data",
+      "image"
+     ],
+     "pt": [
+      "data",
+      "image"
+     ]
+    }
    },
    "images": {
     "languages": [
@@ -126,7 +178,33 @@
     ],
     "weakness": null,
     "resistance": null,
-    "retreat_cost": null
+    "retreat_cost": null,
+    "languages": {
+     "en": [
+      "data",
+      "image"
+     ],
+     "de": [
+      "data",
+      "image"
+     ],
+     "es": [
+      "data",
+      "image"
+     ],
+     "fr": [
+      "data",
+      "image"
+     ],
+     "it": [
+      "data",
+      "image"
+     ],
+     "pt": [
+      "data",
+      "image"
+     ]
+    }
    },
    "images": {
     "languages": [

@@ -330,3 +330,103 @@ describe('misc', () => {
     expect(VERSION).toBe(pkg.default.version)
   })
 })
+
+describe('card languages (lang)', () => {
+  const API = 'https://api.pokewallet.io'
+
+  it('sends lang in lowercase on card, search and set, and nothing for en, ja or no value', async () => {
+    const { pw, calls } = sdk([{ body: fixture('pokemon-card-it') }, { body: fixture('pokemon-search-it') }, { body: fixture('pokemon-set-it') }, { body: fixture('pokemon-card') }])
+    await pw.pokemon.card('pk_x', { lang: 'IT' })
+    await pw.pokemon.search('pinsir', { lang: 'Zh-CN', limit: 1 })
+    await pw.pokemon.set('PLF', { lang: 'fr', limit: 1 })
+    await pw.pokemon.card('pk_x', { lang: 'EN' })
+    expect(calls[0]!.url).toBe(`${API}/cards/pk_x?lang=it`)
+    expect(calls[1]!.url).toBe(`${API}/search?q=pinsir&limit=1&lang=zh-cn`)
+    expect(calls[2]!.url).toBe(`${API}/sets/PLF?limit=1&lang=fr`)
+    expect(calls[3]!.url).toBe(`${API}/cards/pk_x`)
+    const ja = sdk([{ body: fixture('pokemon-card') }])
+    await ja.pw.pokemon.card('pk_x', { lang: 'ja' })
+    expect(ja.calls[0]!.url).toBe(`${API}/cards/pk_x`)
+  })
+
+  it('rejects an unknown language before any request, naming the valid ones', async () => {
+    const { pw, calls } = sdk([{ body: {} }])
+    const e = await fail(pw.pokemon.card('pk_x', { lang: 'xx' }))
+    expect(e).toBeInstanceOf(ValidationError)
+    expect(e.message).toContain('de, es, fr, it, pt, ko, zh-cn, zh-tw, th, id')
+    expect(await fail(pw.pokemon.search('pinsir', { lang: 'english' }))).toBeInstanceOf(ValidationError)
+    expect(await fail(pw.pokemon.set('PLF', { lang: '' }))).toBeInstanceOf(ValidationError)
+    expect(calls).toHaveLength(0)
+  })
+
+  it('rejects lang for One Piece and the ten games, saying it is Pokémon only', async () => {
+    const { pw, calls } = sdk([{ body: {} }])
+    for (const world of [pw.onepiece, pw.games.mtg]) {
+      for (const run of [() => world.search('dragon', { lang: 'it' }), () => world.card('x', { lang: 'it' }), () => world.set('X', { lang: 'it' })]) {
+        const e = await fail(run())
+        expect(e).toBeInstanceOf(ValidationError)
+        expect(e.message).toContain('only available for Pokémon')
+      }
+    }
+    expect(calls).toHaveLength(0)
+  })
+
+  it('reads language, languages and the image block of a translated card', async () => {
+    const { pw } = sdk([{ body: fixture('pokemon-card-it') }])
+    const c = await pw.pokemon.card('pk_x', { lang: 'it' })
+    expect(c.name).toBe('Weedle')
+    expect(c.rarity).toBe('Comune')
+    expect(c.language).toBe('it')
+    expect(c.languages.it).toEqual(['data', 'image'])
+    expect(c.languages.en).toEqual(['data', 'image'])
+    expect(c.image).toMatchObject({ language: 'it', path: expect.stringMatching(/^\/images\/pk_[0-9a-f]+\?lang=it$/) })
+    expect(c.image!.languages).toContain('it')
+    // moved out of info into typed fields
+    expect(c.info).not.toHaveProperty('language')
+    expect(c.info).not.toHaveProperty('languages')
+  })
+
+  it('falls back to English with the default image path when the card has no translation', async () => {
+    const { pw } = sdk([{ body: fixture('pokemon-card-ko') }])
+    const c = await pw.pokemon.card('pk_x', { lang: 'ko' })
+    expect(c.language).toBe('en')
+    expect(c.image).toMatchObject({ language: 'en', path: expect.stringMatching(/^\/images\/pk_[0-9a-f]+$/) })
+    expect(c.languages.ko).toBeUndefined()
+  })
+
+  it('without lang the card has languages but no language and no image path', async () => {
+    const { pw } = sdk([{ body: fixture('pokemon-card') }])
+    const c = await pw.pokemon.card('pk_x')
+    expect(c.language).toBeNull()
+    expect(c.languages.en).toEqual(['data', 'image'])
+    expect(c.image).toMatchObject({ path: null, language: null })
+    expect(c.image!.languages).toContain('en')
+  })
+
+  it('search and set listings carry the same fields per card', async () => {
+    const a = await sdk([{ body: fixture('pokemon-search-it') }]).pw.pokemon.search('pinsir ethan', { lang: 'it', limit: 3 })
+    expect(a.items[0]).toMatchObject({ language: 'it', image: { language: 'it' } })
+    expect(a.items.every((c) => c.language !== null && c.image!.path !== null)).toBe(true)
+    const b = await sdk([{ body: fixture('pokemon-set-it') }]).pw.pokemon.set('PLF', { lang: 'it', limit: 3 })
+    expect(b.items.every((c) => c.language !== null && c.setCode === 'PLF')).toBe(true)
+  })
+
+  it('searchAll and setCards pass lang on every page', async () => {
+    const { pw, calls } = sdk([{ body: fixture('pokemon-search-it') }])
+    for await (const _ of pw.pokemon.searchAll('pinsir ethan', { lang: 'it', maxItems: 1 })) void _
+    expect(calls[0]!.url).toContain('lang=it')
+  })
+
+  it('One Piece and the games have no languages', async () => {
+    const c = await sdk([{ body: fixture('op-card') }]).pw.onepiece.card('op_x')
+    expect(c).toMatchObject({ language: null, languages: {}, image: null })
+  })
+
+  it('imageUrl accepts the relative path from the API and adds only the host', () => {
+    const { pw } = sdk([{ body: {} }])
+    expect(pw.imageUrl('/images/pk_abc?lang=it')).toBe(`${API}/images/pk_abc?lang=it`)
+    expect(pw.imageUrl('/images/pk_abc')).toBe(`${API}/images/pk_abc`)
+    expect(() => pw.imageUrl('/cards/pk_abc')).toThrow(ValidationError)
+    expect(() => pw.imageUrl('//evil.example/images/x')).toThrow(ValidationError)
+  })
+})

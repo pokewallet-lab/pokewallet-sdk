@@ -13,6 +13,7 @@ import { normalizeSet } from '../normalize/sets.js'
 import { makePage, paginate } from '../pagination.js'
 import type {
   Card,
+  CardOptions,
   CompletionValue,
   PricesOptions,
   SearchOptions,
@@ -28,7 +29,7 @@ import type {
   TrendingOptions,
   TrendingSet,
 } from '../types.js'
-import { checkLimit, checkPage, checkPeriod, checkText, checkVariant, seg } from '../validation.js'
+import { checkLang, checkLimit, checkPage, checkPeriod, checkText, checkVariant, rejectLang, seg } from '../validation.js'
 import { LIMITS, type World } from './world.js'
 
 export interface CardWorldConfig {
@@ -36,6 +37,8 @@ export interface CardWorldConfig {
   prefix: string
   /** Minimum search length: the games reject queries shorter than 2 characters. */
   minQuery: number
+  /** Only Pokémon translates card data, so only Pokémon takes `lang`. */
+  translations?: boolean
 }
 
 /** Pokémon and the ten games share one response shape, so one class serves them all. */
@@ -49,12 +52,20 @@ export class CardWorld implements World {
     return `${this.config.prefix}${rest}`
   }
 
+  /** The `lang` query value: validated and normalized for Pokémon, rejected everywhere else. */
+  protected lang(lang: string | undefined): string | undefined {
+    if (this.config.translations) return checkLang(lang)
+    rejectLang(lang)
+    return undefined
+  }
+
   async search(q: string, options: SearchOptions = {}): Promise<SearchPage> {
     const body = rec(
       await this.http.get(this.path('/search'), {
         q: checkText('q', q, this.config.minQuery),
         page: checkPage(options.page),
         limit: checkLimit(options.limit, LIMITS.search),
+        lang: this.lang(options.lang),
       }),
     )
     const p = rec(body.pagination)
@@ -63,12 +74,12 @@ export class CardWorld implements World {
     return { ...page, truncated: rec(body.metadata).truncated === true }
   }
 
-  searchAll(q: string, options: { limit?: number; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
-    return paginate((page) => this.search(q, { page, limit: options.limit }), { maxItems: options.maxItems })
+  searchAll(q: string, options: { limit?: number; lang?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
+    return paginate((page) => this.search(q, { page, limit: options.limit, lang: options.lang }), { maxItems: options.maxItems })
   }
 
-  async card(id: string): Promise<Card> {
-    return normalizeCard(await this.http.get(this.path(`/cards/${seg(id)}`)))
+  async card(id: string, options: CardOptions = {}): Promise<Card> {
+    return normalizeCard(await this.http.get(this.path(`/cards/${seg(id)}`), { lang: this.lang(options.lang) }))
   }
 
   async sets(options: { language?: string } = {}): Promise<SetSummary[]> {
@@ -82,6 +93,7 @@ export class CardWorld implements World {
         page: checkPage(options.page),
         limit: checkLimit(options.limit, LIMITS.set),
         language: options.language,
+        lang: this.lang(options.lang),
       }),
     )
     // 200 with a candidate list instead of cards: same condition as the 300/409 answers.
@@ -95,8 +107,8 @@ export class CardWorld implements World {
     return { ...page, set }
   }
 
-  setCards(code: string, options: { limit?: number; language?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
-    return paginate((page) => this.set(code, { page, limit: options.limit, language: options.language }), {
+  setCards(code: string, options: { limit?: number; language?: string; lang?: string; maxItems?: number } = {}): AsyncGenerator<Card, void, undefined> {
+    return paginate((page) => this.set(code, { page, limit: options.limit, language: options.language, lang: options.lang }), {
       maxItems: options.maxItems,
     })
   }

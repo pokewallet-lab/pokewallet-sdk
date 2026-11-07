@@ -158,11 +158,11 @@ Three worlds with the same methods: `pw.pokemon`, `pw.onepiece`, and `pw.games.<
 
 | TypeScript | Python | Returns | Access |
 |---|---|---|---|
-| `search(q, {page, limit})` | `search(q, page=, limit=)` | one page of cards with prices | free |
+| `search(q, {page, limit, lang})` | `search(q, page=, limit=, lang=)` | one page of cards with prices | free |
 | `searchAll(q, {limit, maxItems})` | `search_all(...)` | iterator over every result | free |
-| `card(id)` | `card(id)` | one card | free |
+| `card(id, {lang})` | `card(id, lang=)` | one card | free |
 | `sets({language})` | `sets(language=)` | all sets | free |
-| `set(code, {page, limit})` | `set(code, page=, limit=)` | one page of a set's cards | free |
+| `set(code, {page, limit, lang})` | `set(code, page=, limit=, lang=)` | one page of a set's cards | free |
 | `setCards(code, {limit, maxItems})` | `set_cards(...)` | iterator over a whole set | free |
 | `prices(code)` | `prices(code)` | prices of every card in a set (one row per finish; sealed products included, `productType` tells them apart) | Pro |
 | `statistics(code, {variant})` | `statistics(code, variant=)` | average, min, max, most expensive card, trend, rarity breakdown; `variant` is `normal` or `foil` | Pro |
@@ -172,7 +172,7 @@ Three worlds with the same methods: `pw.pokemon`, `pw.onepiece`, and `pw.games.<
 | `pokemon.priceHistory(id)` | `pokemon.price_history(id)` | price snapshots at 7/14/30/60/120 days | Pro, Pokémon only |
 | `health()` | `health()` | service status and per-service checks | no key needed |
 | `listGames()` | `list_games()` | the ten games and their routes | no key needed |
-| `imageUrl(id)` | `image_url(id)` | an image URL (see below) | free |
+| `imageUrl(idOrPath)` | `image_url(id_or_path)` | an image URL (see below) | free |
 
 "Pro" means a Pro plan or the 7-day trial for Pokémon and One Piece, and an Ultra plan or the trial for the ten other games. Limits: `limit` is at most 100 for searches, 200 for set pages, 50 for trending and 100 for top cards; the SDK checks `page`, `limit`, `period` and `variant` before sending anything.
 
@@ -180,7 +180,30 @@ Statistics and completion value describe a set the same way in every world: `set
 
 Every returned object has the same fields in both languages (`camelCase` in TypeScript, `snake_case` in Python): a card has `id`, `name`, `number`, `rarity`, `setId`, `setCode`, `setName`, `tcgplayer.prices[]` (finish, `market`, `low`, `mid`, `high`, `directLow`) and `cardmarket.prices[]` (`avg`, `low`, `trend`, `avg1`, `avg7`, `avg30`). Prices are numbers, or `null` / `None` when missing. On One Piece, `card(id)` and search fill `setId`, `setCode` and `setName` from each entry; in a set listing the cards have `setId` and `setCode`, and the set's name is in `page.set`. A card also has `productType` (`card`, or a sealed type) and, for One Piece, one id per entry: a Normal and a Foil entry of the same card have different ids. A set listing has `cardCount` and `sealedCount`. Game-specific fields (`hp`, `attacks`, Magic's `p` and `t`, One Piece `ext_*`) are in `card.info`, and the untouched server value is always in `card.raw`.
 
-**Images:** `imageUrl(id)` only builds the URL. Image routes need your key in the `X-API-Key` header, so the URL cannot go straight into an `<img>` tag; fetch it with the header or proxy it from your server.
+**Images:** `imageUrl(id)` only builds the URL. Image routes need your key in the `X-API-Key` header, so the URL cannot go straight into an `<img>` tag; fetch it with the header or proxy it from your server. It also takes the relative `card.image.path` the API returns with `lang` (below) and adds only the host.
+
+**Card languages (Pokémon).** `search`, `card` and `set` take `lang` to get a card's name, rarity, attacks and text in another language: `de`, `es`, `fr`, `it`, `pt`, `ko`, `zh-cn`, `zh-tw`, `th` or `id`, in any case. `en`, `ja` or no value give the usual answer. The SDKs check the value before sending and refuse anything else with a `ValidationError` that lists the valid ones; for One Piece and the ten games `lang` is refused too, because only Pokémon has translations.
+
+```ts
+const card = await pw.pokemon.card(id, { lang: 'it' })
+card.language          // 'it', or 'en' when this card has no Italian text
+card.languages         // { en: ['data', 'image'], it: ['data', 'image'], ko: ['data'], ... }
+card.image?.path       // '/images/pk_…?lang=it', or '/images/pk_…' when there is no Italian image
+pw.imageUrl(card.image!.path!) // the URL to fetch with your key header
+```
+
+```python
+card = pw.pokemon.card(card_id, lang="it")
+card.language, card.languages, card.image.path   # same fields, snake_case
+pw.image_url(card.image.path)
+```
+
+- `card.languages` is always there on Pokémon cards, with or without `lang`: for each language, `data` (name, rarity, attacks, text) and/or `image`. `en` is always present. Use it to see which values of `lang` give a translation for that card.
+- `card.language` and `card.image.path` / `card.image.language` appear only when you asked for a language. If the card has no text in it, `language` is `en` and the text is the English one; the image follows its own list, so it can be in your language even when the text is not.
+- A translation can be partial: some fields may stay in English. The rarity is the one printed on the card in that language. Attacks keep the usual `[Cost] Name (damage)` format.
+- Coverage varies by set and by language and grows over time. The European languages (`de es fr it pt`) are for the cards of English sets, the Asian ones (`ko zh-cn zh-tw th id`) for the cards of Japanese sets; the same card in the two families has two ids, with no link between them, so `ko` on an English card gives English.
+- Images exist for `it fr de es pt`; for the other languages `image.path` is the default image and `image.language` is `en`.
+- This needs the API release that serves `lang`. Against an older API the options still work, but nothing is translated and `card.languages` is empty.
 
 Image outcomes: **404** `Image not found` means the source has no image, so do not retry it in the same run (check again from time to time); **502**, **503** and other 5xx answers are temporary, so retry with backoff; on **429** wait for `Retry-After` when it is present.
 
@@ -250,7 +273,7 @@ An ambiguous set code is reported the same way on every endpoint, even though th
 
 `packages/mcp` is a small server for the [Model Context Protocol](https://modelcontextprotocol.io). It lets any MCP client (Claude Code, Claude Desktop, Cursor, VS Code, Gemini CLI, your own agents, ...) search cards and read prices using **your own key**: the client sends `Authorization: Bearer pk_…`, the server forwards it to PokeWallet and keeps nothing. Your plan and quota stay yours, and every tool call uses one request of your quota.
 
-Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
+Tools (all read-only): `list_games`, `search_cards` (at most 10 results), `get_card`, `list_sets` (filter by name or language), `get_set` (an ambiguous set returns its alternatives; `search_cards`, `get_card` and `get_set` take an optional Pokémon `lang`, see "Card languages" above), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics`, `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter picks `pokemon` (default), `onepiece` or a game code.
 
 The hosted server is at `https://mcp.pokewallet.io/mcp`. Connect a client, passing your key as a Bearer header.
 
@@ -397,7 +420,7 @@ The MCP package is not published to a package registry. The two SDK packages are
 | MCP end to end (local `wrangler dev`, live API) | `cd packages/mcp && npm run test:e2e` | `POKEWALLET_API_KEY` |
 | Customer-style | `npm pack` / `pip wheel .`, install in a fresh folder or venv, run the README snippets | `POKEWALLET_API_KEY` |
 
-Contract and end-to-end tests skip cleanly without a key (the two key-less endpoint tests always run). Load the key into the process that needs it and mask the output:
+Contract and end-to-end tests skip cleanly without a key (the two key-less endpoint tests always run). The card-language checks run only with `POKEWALLET_LANG_LIVE=1`, once the API serves `lang`; `POKEWALLET_BASE_URL` points the contract suites at another deployment, such as a local one. Load the key into the process that needs it and mask the output:
 
 ```sh
 ( set -a; . <(grep '^POKEWALLET_API_KEY=' /path/to/.dev.vars); set +a; npm run test:contract ) 2>&1 | sed -E 's/pk_[A-Za-z0-9_-]{6,}/pk_***/g'

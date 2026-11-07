@@ -34,7 +34,7 @@ describe('card shaping', () => {
     const c = await pw.pokemon.card('pk_x')
     for (const out of [cardSummary(c), cardDetail(c)]) {
       expect(JSON.stringify(out)).not.toMatch(/4242424|4242425|unlisted/)
-      expect(Object.keys(out).every((k) => ['id', 'name', 'set', 'setId', 'number', 'rarity', 'tcgplayerUsd', 'cardmarketEur', 'type', 'productType', 'text', 'finishes', 'details', 'links'].includes(k))).toBe(true)
+      expect(Object.keys(out).every((k) => ['id', 'name', 'set', 'setId', 'number', 'rarity', 'tcgplayerUsd', 'cardmarketEur', 'type', 'productType', 'text', 'finishes', 'details', 'links', 'language', 'languages', 'imagePath', 'imageLanguage'].includes(k))).toBe(true)
     }
   })
 

@@ -3,8 +3,17 @@ import { PokeWallet } from '../../src/index.js'
 /** The key only ever comes from the environment; without it the contract suites skip. */
 export const HAS_KEY = Boolean(process.env.POKEWALLET_API_KEY)
 
+/** Point the suites at another deployment (for example a local instance) instead of production. */
+export const BASE_URL = process.env.POKEWALLET_BASE_URL
+
+/**
+ * Card languages (`lang`) are checked only when this is set: the suites run against production by
+ * default, and the feature is not there until the API that serves it is deployed.
+ */
+export const HAS_LANG = Boolean(process.env.POKEWALLET_LANG_LIVE)
+
 export function liveClient(): PokeWallet {
-  return new PokeWallet({ apiKey: process.env.POKEWALLET_API_KEY })
+  return new PokeWallet({ apiKey: process.env.POKEWALLET_API_KEY, baseUrl: BASE_URL })
 }
 
 /** Keys that must never appear in an answer, at any depth. */

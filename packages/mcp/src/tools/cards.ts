@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { guarded, ok } from '../errors.js'
 import { cardDetail, cardSummary } from '../shape.js'
-import { gameParam, worldFor } from '../worlds.js'
-import { COST, READ_ONLY, type Deps } from './common.js'
+import { gameParam, langParam, worldFor } from '../worlds.js'
+import { COST, LANG_NOTE, READ_ONLY, type Deps } from './common.js'
 
 export function registerCardTools({ server, pw }: Deps): void {
   server.registerTool(
@@ -28,18 +28,19 @@ export function registerCardTools({ server, pw }: Deps): void {
     'search_cards',
     {
       title: 'Search cards',
-      description: `Search cards by name, card number or set. Each result already carries its id and market prices (TCGPlayer USD, CardMarket trend EUR, per finish), so a follow-up get_card is rarely needed. Returns at most 10 results per page. ${COST}`,
+      description: `Search cards by name, card number or set. Each result already carries its id and market prices (TCGPlayer USD, CardMarket trend EUR, per finish), so a follow-up get_card is rarely needed. Returns at most 10 results per page. ${LANG_NOTE} ${COST}`,
       inputSchema: z.object({
         query: z.string().min(2).max(100).describe('Card name, number or set, e.g. "charizard" or "OP01-001".'),
         game: gameParam,
         limit: z.number().int().min(1).max(10).default(5).describe('Results per page (max 10).'),
         page: z.number().int().min(1).default(1),
+        lang: langParam,
       }),
       annotations: READ_ONLY,
     },
-    ({ query, game, limit, page }) =>
+    ({ query, game, limit, page, lang }) =>
       guarded(async () => {
-        const res = await worldFor(pw, game).search(query, { limit, page })
+        const res = await worldFor(pw, game).search(query, { limit, page, lang })
         return ok({
           game,
           query,
@@ -56,17 +57,18 @@ export function registerCardTools({ server, pw }: Deps): void {
     'get_card',
     {
       title: 'Get card details',
-      description: `Full details of one card: text, type, game-specific stats, prices per finish and shop links. Use an id from search_cards or get_set. For pokemon, a plain card number plus setCode also works. ${COST}`,
+      description: `Full details of one card: text, type, game-specific stats, prices per finish and shop links. Use an id from search_cards or get_set. For pokemon, a plain card number plus setCode also works. ${LANG_NOTE} ${COST}`,
       inputSchema: z.object({
         id: z.string().min(1).describe('Card id as returned by search_cards (pk_…, op_…, mtg_…, or a 64-character hex id), or a plain card number for pokemon.'),
         game: gameParam,
         setCode: z.string().optional().describe('Pokémon only: set code, required when id is a plain card number like "086/078".'),
+        lang: langParam,
       }),
       annotations: READ_ONLY,
     },
-    ({ id, game, setCode }) =>
+    ({ id, game, setCode, lang }) =>
       guarded(async () => {
-        const card = game === 'pokemon' ? await pw.pokemon.card(id, { setCode }) : await worldFor(pw, game).card(id)
+        const card = game === 'pokemon' ? await pw.pokemon.card(id, { setCode, lang }) : await worldFor(pw, game).card(id, { lang })
         return ok(cardDetail(card))
       }),
   )

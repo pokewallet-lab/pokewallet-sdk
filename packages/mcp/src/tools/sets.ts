@@ -2,8 +2,8 @@ import { AmbiguousSetError } from '@pokewallet/sdk'
 import { z } from 'zod'
 import { ambiguousResult, guarded, ok } from '../errors.js'
 import { cardSummary, completion, setEntry, statistics } from '../shape.js'
-import { gameParam, worldFor } from '../worlds.js'
-import { COST, PRO_NEEDED, READ_ONLY, type Deps } from './common.js'
+import { gameParam, langParam, worldFor } from '../worlds.js'
+import { COST, LANG_NOTE, PRO_NEEDED, READ_ONLY, type Deps } from './common.js'
 
 const setParam = z.string().min(1).describe('Set code (e.g. "PLF", "OP01", "FRA") or numeric setId. If a code is ambiguous the alternatives are returned: call again with one setId.')
 
@@ -36,19 +36,20 @@ export function registerSetTools({ server, pw }: Deps): void {
     'get_set',
     {
       title: 'Get the cards of a set',
-      description: `One page of a set's cards (name, number, rarity, id). An ambiguous set code returns the candidate sets instead of an error. Prices are not in the listing: use search_cards or get_card. ${COST}`,
+      description: `One page of a set's cards (name, number, rarity, id). An ambiguous set code returns the candidate sets instead of an error. Prices are not in the listing: use search_cards or get_card. ${LANG_NOTE} ${COST}`,
       inputSchema: z.object({
         set: setParam,
         game: gameParam,
         page: z.number().int().min(1).default(1),
         limit: z.number().int().min(1).max(50).default(20).describe('Cards per page (max 50).'),
+        lang: langParam,
       }),
       annotations: READ_ONLY,
     },
-    ({ set, game, page, limit }) =>
+    ({ set, game, page, limit, lang }) =>
       guarded(async () => {
         try {
-          const res = await worldFor(pw, game).set(set, { page, limit })
+          const res = await worldFor(pw, game).set(set, { page, limit, lang })
           return ok({
             game,
             set: setEntry(res.set),

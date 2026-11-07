@@ -76,6 +76,26 @@ class Card:
     #: Game-specific fields: ``hp``, ``attacks``, ``p``, ``t``, ``ext_color``... as sent by the API.
     info: Dict[str, Any]
     raw: Any = None
+    #: Pokémon: the language the text fields are in. Set when ``lang`` was requested, ``"en"`` when the card
+    #: has no translation in that language. None when ``lang`` was not requested.
+    language: Optional[str] = None
+    #: Pokémon: what exists for this card, per language: ``"data"`` (name, rarity, attacks, text) and/or
+    #: ``"image"``. ``en`` is always there. Empty for One Piece and the ten games.
+    languages: Dict[str, List[str]] = field(default_factory=dict)
+    #: The card's images block. None when the answer has none (One Piece).
+    image: Optional["CardImage"] = None
+
+
+@dataclass
+class CardImage:
+    #: Languages the card has an image in (``images.languages``).
+    languages: List[str]
+    #: Relative path of the image in the requested language, for example ``/images/pk_…?lang=it``; it is
+    #: ``/images/pk_…`` when the card has no image in that language. Present when ``lang`` was requested.
+    #: Pass it to :func:`pokewallet.image_url`; the request still needs the API key header.
+    path: Optional[str] = None
+    #: Language of the image at ``path``. Present when ``lang`` was requested.
+    language: Optional[str] = None
 
 
 @dataclass

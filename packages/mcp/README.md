@@ -4,13 +4,13 @@ Stateless remote [MCP](https://modelcontextprotocol.io) server for the PokeWalle
 
 **Auth (mode A):** each request carries `Authorization: Bearer pk_…`, the caller's own PokeWallet key. The Worker answers 401 for anything that is not a Bearer `pk_` token before calling upstream, then forwards the key through `@pokewallet/sdk` with `User-Agent: pokewallet-mcp/<version>` and an `X-PokeWallet-Client` header that adds the name of the calling MCP client, taken from its `User-Agent` (for example `pokewallet-mcp/<version> (Claude-User)`). Plan limits and quota stay the caller's own. The key is never logged or echoed.
 
-Tools (all read-only, each call costs one request of the caller's quota): `list_games`, `search_cards` (max 10 results), `get_card`, `list_sets`, `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics` (optional `variant`: `normal` or `foil`), `set_completion_value`. `trending_sets` covers the last 7 days, the only period. A `game` parameter selects `pokemon` (default), `onepiece` or one of the ten game codes. Whole-set price dumps and images are deliberately not exposed.
+Tools (all read-only, each call costs one request of the caller's quota): `list_games`, `search_cards` (max 10 results), `get_card`, `list_sets`, `get_set` (an ambiguous set returns its alternatives), `get_price_history` (Pokémon), `top_cards`, `trending_sets`, `set_statistics` (optional `variant`: `normal` or `foil`), `set_completion_value`. `trending_sets` covers the last 7 days, the only period. `search_cards`, `get_card` and `get_set` take an optional `lang` (Pokémon only: `de es fr it pt ko zh-cn zh-tw th id`; `en` and `ja` are the default) and show `language` (the language served, `en` when the card has no translation), `languages` (what exists for the card, per language: `data`, `image` or `data+image`) and `imagePath` (relative path of the image in that language). Translations can be partial. A language that is not valid, or `lang` on another game, is a tool error. Needs the API release that serves `lang`. A `game` parameter selects `pokemon` (default), `onepiece` or one of the ten game codes. Whole-set price dumps and images are deliberately not exposed.
 
 ```sh
 npm install
 npm run typecheck
 npm test                  # unit tests, no network
-npm run test:e2e          # starts `wrangler dev` locally; live tests need POKEWALLET_API_KEY in the environment
+npm run test:e2e          # starts `wrangler dev` locally; live tests need POKEWALLET_API_KEY in the environment (card languages also need POKEWALLET_LANG_LIVE=1)
 npm run dev               # local server at http://127.0.0.1:8787/mcp
 ```
 

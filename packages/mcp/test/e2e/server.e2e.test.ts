@@ -211,3 +211,34 @@ live('MCP over Streamable HTTP against the production API', () => {
     }
   })
 })
+
+// The production API serves `lang` only once the matching API release is deployed: opt in with POKEWALLET_LANG_LIVE.
+const liveLang = describe.skipIf(!KEY || !process.env.POKEWALLET_LANG_LIVE)
+
+liveLang('MCP card languages against the production API', () => {
+  let client: Client
+
+  beforeAll(async () => {
+    client = await connect(KEY!)
+  })
+  afterAll(async () => {
+    await client?.close()
+  })
+
+  it('search_cards, get_card and get_set take lang and show the language, the languages and the image path', async () => {
+    const found = (await call(client, 'search_cards', { query: 'pinsir ethan', lang: 'it', limit: 3 })).json()
+    const hit = found.results.find((r: { language?: string }) => r.language === 'it')
+    expect(hit.imagePath).toMatch(/^\/images\/pk_[0-9a-f]+\?lang=it$/)
+    expect(hit.languages.en).toBe('data+image')
+
+    const card = (await call(client, 'get_card', { id: hit.id, lang: 'it' })).json()
+    expect(card).toMatchObject({ language: 'it', imageLanguage: 'it' })
+    expect((await call(client, 'get_card', { id: hit.id, lang: 'ko' })).json()).toMatchObject({ language: 'en' })
+
+    const set = (await call(client, 'get_set', { set: 'DRI', lang: 'it', limit: 3 })).json()
+    expect(set.cards.every((c: { language?: string }) => c.language)).toBe(true)
+
+    expect((await call(client, 'search_cards', { query: 'pinsir', lang: 'xx' })).isError).toBe(true)
+    expect((await call(client, 'search_cards', { query: 'luffy', game: 'onepiece', lang: 'it' })).isError).toBe(true)
+  })
+})

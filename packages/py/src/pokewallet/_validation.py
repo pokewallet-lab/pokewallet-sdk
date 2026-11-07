@@ -47,3 +47,30 @@ def check_text(name: str, value: str, minimum: int = 1) -> str:
 def seg(value: str) -> str:
     """Path segment for a user-supplied id or set code."""
     return quote(check_text("id", value), safe="")
+
+
+#: Languages the API serves card data in, besides the default one (``en`` and ``ja`` are the default).
+CARD_LANGUAGES = ("de", "es", "fr", "it", "pt", "ko", "zh-cn", "zh-tw", "th", "id")
+
+
+def check_lang(lang: Optional[str]) -> Optional[str]:
+    """``lang`` for Pokémon cards: any case is accepted and sent in lowercase.
+
+    ``en``, ``ja`` and None mean the default language and send nothing. Anything else raises before the request.
+    """
+    if lang is None:
+        return None
+    value = lang.strip().lower() if isinstance(lang, str) else ""
+    if value in ("en", "ja"):
+        return None
+    if value not in CARD_LANGUAGES:
+        raise ValidationError(
+            f"lang must be one of {', '.join(CARD_LANGUAGES)} (en and ja return the default language), got {lang!r}"
+        )
+    return value
+
+
+def reject_lang(lang: Optional[str]) -> None:
+    """One Piece and the ten games have no translations: ``lang`` is rejected instead of silently ignored."""
+    if lang is not None:
+        raise ValidationError("lang is only available for Pokémon cards")
