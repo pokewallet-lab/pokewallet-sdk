@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.pokewallet/mcp",
+  "title": "PokéWallet",
+  "description": "Card prices and data for Pokémon, One Piece and 10 more TCGs, from TCGplayer and Cardmarket.",
+  "version": "0.1.9",
+  "websiteUrl": "https://pokewallet.io/developers/mcp",
+  "repository": {
+    "url": "https://github.com/pokewallet-lab/pokewallet-sdk",
+    "source": "github",
+    "subfolder": "packages/mcp"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.pokewallet.io/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer <your PokéWallet API key (pk_...)>. Get a free key at https://pokewallet.io/auth/login?signup=1",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
